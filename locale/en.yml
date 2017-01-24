@@ -1,0 +1,11 @@
+flarum-ext-auth-ldap
+  admin:
+    ldap_settings:
+      title: LDAP Login adapter settings
+      only_use_ldap: Only use LDAP for authentication
+      registration_url: Registration URL
+  forum:
+    log_in: => core.ref.log_in
+    log_out: => core.ref.log_out
+    log_in_with: Login with %name%
+    log_out_from: Logout from %name%
