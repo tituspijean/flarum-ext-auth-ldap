@@ -11,7 +11,6 @@ use Flarum\Http\Controller\ControllerInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
-use Adldap\Adldap;
 
 class LDAPAuthController implements ControllerInterface
 {
@@ -41,87 +40,81 @@ class LDAPAuthController implements ControllerInterface
 	 */
 	public function handle( Request $request )
 	{
-		$redirectUri = (string) $request->getAttribute( 'originalUri', $request->getUri() )->withQuery( '' );
-
-		$session = $request->getAttribute( 'session' );
-
-		$queryParams = $request->getQueryParams();
-		$out = array_key_exists( 'out', $queryParams );
+		$actor = $request->getAttribute('actor');
+		$body = $request->getParsedBody();
+		$params = array_only($body, ['identification', 'password']);
+		$uid = array_get($params, 'identification');
+		$password = array_get($params, 'password');
+		$uid = 'test';
+		$username='uid='.$uid.',ou=users,dc=yunohost,dc=org';
+		$password='12345678';
 
 		// TO DO : USE EXTENSION VARIABLE STORAGE
-		$configuration = array(
-			//'user_id_key' => '',
-			//'account_suffix' => '',
-			//'person_filter' => array('category' => 'objectCategory', 'person' => 'person'),
-			'base_dn' => 'ou=users,dc=yunohost,dc=org',
-			'domain_controllers' => array('localhost'),
-    			//'admin_username' => 'administrator',
-    			//'admin_password' => 'password',
-    			//'real_primarygroup' => true,
-    			//'use_ssl' => false,
-    			//'use_tls' => false,
-    			//'recursive_groups' => true,
-    			'ad_port' => '389',
-    			'sso' => false,
-		);
+		// Create the configuration array.
+		$config = [
+		    // Mandatory Configuration Options
+		    'domain_controllers'    => ['localhost'],
+		    'base_dn'               => 'ou=users,dc=yunohost,dc=org',
+		    //'admin_username'        => $username,
+		    //'admin_password'        => $password,
 
+		    // Optional Configuration Options
+		    'account_prefix'        => '',
+		    'account_suffix'        => '',
+		    //'admin_account_suffix'  => '@acme.org',
+		    'port'                  => 389,
+		    'follow_referrals'      => true,
+		    //'use_ssl'               => false,
+		    //'use_tls'               => false,php
+		    'timeout'               => 5,
+
+		    // Custom LDAP Options
+		    //'custom_options'        => [
+			// See: http://php.net/ldap_set_option
+			//LDAP_OPT_X_TLS_REQUIRE_CERT => LDAP_OPT_X_TLS_HARD
+		    //]
+		];
+
+		// Create a new Adldap Provider instance.
+		$provider = new \Adldap\Connections\Provider($config);
 		// Try to bind.
-		$adldap = false;
-		$exception = false;
-		if (is_array($options['domain_controllers']) && !empty($options['domain_controllers'][0])) {
-    			try {
-				$adldap = new adLDAP($options);
-			} catch (adLDAPException $e) {
-				$exception = $e;
+try {
+    $provider->auth()->bind($username, $password);
+
+     // Successfully bound to server.
+} catch (\Adldap\Exceptions\Auth\BindException $e) {
+    // There was an issue binding to the LDAP server.
+}
+		try {
+		    if ($provider->auth()->attempt($username, $password, $bindAsUser = true)) {
+			// Credentials were correct.
+			$user = $provider->search()->findBy('uid', $uid);
+			$identification = [
+				'username' => $uid
+			];
+			$suggestions = [
+				'username' => $user->getDisplayName(),
+				'email' => $user->mail[0]
+				//'avatar' => $user->getJpegPhoto();
+			];
+			return $this->authResponse->make($request, $identification, $suggestions);
 			}
+
+		} catch (\Adldap\Exceptions\Auth\UsernameRequiredException $e) {
+		    	// The user didn't supply a username.
+			return new Response("No username", 500);
+
+		} catch (\Adldap\Exceptions\Auth\PasswordRequiredException $e) {
+			// The user didn't supply a password.
+			return new Response("No password", 500);
+		} catch (\Adldap\Exceptions\Auth\BindException $e) {
+    			// There was an issue binding / connecting to the server.
+			return new Response("Could not bind", 500);
 		}
 
-		// Handle log in.
-		// TO DO : ACTUALLY GET LOGIN AND PASSWORD FROM FLARUM'S FORM
-		$username = (!empty($_POST['username'])) ? $_POST['username'] : '';
-		$info = false;
-		if ($adldap && !empty($username)) {
-			$password = $_POST['password']
-			try {
-				$adldap->authenticate($username, $password);
-				$info = $adldap->user()->info($username, ['*']);
-				if (isset($info[0])) {
-					$info = $info[0];
-				}
-			} catch (\adLDAP\Exceptions\adLDAPException $e) {
-				$exception = $e;
-			}
-		}
 
-		// TO DO : JUMP DIRECTLY TO LOG OUT IF REQUESTED
-		if( $out ) {
-			$returnTo = $redirectUri;
-			$paramters = array();
-			$nameId = unserialize( $session->get( 'LDAPNameId' ) );
-			$sessionIndex = unserialize( $session->get( 'LDAPSessionIndex' ) );
+        return new Response("Error", 500);
 
-			$auth->logout( $returnTo, $paramters, $nameId, $sessionIndex );
-
-		}
-
-		// HERE CODE FOR LOGIN AND SET $LDAPUserdata IF SUCCESSFULL
-		// SERIALIZATION IS FROM THE SAML2 EXT. IS IT NEEDED HERE ?
-
-		$LDAPUserdata = unserialize( $session->get( 'LDAPUserdata' ) );
-
-		if( $LDAPUserdata == null ) {
-			$auth->login( $redirectUri );
-			exit();
-		}
-
-		$identification = [
-			'ldap_uid' => $LDAPUserdata[ 'uid' ][ 0 ]
-		];
-		$suggestions = [
-			'username' => $LDAPUserdata[ 'username' ][ 0 ],
-			'email' => $LDAPUserdata[ 'mail' ][ 0 ]
-		];
-
-		return $this->authResponse->make( $request, $identification, $suggestions );
 	}
 }
+
