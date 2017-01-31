@@ -2,6 +2,6 @@ var gulp = require('flarum-gulp');
 
 gulp({
   modules: {
-    'flarum/auth/saml2': 'src/**/*.js'
+    'flarum/auth/ldap': 'src/**/*.js'
   }
 });

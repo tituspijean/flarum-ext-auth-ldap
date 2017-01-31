@@ -1,7 +1,6 @@
 import app from 'flarum/app';
+import addLDAPPane from "flarum/auth/ldap/addLDAPPane";
 
-import LDAPSettingsModal from 'flarum/auth/ldap/components/LDAPSettingsModal';
-
-app.initializers.add('flarum-auth-ldap', () => {
-  app.extensionSettings['flarum-auth-ldap'] = () => app.modal.show(new LDAPSettingsModal());
+app.initializers.add('flarum-auth-ldap', app => {
+  addLDAPPane();
 });

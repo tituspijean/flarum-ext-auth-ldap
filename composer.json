@@ -11,8 +11,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/TitusPiJean/flarum-ext-auth-ldap/issues",
-        "source": "https://github.com/TitusPiJean/flarum-ext-auth-ldap"
+        "issues": "https://github.com/tituspijean/flarum-ext-auth-ldap/issues",
+        "source": "https://github.com/tituspijean/flarum-ext-auth-ldap"
     },
     "require": {
         "flarum/core": "^0.1.0-beta.6",
@@ -27,7 +27,7 @@
         "flarum-extension": {
             "title": "LDAP Login",
             "icon": {
-                "name": "lock",
+                "name": "address-book",
                 "backgroundColor": "#b15959",
                 "color": "#fff"
             }
