@@ -1,6 +1,6 @@
 {
     "name": "tituspijean/flarum-ext-auth-ldap",
-    "description": "Allow users to log in through a LDAP server.",
+    "description": "Allow users to log in through LDAP.",
     "type": "flarum-extension",
     "keywords": ["authentication"],
     "license": "MIT",
@@ -15,17 +15,19 @@
         "source": "https://github.com/tituspijean/flarum-ext-auth-ldap"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.6",
-         "adldap2/adldap2": "7.0.*"
+        "flarum/core": "^0.1.0-beta.7"
     },
     "autoload": {
         "psr-4": {
-            "Flarum\\Auth\\LDAP\\": "src/"
+            "TitusPiJean\\Flarum\\Auth\\LDAP\\": "src/"
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "0.4-dev"
+        },
         "flarum-extension": {
-            "title": "LDAP Login",
+            "title": "LDAP login",
             "icon": {
                 "name": "address-book",
                 "backgroundColor": "#b15959",

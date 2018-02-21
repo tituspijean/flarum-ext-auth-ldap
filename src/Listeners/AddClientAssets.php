@@ -1,6 +1,6 @@
 <?php
 
-namespace Flarum\Auth\LDAP\Listener;
+namespace TitusPiJean\Flarum\Auth\LDAP\Listeners;
 
 use DirectoryIterator;
 use Flarum\Event\ConfigureWebApp;
@@ -15,7 +15,7 @@ class AddClientAssets
     public function subscribe(Dispatcher $events)
     {
         $events->listen(ConfigureWebApp::class, [$this, 'addAssets']);
-	$events->listen(ConfigureLocales::class, [$this, 'addLocales']);
+        $events->listen(ConfigureLocales::class, [$this, 'addLocales']);
     }
 
     /**
@@ -28,22 +28,21 @@ class AddClientAssets
                 __DIR__.'/../../js/forum/dist/extension.js',
                 __DIR__.'/../../less/forum/extension.less'
             ]);
-            $event->addBootstrapper('flarum/auth/ldap/main');
+            $event->addBootstrapper('tituspijean/flarum-ext-auth-ldap/main');
         }
-
         if ($event->isAdmin()) {
             $event->addAssets([
-                __DIR__.'/../../js/admin/dist/extension.js'
+                __DIR__.'/../../js/admin/dist/extension.js',
             ]);
-            $event->addBootstrapper('flarum/auth/ldap/main');
+            $event->addBootstrapper('tituspijean/flarum-ext-auth-ldap/main');
         }
     }
 
-   /**
-    * Provides i18n files.
-    *
-    * @param ConfigureLocales $event
-    */
+    /**
+     * Provides i18n files.
+     *
+     * @param ConfigureLocales $event
+     */
     public function addLocales(ConfigureLocales $event)
     {
         foreach (new DirectoryIterator(__DIR__.'/../../locale') as $file) {

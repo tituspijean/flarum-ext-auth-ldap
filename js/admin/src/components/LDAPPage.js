@@ -2,6 +2,7 @@ import Component from "flarum/Component";
 import Button from "flarum/components/Button";
 import saveSettings from "flarum/utils/saveSettings";
 import Alert from "flarum/components/Alert";
+import FieldSet from "flarum/components/FieldSet";
 import Select from "flarum/components/Select";
 import Switch from "flarum/components/Switch";
 
@@ -11,19 +12,16 @@ export default class LDAPPage extends Component {
         this.loading = false;
 
         this.fields = [
-            'name',
-            'domain_controllers',
-            'base_dn',
-            'port',
+            'address'
         ];
 
         this.checkboxes = [
-            'only_use'
+            'onlyUse'
         ];
 
         this.values = {};
 
-        this.settingsPrefix = 'flarum-auth-ldap';
+        this.settingsPrefix = 'flarum-ext-auth-ldap';
 
         const settings = app.data.settings;
 
@@ -40,45 +38,27 @@ export default class LDAPPage extends Component {
             m('div', {className: 'LDAPPage'}, [
                 m('div', {className: 'container'}, [
                     m('form', {onsubmit: this.onsubmit.bind(this)}, [
-                        m('fieldset', {className: 'LDAPPage-preferences'}, [
-                            m('legend', {}, app.translator.trans('flarum-auth-ldap.admin.settings.title')),
-                            m('label', {}, app.translator.trans('flarum-auth-ldap.admin.settings.name')),
+                       m('fieldset', {className: 'LDAPPage-preferences'}, [
+                            m('legend', {}, app.translator.trans('flarum-ext-auth-ldap.admin.settings.title')),
+                            m('label', {}, app.translator.trans('flarum-ext-auth-ldap.admin.settings.address')),
                             m('input', {
                                 className: 'FormControl',
-                                value: this.values.name() || 'LDAP',
-                                oninput: m.withAttr('value', this.values.name)
-                            }),
-                            m('label', {}, app.translator.trans('flarum-auth-ldap.admin.settings.domain_controllers')),
-                            m('input', {
-                                className: 'FormControl',
-                                value: this.values.domain_controllers() || 'localhost',
-                                oninput: m.withAttr('value', this.values.domain_controllers)
-                            }),
-                            m('label', {}, app.translator.trans('flarum-auth-ldap.admin.settings.base_dn')),
-                            m('input', {
-                                className: 'FormControl',
-                                value: this.values.base_dn() || 'ou=users,dc=yunohost,dc=org',
-                                oninput: m.withAttr('value', this.values.base_dn)
-                            }),
-                            m('label', {}, app.translator.trans('flarum-auth-ldap.admin.settings.port')),
-                            m('input', {
-                                className: 'FormControl',
-                                value: this.values.port() || 389,
-                                oninput: m.withAttr('value', this.values.port)
+                                value: this.values.address(),
+                                oninput: m.withAttr('value', this.values.address)
                             }),
                             Switch.component({
-                                state: this.values.only_use() || false,
-                                children: app.translator.trans('flarum-auth-ldap.admin.settings.only_use'),
-                                onchange: this.values.only_use
-                            }),
+                                        state: this.values.onlyUse() || false,
+                                        children: app.translator.trans('flarum-ext-auth-ldap.admin.settings.onlyUse'),
+                                        onchange: this.values.onlyUse
+                                    })
+			]),
                             Button.component({
                                  type: 'submit',
                                  className: 'Button Button--primary',
-                                 children: app.translator.trans('flarum-auth-ldap.admin.buttons.save'),
+                                 children: app.translator.trans('flarum-ext-auth-ldap.admin.buttons.save'),
                                  loading: this.loading,
                                  disabled: !this.changed()
                             })
-                        ])
                     ])
                 ])
             ])

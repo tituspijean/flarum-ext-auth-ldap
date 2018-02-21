@@ -1,6 +1,7 @@
 import app from 'flarum/app';
-import addLDAPPane from "flarum/auth/ldap/addLDAPPane";
 
-app.initializers.add('flarum-auth-ldap', app => {
-  addLDAPPane();
+import addLDAPPage from 'tituspijean/flarum-ext-auth-ldap/addLDAPPage';
+
+app.initializers.add('tituspijean-flarum-ext-auth-ldap', app => {
+  addLDAPPage();
 });

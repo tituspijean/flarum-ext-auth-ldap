@@ -2,6 +2,6 @@ var gulp = require('flarum-gulp');
 
 gulp({
   modules: {
-    'flarum/auth/ldap': 'src/**/*.js'
+    'tituspijean/flarum-ext-auth-ldap': 'src/**/*.js'
   }
 });

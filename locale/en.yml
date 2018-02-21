@@ -1,18 +1,13 @@
-flarum-auth-ldap:
-  admin:
-    help_texts:
-      description: Set up LDAP authentication
-    settings:
-      title: LDAP Login adapter settings
-      name: LDAP server name
-      domain_controllers: Domains (comma separated)
-      base_dn: Base DN
-      port: Port
-      only_use: Only use LDAP for authentication
-    buttons:
-      save: Save
+flarum-ext-auth-ldap:
   forum:
     log_in: => core.ref.log_in
+    log_in_with: Log in with LDAP
     log_out: => core.ref.log_out
-    log_in_with: Login with {name}
-    log_out_from: Logout from {name}
+  admin:
+    description: Set LDAP domain
+    settings:
+      title: LDAP settings
+      address: LDAP's domain (without "https://" or trailing "/")
+      onlyUse: Disable Flarum login and only use LDAP authentication
+    buttons:
+      save: Save

@@ -48,8 +48,8 @@ class LDAPAuthController implements ControllerInterface
         ];
 
         // TEMPORARY TEST
-        // $uid = 'test';
-        // $password='12345678';
+        $uid = 'test';
+        $password='12345678';
 
         $provider = new \Adldap\Connections\Provider($config);
         $uid_dn='uid='.$uid.','.$config['base_dn'];
@@ -77,3 +77,29 @@ class LDAPAuthController implements ControllerInterface
         return new Response("Error", 500);
     }
 }
+
+
+// $ldap = $this->settings->get('flarum-ext-auth-ldap.address');
+// if ($ldap == '') {
+//     $this->settings->set('flarum-ext-auth-ldap.onlyUse', false);
+//     return new TextResponse('LDAP domain is not set, Flarum login has been reactivated. Please configure LDAP extension. ', 500, []);
+// }
+// if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
+//     $r           = base64_encode("https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+//     $urlredirect = "https://" . $ldap . "/yunohost/sso/?r=" . $r;
+//     $response    = new RedirectResponse($urlredirect);
+//     $response    = $response->withHeader('Authorization', '');
+//     return $response;
+// } else {
+//     $email = $request->getHeader('Email')[0];
+//     $uid = $_SERVER['PHP_AUTH_USER'];
+//
+//     $identification = [
+//         'username' => $uid,
+//         'email' => $email
+//     ];
+//     $suggestions = [
+//         'username' => $uid,
+//         'email' => $email
+//     ];
+//     return $this->authResponse->make($request, $identification, $suggestions);

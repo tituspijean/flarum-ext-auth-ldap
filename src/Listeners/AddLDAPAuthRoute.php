@@ -1,6 +1,6 @@
 <?php
 
-namespace Flarum\Auth\LDAP\Listener;
+namespace TitusPiJean\Flarum\Auth\LDAP\Listeners;
 
 use Flarum\Event\ConfigureForumRoutes;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -20,6 +20,6 @@ class AddLDAPAuthRoute
      */
     public function configureForumRoutes(ConfigureForumRoutes $event)
     {
-        $event->get('/auth/ldap', 'auth.ldap', 'Flarum\Auth\LDAP\LDAPAuthController');
+        $event->get('/auth/ldap', 'auth.ldap', 'TitusPiJean\Flarum\Auth\LDAP\Controllers\LDAPAuthController');
     }
 }
