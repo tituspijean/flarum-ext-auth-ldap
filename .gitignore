@@ -1,1 +1,4 @@
-node_modules/
+.editorconfig
+js/*/node_modules
+vendor/
+composer.lock

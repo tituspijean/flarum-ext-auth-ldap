@@ -1,187 +1,95 @@
-"use strict";
+'use strict';
 
-System.register("tituspijean/flarum-ext-auth-ldap/addLDAPPage", ["flarum/extend", "flarum/components/AdminNav", "flarum/components/AdminLinkButton", "tituspijean/flarum-ext-auth-ldap/components/LDAPPage"], function (_export, _context) {
-    "use strict";
+System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal', ['flarum/app', 'flarum/components/SettingsModal', 'flarum/components/Switch'], function (_export, _context) {
+	"use strict";
 
-    var extend, AdminNav, AdminLinkButton, LDAPPage;
+	var app, SettingsModal, Switch, settingsPrefix, translationPrefix, LDAPSettingsModal;
+	return {
+		setters: [function (_flarumApp) {
+			app = _flarumApp.default;
+		}, function (_flarumComponentsSettingsModal) {
+			SettingsModal = _flarumComponentsSettingsModal.default;
+		}, function (_flarumComponentsSwitch) {
+			Switch = _flarumComponentsSwitch.default;
+		}],
+		execute: function () {
+			settingsPrefix = 'tituspijean-flarum-ext-auth-ldap.';
+			translationPrefix = 'tituspijean-flarum-ext-auth-ldap.admin.settings.';
 
-    _export("default", function () {
-        app.routes['tituspijean-flarum-ext-auth-ldap'] = { path: '/ldap', component: LDAPPage.component() };
-        app.extensionSettings['tituspijean-flarum-ext-auth-ldap'] = function () {
-            return m.route(app.route('tituspijean-flarum-ext-auth-ldap'));
-        };
-        extend(AdminNav.prototype, 'items', function (items) {
-            items.add('tituspijean-flarum-ext-auth-ldap', AdminLinkButton.component({
-                href: app.route('tituspijean-flarum-ext-auth-ldap'),
-                icon: 'address-book',
-                children: 'LDAP authentication',
-                description: app.translator.trans('flarum-ext-auth-ldap.admin.description')
-            }));
-        });
-    });
+			LDAPSettingsModal = function (_SettingsModal) {
+				babelHelpers.inherits(LDAPSettingsModal, _SettingsModal);
 
-    return {
-        setters: [function (_flarumExtend) {
-            extend = _flarumExtend.extend;
-        }, function (_flarumComponentsAdminNav) {
-            AdminNav = _flarumComponentsAdminNav.default;
-        }, function (_flarumComponentsAdminLinkButton) {
-            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
-        }, function (_tituspijeanFlarumExtAuthSsowatComponentsLDAPPage) {
-            LDAPPage = _tituspijeanFlarumExtAuthSsowatComponentsLDAPPage.default;
-        }],
-        execute: function () {}
-    };
-});;
-"use strict";
+				function LDAPSettingsModal() {
+					babelHelpers.classCallCheck(this, LDAPSettingsModal);
+					return babelHelpers.possibleConstructorReturn(this, (LDAPSettingsModal.__proto__ || Object.getPrototypeOf(LDAPSettingsModal)).apply(this, arguments));
+				}
 
-System.register("tituspijean/flarum-ext-auth-ldap/components/LDAPPage", ["flarum/Component", "flarum/components/Button", "flarum/utils/saveSettings", "flarum/components/Alert", "flarum/components/FieldSet", "flarum/components/Select", "flarum/components/Switch"], function (_export, _context) {
-    "use strict";
+				babelHelpers.createClass(LDAPSettingsModal, [{
+					key: 'title',
+					value: function title() {
+						return app.translator.trans(translationPrefix + 'title');
+					}
+				}, {
+					key: 'form',
+					value: function form() {
+						return [m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.domain_controllers')), m('input.FormControl', {
+							bidi: this.setting(settingsPrefix + 'domain_controllers'),
+							placeholder: 'localhost'
+						})]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.base_dn')), m('input.FormControl', {
+							bidi: this.setting(settingsPrefix + 'base_dn'),
+							placeholder: 'ou=users,dc=yunohost,dc=org'
+						})]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.port')), m('input.FormControl', {
+							bidi: this.setting(settingsPrefix + 'port'),
+							placeholder: '389'
+						})]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.account_prefix')), m('input.FormControl', {
+							bidi: this.setting(settingsPrefix + 'account_prefix'),
+							placeholder: ''
+						})]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.account_suffix')), m('input.FormControl', {
+							bidi: this.setting(settingsPrefix + 'account_suffix'),
+							placeholder: ''
+						})]), m('.Form-group', [m('label', Switch.component({
+							state: [true, '1'].indexOf(this.setting(settingsPrefix + 'follow_referrals')()) !== -1,
+							onchange: this.setting(settingsPrefix + 'follow_referrals'),
+							children: app.translator.trans(translationPrefix + 'follow_referrals')
+						}))]), m('.Form-group', [m('label', Switch.component({
+							state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_ssl')()) !== -1,
+							onchange: this.setting(settingsPrefix + 'use_ssl'),
+							children: app.translator.trans(translationPrefix + 'use_ssl')
+						}))]), m('.Form-group', [m('label', Switch.component({
+							state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_tls')()) !== -1,
+							onchange: this.setting(settingsPrefix + 'use_tls'),
+							children: app.translator.trans(translationPrefix + 'use_tls')
+						}))])];
+					}
+				}]);
+				return LDAPSettingsModal;
+			}(SettingsModal);
 
-    var Component, Button, saveSettings, Alert, FieldSet, Select, Switch, LDAPPage;
-    return {
-        setters: [function (_flarumComponent) {
-            Component = _flarumComponent.default;
-        }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton.default;
-        }, function (_flarumUtilsSaveSettings) {
-            saveSettings = _flarumUtilsSaveSettings.default;
-        }, function (_flarumComponentsAlert) {
-            Alert = _flarumComponentsAlert.default;
-        }, function (_flarumComponentsFieldSet) {
-            FieldSet = _flarumComponentsFieldSet.default;
-        }, function (_flarumComponentsSelect) {
-            Select = _flarumComponentsSelect.default;
-        }, function (_flarumComponentsSwitch) {
-            Switch = _flarumComponentsSwitch.default;
-        }],
-        execute: function () {
-            LDAPPage = function (_Component) {
-                babelHelpers.inherits(LDAPPage, _Component);
-
-                function LDAPPage() {
-                    babelHelpers.classCallCheck(this, LDAPPage);
-                    return babelHelpers.possibleConstructorReturn(this, (LDAPPage.__proto__ || Object.getPrototypeOf(LDAPPage)).apply(this, arguments));
-                }
-
-                babelHelpers.createClass(LDAPPage, [{
-                    key: "init",
-                    value: function init() {
-                        var _this2 = this;
-
-                        this.loading = false;
-
-                        this.fields = ['address'];
-
-                        this.checkboxes = ['onlyUse'];
-
-                        this.values = {};
-
-                        this.settingsPrefix = 'flarum-ext-auth-ldap';
-
-                        var settings = app.data.settings;
-
-                        this.fields.forEach(function (key) {
-                            return _this2.values[key] = m.prop(settings[_this2.addPrefix(key)]);
-                        });
-                        this.checkboxes.forEach(function (key) {
-                            return _this2.values[key] = m.prop(settings[_this2.addPrefix(key)] === '1');
-                        });
-                    }
-                }, {
-                    key: "view",
-                    value: function view() {
-                        return [m('div', { className: 'LDAPPage' }, [m('div', { className: 'container' }, [m('form', { onsubmit: this.onsubmit.bind(this) }, [m('fieldset', { className: 'LDAPPage-preferences' }, [m('legend', {}, app.translator.trans('flarum-ext-auth-ldap.admin.settings.title')), m('label', {}, app.translator.trans('flarum-ext-auth-ldap.admin.settings.address')), m('input', {
-                            className: 'FormControl',
-                            value: this.values.address(),
-                            oninput: m.withAttr('value', this.values.address)
-                        }), Switch.component({
-                            state: this.values.onlyUse() || false,
-                            children: app.translator.trans('flarum-ext-auth-ldap.admin.settings.onlyUse'),
-                            onchange: this.values.onlyUse
-                        })]), Button.component({
-                            type: 'submit',
-                            className: 'Button Button--primary',
-                            children: app.translator.trans('flarum-ext-auth-ldap.admin.buttons.save'),
-                            loading: this.loading,
-                            disabled: !this.changed()
-                        })])])])];
-                    }
-                }, {
-                    key: "changed",
-                    value: function changed() {
-                        var _this3 = this;
-
-                        var fieldsCheck = this.fields.some(function (key) {
-                            return _this3.values[key]() !== app.data.settings[_this3.addPrefix(key)];
-                        });
-                        var checkboxesCheck = this.checkboxes.some(function (key) {
-                            return _this3.values[key]() !== (app.data.settings[_this3.addPrefix(key)] == '1');
-                        });
-                        return fieldsCheck || checkboxesCheck;
-                    }
-                }, {
-                    key: "onsubmit",
-                    value: function onsubmit(e) {
-                        var _this4 = this;
-
-                        e.preventDefault();
-
-                        if (this.loading) return;
-
-                        this.loading = true;
-
-                        app.alerts.dismiss(this.successAlert);
-
-                        var settings = {};
-
-                        this.fields.forEach(function (key) {
-                            return settings[_this4.addPrefix(key)] = _this4.values[key]();
-                        });
-                        this.checkboxes.forEach(function (key) {
-                            return settings[_this4.addPrefix(key)] = _this4.values[key]();
-                        });
-
-                        saveSettings(settings).then(function () {
-                            app.alerts.show(_this4.successAlert = new Alert({
-                                type: 'success',
-                                children: app.translator.trans('core.admin.basics.saved_message')
-                            }));
-                        }).catch(function () {}).then(function () {
-                            _this4.loading = false;
-                            m.redraw();
-                        });
-                    }
-                }, {
-                    key: "addPrefix",
-                    value: function addPrefix(key) {
-                        return this.settingsPrefix + '.' + key;
-                    }
-                }]);
-                return LDAPPage;
-            }(Component);
-
-            _export("default", LDAPPage);
-        }
-    };
+			_export('default', LDAPSettingsModal);
+		}
+	};
 });;
 'use strict';
 
-System.register('tituspijean/flarum-ext-auth-ldap/main', ['flarum/app', 'tituspijean/flarum-ext-auth-ldap/addLDAPPage'], function (_export, _context) {
-  "use strict";
+System.register('tituspijean/flarum-ext-auth-ldap/main', ['flarum/extend', 'flarum/app', 'tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal'], function (_export, _context) {
+	"use strict";
 
-  var app, addLDAPPage;
-  return {
-    setters: [function (_flarumApp) {
-      app = _flarumApp.default;
-    }, function (_tituspijeanFlarumExtAuthSsowatAddLDAPPage) {
-      addLDAPPage = _tituspijeanFlarumExtAuthSsowatAddLDAPPage.default;
-    }],
-    execute: function () {
+	var extend, app, LDAPSettingsModal;
+	return {
+		setters: [function (_flarumExtend) {
+			extend = _flarumExtend.extend;
+		}, function (_flarumApp) {
+			app = _flarumApp.default;
+		}, function (_tituspijeanFlarumExtAuthLdapComponentsLDAPSettingsModal) {
+			LDAPSettingsModal = _tituspijeanFlarumExtAuthLdapComponentsLDAPSettingsModal.default;
+		}],
+		execute: function () {
 
-      app.initializers.add('tituspijean-flarum-ext-auth-ldap', function (app) {
-        addLDAPPage();
-      });
-    }
-  };
+			app.initializers.add('tituspijean-auth-ldap', function (app) {
+				app.extensionSettings['tituspijean-auth-ldap'] = function () {
+					return app.modal.show(new LDAPSettingsModal());
+				};
+			});
+		}
+	};
 });

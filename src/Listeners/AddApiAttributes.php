@@ -7,7 +7,8 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Event\PrepareApiAttributes;
 use Flarum\Api\Serializer\ForumSerializer;
 
-class AddApiAttributes {
+class AddApiAttributes
+{
     /**
      * @var SettingsRepositoryInterface
      */
@@ -26,7 +27,8 @@ class AddApiAttributes {
         $events->listen(PrepareApiAttributes::class, [$this, 'prepareApiAttributes']);
     }
 
-    public function prepareApiAttributes(PrepareApiAttributes $event) {
+    public function prepareApiAttributes(PrepareApiAttributes $event)
+    {
         if ($event->isSerializer(ForumSerializer::class)) {
             $event->attributes['address'] = $this->settings->get('flarum-ext-auth-ldap.address');
             $event->attributes['onlyUse'] = (bool) $this->settings->get('flarum-ext-auth-ldap.onlyUse');

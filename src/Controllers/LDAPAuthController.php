@@ -1,10 +1,12 @@
-<?php namespace TitusPiJean\Flarum\Auth\LDAP;
+<?php namespace TitusPiJean\Flarum\Auth\LDAP\Controllers;
 
 use Flarum\Forum\AuthenticationResponseFactory;
 use Flarum\Http\Controller\ControllerInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Diactoros\Response\TextResponse;
+use Adldap;
 
 class LDAPAuthController implements ControllerInterface
 {
@@ -40,20 +42,21 @@ class LDAPAuthController implements ControllerInterface
         $uid = array_get($params, 'identification');
         $password = array_get($params, 'password');
 
+        $settingsPrefix = 'tituspijean-flarum-ext-auth-ldap.';
         $config = [
-            'domain_controllers'    => explode(',', $this->settings->get('flarum-auth-ldap.domain_controllers')),
-            'base_dn'               => $this->settings->get('flarum-auth-ldap.base_dn'),
-            'port'                  => intval($this->settings->get('flarum-auth-ldap.port')),
-            'timeout'               => 5,
+            'domain_controllers'    => explode(',', $this->settings->get($settingsPrefix.'domain_controllers')),
+            'base_dn'               => $this->settings->get($settingsPrefix.'base_dn'),
+            'account_prefix'        => $this->settings->get($settingsPrefix.'account_prefix'),
+            'account_suffix'        => $this->settings->get($settingsPrefix.'account_suffix'),
+            'port'                  => intval($this->settings->get($settingsPrefix.'port')),
+            'follow_referrals'      => boolval($this->settings->get($settingsPrefix.'follow_referrals')),
+            'use_ssl'               => boolval($this->settings->get($settingsPrefix.'use_ssl')),
+            'use_tls'               => boolval($this->settings->get($settingsPrefix.'use_tls')),
+            'timeout'               => 5
         ];
-
-        // TEMPORARY TEST
-        $uid = 'test';
-        $password='12345678';
-
-        $provider = new \Adldap\Connections\Provider($config);
-        $uid_dn='uid='.$uid.','.$config['base_dn'];
+        $uid_dn = "uid=".$uid.",".$config['base_dn'];
         try {
+            $provider = new \Adldap\Connections\Provider($config);
             if ($provider->auth()->attempt($uid_dn, $password, $bindAsUser = true)) {
                 // Credentials were correct.
                 $user = $provider->search()->findBy('uid', $uid);
@@ -68,38 +71,12 @@ class LDAPAuthController implements ControllerInterface
                 return $this->authResponse->make($request, $identification, $suggestions);
             }
         } catch (\Adldap\Exceptions\Auth\UsernameRequiredException $e) {
-            return new Response("No username", 500);
+            return new TextResponse("No username for LDAP authentication", 500);
         } catch (\Adldap\Exceptions\Auth\PasswordRequiredException $e) {
-            return new Response("No password", 500);
+            return new TextResponse("No password for LDAP authentication", 500);
         } catch (\Adldap\Exceptions\Auth\BindException $e) {
-            return new Response("Could not bind", 500);
+            return new TextResponse("Could not bind to LDAP server", 500);
         }
-        return new Response("Error", 500);
+        return new TextResponse("Unspecified error during LDAP authentication", 500);
     }
 }
-
-
-// $ldap = $this->settings->get('flarum-ext-auth-ldap.address');
-// if ($ldap == '') {
-//     $this->settings->set('flarum-ext-auth-ldap.onlyUse', false);
-//     return new TextResponse('LDAP domain is not set, Flarum login has been reactivated. Please configure LDAP extension. ', 500, []);
-// }
-// if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
-//     $r           = base64_encode("https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-//     $urlredirect = "https://" . $ldap . "/yunohost/sso/?r=" . $r;
-//     $response    = new RedirectResponse($urlredirect);
-//     $response    = $response->withHeader('Authorization', '');
-//     return $response;
-// } else {
-//     $email = $request->getHeader('Email')[0];
-//     $uid = $_SERVER['PHP_AUTH_USER'];
-//
-//     $identification = [
-//         'username' => $uid,
-//         'email' => $email
-//     ];
-//     $suggestions = [
-//         'username' => $uid,
-//         'email' => $email
-//     ];
-//     return $this->authResponse->make($request, $identification, $suggestions);

@@ -1,13 +1,18 @@
-flarum-ext-auth-ldap:
+tituspijean-flarum-ext-auth-ldap:
   forum:
     log_in: => core.ref.log_in
     log_in_with: Log in with LDAP
     log_out: => core.ref.log_out
   admin:
-    description: Set LDAP domain
     settings:
       title: LDAP settings
-      address: LDAP's domain (without "https://" or trailing "/")
+      field:
+        domain_controllers: LDAP domains (comma separated)
+        base_dn: Base DN
+        port: port
+        account_prefix: Account prefix
+        account_suffix: Account suffix
+      follow_referrals: Follow referrals
+      use_ssl: Use SSL
+      use_tls: Use TLS
       onlyUse: Disable Flarum login and only use LDAP authentication
-    buttons:
-      save: Save

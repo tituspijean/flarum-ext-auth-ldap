@@ -20,6 +20,6 @@ class AddLDAPAuthRoute
      */
     public function configureForumRoutes(ConfigureForumRoutes $event)
     {
-        $event->get('/auth/ldap', 'auth.ldap', 'TitusPiJean\Flarum\Auth\LDAP\Controllers\LDAPAuthController');
+        $event->post('/auth/ldap', 'auth.ldap', 'TitusPiJean\Flarum\Auth\LDAP\Controllers\LDAPAuthController');
     }
 }
