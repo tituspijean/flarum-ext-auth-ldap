@@ -59,6 +59,10 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal',
 							state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_tls')()) !== -1,
 							onchange: this.setting(settingsPrefix + 'use_tls'),
 							children: app.translator.trans(translationPrefix + 'use_tls')
+						}))]), m('.Form-group', [m('label', Switch.component({
+							state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
+							onchange: this.setting(settingsPrefix + 'onlyUse'),
+							children: app.translator.trans(translationPrefix + 'onlyUse')
 						}))])];
 					}
 				}]);

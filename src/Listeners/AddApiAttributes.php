@@ -30,8 +30,7 @@ class AddApiAttributes
     public function prepareApiAttributes(PrepareApiAttributes $event)
     {
         if ($event->isSerializer(ForumSerializer::class)) {
-            $event->attributes['address'] = $this->settings->get('flarum-ext-auth-ldap.address');
-            $event->attributes['onlyUse'] = (bool) $this->settings->get('flarum-ext-auth-ldap.onlyUse');
+            $event->attributes['onlyUseLDAP'] = (bool) $this->settings->get('tituspijean-flarum-ext-auth-ldap.onlyUse');
         }
     }
 }

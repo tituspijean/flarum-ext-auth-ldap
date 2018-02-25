@@ -5,6 +5,8 @@ import Button from 'flarum/components/Button';
 import LogInButtons from 'flarum/components/LogInButtons';
 import extractText from 'flarum/utils/extractText';
 
+const translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+
 export default class LDAPLogInModal extends Modal {
   init() {
     super.init();
@@ -36,13 +38,12 @@ export default class LDAPLogInModal extends Modal {
   }
 
   title() {
-    return app.translator.trans('core.forum.log_in.title');
+    return app.translator.trans(translationPrefix + 'log_in_title');
   }
 
   content() {
     return [
       <div className="Modal-body">
-        <LogInButtons/>
 
         <div className="Form Form--centered">
           <div className="Form-group">

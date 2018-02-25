@@ -68,13 +68,13 @@ export default class LDAPSettingsModal extends SettingsModal {
 					children: app.translator.trans(translationPrefix + 'use_tls'),
 				})),
 			]),
-			// m('.Form-group', [
-			// 	m('label', Switch.component({
-			// 		state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
-			// 		onchange: this.setting(settingsPrefix + 'onlyUse'),
-			// 		children: app.translator.trans(translationPrefix + 'onlyUse'),
-			// 	})),
-			// ]),
+			m('.Form-group', [
+				m('label', Switch.component({
+					state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
+					onchange: this.setting(settingsPrefix + 'onlyUse'),
+					children: app.translator.trans(translationPrefix + 'onlyUse'),
+				})),
+			]),
 		];
 	}
 }

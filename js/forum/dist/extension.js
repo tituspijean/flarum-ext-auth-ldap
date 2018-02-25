@@ -3,7 +3,7 @@
 System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['flarum/components/Modal', 'flarum/components/ForgotPasswordModal', 'flarum/components/Alert', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
   "use strict";
 
-  var Modal, ForgotPasswordModal, Alert, Button, LogInButtons, extractText, LDAPLogInModal;
+  var Modal, ForgotPasswordModal, Alert, Button, LogInButtons, extractText, translationPrefix, LDAPLogInModal;
   return {
     setters: [function (_flarumComponentsModal) {
       Modal = _flarumComponentsModal.default;
@@ -19,6 +19,8 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
       extractText = _flarumUtilsExtractText.default;
     }],
     execute: function () {
+      translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+
       LDAPLogInModal = function (_Modal) {
         babelHelpers.inherits(LDAPLogInModal, _Modal);
 
@@ -61,7 +63,7 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
         }, {
           key: 'title',
           value: function title() {
-            return app.translator.trans('core.forum.log_in.title');
+            return app.translator.trans(translationPrefix + 'log_in_title');
           }
         }, {
           key: 'content',
@@ -69,7 +71,6 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
             return [m(
               'div',
               { className: 'Modal-body' },
-              m(LogInButtons, null),
               m(
                 'div',
                 { className: 'Form Form--centered' },
@@ -167,7 +168,7 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
 System.register("tituspijean/flarum-ext-auth-ldap/main", ["flarum/extend", "flarum/app", "flarum/components/HeaderSecondary", "flarum/components/SettingsPage", "flarum/components/Button", "tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal"], function (_export, _context) {
 	"use strict";
 
-	var extend, app, HeaderSecondary, SettingsPage, Button, LDAPLogInModal;
+	var extend, app, HeaderSecondary, SettingsPage, Button, LDAPLogInModal, translationPrefix;
 	return {
 		setters: [function (_flarumExtend) {
 			extend = _flarumExtend.extend;
@@ -183,27 +184,46 @@ System.register("tituspijean/flarum-ext-auth-ldap/main", ["flarum/extend", "flar
 			LDAPLogInModal = _tituspijeanFlarumExtAuthLdapComponentsLDAPLogInModal.default;
 		}],
 		execute: function () {
+			translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+
 
 			app.initializers.add('tituspijean-auth-ldap', function () {
 
-				extend(HeaderSecondary.prototype, 'items', replaceLoginButton);
+				extend(HeaderSecondary.prototype, 'items', addLoginButton);
 				extend(HeaderSecondary.prototype, 'items', removeSignupButton);
 
 				extend(SettingsPage.prototype, 'accountItems', removeProfileActions);
 				extend(SettingsPage.prototype, 'settingsItems', checkRemoveAccountSection);
 
-				function replaceLoginButton(items) {
+				function addLoginButton(items) {
+					var onlyUseSSOwat = app.forum.attribute('onlyUseLDAP');
+
+					if (items.has('logIn')) {
+						if (onlyUseSSOwat == true) {
+							items.replace('logIn', Button.component({
+								children: app.translator.trans(translationPrefix + 'log_in_link'),
+								className: 'Button Button--link',
+								onclick: function onclick() {
+									return app.modal.show(new LDAPLogInModal());
+								}
+							}), 0);
+						} else {
+							items.add('logInLDAP', Button.component({
+								children: app.translator.trans(translationPrefix + 'log_in_link'),
+								className: 'Button Button--link',
+								onclick: function onclick() {
+									return app.modal.show(new LDAPLogInModal());
+								}
+							}), 0);
+						}
+					}
+				}
+
+				function removeLoginButton(items) {
 					if (!items.has('logIn')) {
 						return;
 					}
-
-					items.replace('logIn', Button.component({
-						children: app.translator.trans('core.forum.header.log_in_link'),
-						className: 'Button Button--link',
-						onclick: function onclick() {
-							return app.modal.show(new LDAPLogInModal());
-						}
-					}), 0);
+					items.remove('logIn');
 				}
 
 				function removeSignupButton(items) {
