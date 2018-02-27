@@ -8,52 +8,39 @@ import HeaderSecondary from "flarum/components/HeaderSecondary";
 import SettingsPage from "flarum/components/SettingsPage";
 import Button from 'flarum/components/Button';
 
-import LDAPLogInModal from "tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal";
+import LDAPLogInModal from "tituspijean-auth-ldap/components/LDAPLogInModal";
 
-const translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+const translationPrefix = 'tituspijean-auth-ldap.forum.';
 
 app.initializers.add('tituspijean-auth-ldap', function() {
 
-	extend(HeaderSecondary.prototype, 'items', addLoginButton);
-	extend(HeaderSecondary.prototype, 'items', removeSignupButton);
+	extend(HeaderSecondary.prototype, 'items', addLoginLink);
+	extend(HeaderSecondary.prototype, 'items', removeIfOnlyUse);
 
 	extend(SettingsPage.prototype, 'accountItems', removeProfileActions);
 	extend(SettingsPage.prototype, 'settingsItems', checkRemoveAccountSection);
 
-	function addLoginButton(items) {
-		const onlyUseSSOwat = app.forum.attribute('onlyUseLDAP');
-
+	function addLoginLink(items) {
 		if (items.has('logIn')) {
-			if (onlyUseSSOwat == true) {
-				items.replace('logIn',
-					Button.component({
-						children: app.translator.trans(translationPrefix + 'log_in_link'),
-						className: 'Button Button--link',
-						onclick: () => app.modal.show(new LDAPLogInModal())
-					}), 0
-				);
-			}
-			else {
-				items.add('logInLDAP',
-					Button.component({
-						children: app.translator.trans(translationPrefix + 'log_in_link'),
-						className: 'Button Button--link',
-						onclick: () => app.modal.show(new LDAPLogInModal())
-					}), 0
-				);
-			}
+			items.add('logInLDAP',
+				Button.component({
+					children: app.translator.trans(translationPrefix + 'log_in_with') + ' ' + app.forum.attribute('LDAP_method_name'),
+					className: 'Button Button--link',
+					onclick: () => app.modal.show(new LDAPLogInModal())
+				}), 0
+			);
 		}
 	}
 
-	function removeLoginButton(items) {
-		if (!items.has('logIn')) {
-			return;
+	function removeIfOnlyUse(items) {
+		if (app.forum.attribute('onlyUseLDAP')) {
+			if (items.has('signUp')) {
+				items.remove('signUp');
+			}
+			if (items.has('logIn')) {
+				items.remove('logIn');
+			}
 		}
-		items.remove('logIn');
-	}
-
-	function removeSignupButton(items) {
-		items.remove('signUp');
 	}
 
 	function removeProfileActions(items) {

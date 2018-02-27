@@ -28,13 +28,13 @@ class AddClientAssets
                 __DIR__.'/../../js/forum/dist/extension.js',
                 __DIR__.'/../../less/forum/extension.less'
             ]);
-            $event->addBootstrapper('tituspijean/flarum-ext-auth-ldap/main');
+            $event->addBootstrapper('tituspijean-auth-ldap/main');
         }
         if ($event->isAdmin()) {
             $event->addAssets([
                 __DIR__.'/../../js/admin/dist/extension.js',
             ]);
-            $event->addBootstrapper('tituspijean/flarum-ext-auth-ldap/main');
+            $event->addBootstrapper('tituspijean-auth-ldap/main');
         }
     }
 

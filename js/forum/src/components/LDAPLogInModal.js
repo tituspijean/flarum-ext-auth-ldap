@@ -5,7 +5,7 @@ import Button from 'flarum/components/Button';
 import LogInButtons from 'flarum/components/LogInButtons';
 import extractText from 'flarum/utils/extractText';
 
-const translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+const translationPrefix = 'tituspijean-auth-ldap.forum.';
 
 export default class LDAPLogInModal extends Modal {
   init() {
@@ -38,8 +38,8 @@ export default class LDAPLogInModal extends Modal {
   }
 
   title() {
-    return app.translator.trans(translationPrefix + 'log_in_title');
-  }
+    return app.translator.trans(translationPrefix + 'log_in_with') + ' ' +  app.forum.attribute('LDAP_method_name');
+    }
 
   content() {
     return [

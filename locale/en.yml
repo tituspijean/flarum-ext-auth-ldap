@@ -1,13 +1,12 @@
-tituspijean-flarum-ext-auth-ldap:
+tituspijean-auth-ldap:
   forum:
-    log_in: Log in with LDAP
-    log_in_link: Log in with LDAP
-    log_in_title: Log in with LDAP
+    log_in_with: Log in with
     log_out: => core.ref.log_out
   admin:
     settings:
       title: LDAP settings
       field:
+        method_name: LDAP server name (will appear after "Login with")
         domain_controllers: LDAP domains (comma separated)
         base_dn: Base DN
         port: port

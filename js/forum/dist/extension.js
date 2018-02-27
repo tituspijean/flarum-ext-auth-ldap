@@ -1,6 +1,6 @@
 'use strict';
 
-System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['flarum/components/Modal', 'flarum/components/ForgotPasswordModal', 'flarum/components/Alert', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
+System.register('tituspijean-auth-ldap/components/LDAPLogInModal', ['flarum/components/Modal', 'flarum/components/ForgotPasswordModal', 'flarum/components/Alert', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
   "use strict";
 
   var Modal, ForgotPasswordModal, Alert, Button, LogInButtons, extractText, translationPrefix, LDAPLogInModal;
@@ -19,7 +19,7 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
       extractText = _flarumUtilsExtractText.default;
     }],
     execute: function () {
-      translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+      translationPrefix = 'tituspijean-auth-ldap.forum.';
 
       LDAPLogInModal = function (_Modal) {
         babelHelpers.inherits(LDAPLogInModal, _Modal);
@@ -63,7 +63,7 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
         }, {
           key: 'title',
           value: function title() {
-            return app.translator.trans(translationPrefix + 'log_in_title');
+            return app.translator.trans(translationPrefix + 'log_in_with') + ' ' + app.forum.attribute('LDAP_method_name');
           }
         }, {
           key: 'content',
@@ -165,7 +165,7 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal', ['
 });;
 "use strict";
 
-System.register("tituspijean/flarum-ext-auth-ldap/main", ["flarum/extend", "flarum/app", "flarum/components/HeaderSecondary", "flarum/components/SettingsPage", "flarum/components/Button", "tituspijean/flarum-ext-auth-ldap/components/LDAPLogInModal"], function (_export, _context) {
+System.register("tituspijean-auth-ldap/main", ["flarum/extend", "flarum/app", "flarum/components/HeaderSecondary", "flarum/components/SettingsPage", "flarum/components/Button", "tituspijean-auth-ldap/components/LDAPLogInModal"], function (_export, _context) {
 	"use strict";
 
 	var extend, app, HeaderSecondary, SettingsPage, Button, LDAPLogInModal, translationPrefix;
@@ -180,54 +180,42 @@ System.register("tituspijean/flarum-ext-auth-ldap/main", ["flarum/extend", "flar
 			SettingsPage = _flarumComponentsSettingsPage.default;
 		}, function (_flarumComponentsButton) {
 			Button = _flarumComponentsButton.default;
-		}, function (_tituspijeanFlarumExtAuthLdapComponentsLDAPLogInModal) {
-			LDAPLogInModal = _tituspijeanFlarumExtAuthLdapComponentsLDAPLogInModal.default;
+		}, function (_tituspijeanAuthLdapComponentsLDAPLogInModal) {
+			LDAPLogInModal = _tituspijeanAuthLdapComponentsLDAPLogInModal.default;
 		}],
 		execute: function () {
-			translationPrefix = 'tituspijean-flarum-ext-auth-ldap.forum.';
+			translationPrefix = 'tituspijean-auth-ldap.forum.';
 
 
 			app.initializers.add('tituspijean-auth-ldap', function () {
 
-				extend(HeaderSecondary.prototype, 'items', addLoginButton);
-				extend(HeaderSecondary.prototype, 'items', removeSignupButton);
+				extend(HeaderSecondary.prototype, 'items', addLoginLink);
+				extend(HeaderSecondary.prototype, 'items', removeIfOnlyUse);
 
 				extend(SettingsPage.prototype, 'accountItems', removeProfileActions);
 				extend(SettingsPage.prototype, 'settingsItems', checkRemoveAccountSection);
 
-				function addLoginButton(items) {
-					var onlyUseSSOwat = app.forum.attribute('onlyUseLDAP');
-
+				function addLoginLink(items) {
 					if (items.has('logIn')) {
-						if (onlyUseSSOwat == true) {
-							items.replace('logIn', Button.component({
-								children: app.translator.trans(translationPrefix + 'log_in_link'),
-								className: 'Button Button--link',
-								onclick: function onclick() {
-									return app.modal.show(new LDAPLogInModal());
-								}
-							}), 0);
-						} else {
-							items.add('logInLDAP', Button.component({
-								children: app.translator.trans(translationPrefix + 'log_in_link'),
-								className: 'Button Button--link',
-								onclick: function onclick() {
-									return app.modal.show(new LDAPLogInModal());
-								}
-							}), 0);
+						items.add('logInLDAP', Button.component({
+							children: app.translator.trans(translationPrefix + 'log_in_with') + ' ' + app.forum.attribute('LDAP_method_name'),
+							className: 'Button Button--link',
+							onclick: function onclick() {
+								return app.modal.show(new LDAPLogInModal());
+							}
+						}), 0);
+					}
+				}
+
+				function removeIfOnlyUse(items) {
+					if (app.forum.attribute('onlyUseLDAP')) {
+						if (items.has('signUp')) {
+							items.remove('signUp');
+						}
+						if (items.has('logIn')) {
+							items.remove('logIn');
 						}
 					}
-				}
-
-				function removeLoginButton(items) {
-					if (!items.has('logIn')) {
-						return;
-					}
-					items.remove('logIn');
-				}
-
-				function removeSignupButton(items) {
-					items.remove('signUp');
 				}
 
 				function removeProfileActions(items) {

@@ -1,6 +1,6 @@
 'use strict';
 
-System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal', ['flarum/app', 'flarum/components/SettingsModal', 'flarum/components/Switch'], function (_export, _context) {
+System.register('tituspijean-auth-ldap/components/LDAPSettingsModal', ['flarum/app', 'flarum/components/SettingsModal', 'flarum/components/Switch'], function (_export, _context) {
 	"use strict";
 
 	var app, SettingsModal, Switch, settingsPrefix, translationPrefix, LDAPSettingsModal;
@@ -13,8 +13,8 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal',
 			Switch = _flarumComponentsSwitch.default;
 		}],
 		execute: function () {
-			settingsPrefix = 'tituspijean-flarum-ext-auth-ldap.';
-			translationPrefix = 'tituspijean-flarum-ext-auth-ldap.admin.settings.';
+			settingsPrefix = 'tituspijean-auth-ldap.';
+			translationPrefix = 'tituspijean-auth-ldap.admin.settings.';
 
 			LDAPSettingsModal = function (_SettingsModal) {
 				babelHelpers.inherits(LDAPSettingsModal, _SettingsModal);
@@ -32,7 +32,10 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal',
 				}, {
 					key: 'form',
 					value: function form() {
-						return [m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.domain_controllers')), m('input.FormControl', {
+						return [m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.method_name')), m('input.FormControl', {
+							bidi: this.setting(settingsPrefix + 'method_name'),
+							placeholder: 'LDAP'
+						})]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.domain_controllers')), m('input.FormControl', {
 							bidi: this.setting(settingsPrefix + 'domain_controllers'),
 							placeholder: 'localhost'
 						})]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.base_dn')), m('input.FormControl', {
@@ -75,7 +78,7 @@ System.register('tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal',
 });;
 'use strict';
 
-System.register('tituspijean/flarum-ext-auth-ldap/main', ['flarum/extend', 'flarum/app', 'tituspijean/flarum-ext-auth-ldap/components/LDAPSettingsModal'], function (_export, _context) {
+System.register('tituspijean-auth-ldap/main', ['flarum/extend', 'flarum/app', 'tituspijean-auth-ldap/components/LDAPSettingsModal'], function (_export, _context) {
 	"use strict";
 
 	var extend, app, LDAPSettingsModal;
@@ -84,8 +87,8 @@ System.register('tituspijean/flarum-ext-auth-ldap/main', ['flarum/extend', 'flar
 			extend = _flarumExtend.extend;
 		}, function (_flarumApp) {
 			app = _flarumApp.default;
-		}, function (_tituspijeanFlarumExtAuthLdapComponentsLDAPSettingsModal) {
-			LDAPSettingsModal = _tituspijeanFlarumExtAuthLdapComponentsLDAPSettingsModal.default;
+		}, function (_tituspijeanAuthLdapComponentsLDAPSettingsModal) {
+			LDAPSettingsModal = _tituspijeanAuthLdapComponentsLDAPSettingsModal.default;
 		}],
 		execute: function () {
 

@@ -2,8 +2,8 @@ import app from 'flarum/app';
 import SettingsModal from 'flarum/components/SettingsModal';
 import Switch from 'flarum/components/Switch';
 
-const settingsPrefix = 'tituspijean-flarum-ext-auth-ldap.';
-const translationPrefix = 'tituspijean-flarum-ext-auth-ldap.admin.settings.';
+const settingsPrefix = 'tituspijean-auth-ldap.';
+const translationPrefix = 'tituspijean-auth-ldap.admin.settings.';
 
 export default class LDAPSettingsModal extends SettingsModal {
 	title() {
@@ -12,6 +12,13 @@ export default class LDAPSettingsModal extends SettingsModal {
 
 	form() {
 		return [
+			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.method_name')),
+				m('input.FormControl', {
+					bidi: this.setting(settingsPrefix + 'method_name'),
+					placeholder: 'LDAP',
+				}),
+			]),
 			m('.Form-group', [
 				m('label', app.translator.trans(translationPrefix + 'field.domain_controllers')),
 				m('input.FormControl', {

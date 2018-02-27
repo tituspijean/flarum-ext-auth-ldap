@@ -30,7 +30,8 @@ class AddApiAttributes
     public function prepareApiAttributes(PrepareApiAttributes $event)
     {
         if ($event->isSerializer(ForumSerializer::class)) {
-            $event->attributes['onlyUseLDAP'] = (bool) $this->settings->get('tituspijean-flarum-ext-auth-ldap.onlyUse');
+            $event->attributes['onlyUseLDAP'] = (bool) $this->settings->get('tituspijean-auth-ldap.onlyUse');
+            $event->attributes['LDAP_method_name'] = (string) $this->settings->get('tituspijean-auth-ldap.method_name');
         }
     }
 }

@@ -42,7 +42,7 @@ class LDAPAuthController implements ControllerInterface
         $uid = array_get($params, 'identification');
         $password = array_get($params, 'password');
 
-        $settingsPrefix = 'tituspijean-flarum-ext-auth-ldap.';
+        $settingsPrefix = 'tituspijean-auth-ldap.';
         $config = [
             'domain_controllers'    => explode(',', $this->settings->get($settingsPrefix.'domain_controllers')),
             'base_dn'               => $this->settings->get($settingsPrefix.'base_dn'),
@@ -71,12 +71,12 @@ class LDAPAuthController implements ControllerInterface
                 return $this->authResponse->make($request, $identification, $suggestions);
             }
         } catch (\Adldap\Exceptions\Auth\UsernameRequiredException $e) {
-            return new TextResponse("No username for LDAP authentication", 500);
+            return new TextResponse("No username for LDAP authentication", 401);
         } catch (\Adldap\Exceptions\Auth\PasswordRequiredException $e) {
-            return new TextResponse("No password for LDAP authentication", 500);
+            return new TextResponse("No password for LDAP authentication", 401);
         } catch (\Adldap\Exceptions\Auth\BindException $e) {
-            return new TextResponse("Could not bind to LDAP server", 500);
+            return new TextResponse("Could not bind to LDAP server", 401);
         }
-        return new TextResponse("Unspecified error during LDAP authentication", 500);
+        return new TextResponse("Unspecified error during LDAP authentication".$password.$uid_dn, 401);
     }
 }
