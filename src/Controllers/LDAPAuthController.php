@@ -77,6 +77,6 @@ class LDAPAuthController implements ControllerInterface
         } catch (\Adldap\Exceptions\Auth\BindException $e) {
             return new TextResponse("Could not bind to LDAP server", 401);
         }
-        return new TextResponse("Unspecified error during LDAP authentication".$password.$uid_dn, 401);
+        return new TextResponse("Unspecified error during LDAP authentication", 401);
     }
 }
