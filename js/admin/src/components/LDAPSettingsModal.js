@@ -77,6 +77,28 @@ export default class LDAPSettingsModal extends SettingsModal {
 			]),
 			m('.Form-group', [
 				m('label', Switch.component({
+					state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_admin')()) !== -1,
+					onchange: this.setting(settingsPrefix + 'use_admin'),
+					children: app.translator.trans(translationPrefix + 'use_admin'),
+				})),
+			]),
+			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.admin_dn')),
+				m('input.FormControl', {
+					bidi: this.setting(settingsPrefix + 'admin_dn'),
+					placeholder: 'cn=admin,dc=yunohost,dc=org',
+				}),
+			]),
+			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.admin_password')),
+				m('input.FormControl', {
+					type: 'password',
+					bidi: this.setting(settingsPrefix + 'admin_password'),
+					placeholder: 'password',
+				}),
+			]),
+			m('.Form-group', [
+				m('label', Switch.component({
 					state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
 					onchange: this.setting(settingsPrefix + 'onlyUse'),
 					children: app.translator.trans(translationPrefix + 'onlyUse'),

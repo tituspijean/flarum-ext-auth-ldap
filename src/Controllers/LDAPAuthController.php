@@ -48,6 +48,8 @@ class LDAPAuthController implements ControllerInterface
             'base_dn'               => $this->settings->get($settingsPrefix.'base_dn'),
             'account_prefix'        => $this->settings->get($settingsPrefix.'account_prefix'),
             'account_suffix'        => $this->settings->get($settingsPrefix.'account_suffix'),
+            'admin_username'        => $this->settings->get($settingsPrefix.'admin_dn'),
+            'admin_password'        => $this->settings->get($settingsPrefix.'admin_password'),
             'port'                  => intval($this->settings->get($settingsPrefix.'port')),
             'follow_referrals'      => boolval($this->settings->get($settingsPrefix.'follow_referrals')),
             'use_ssl'               => boolval($this->settings->get($settingsPrefix.'use_ssl')),
@@ -57,19 +59,22 @@ class LDAPAuthController implements ControllerInterface
         $uid_dn = "uid=".$uid.",".$config['base_dn'];
         try {
             $provider = new \Adldap\Connections\Provider($config);
-            if ($provider->auth()->attempt($uid_dn, $password, $bindAsUser = true)) {
-                // Credentials were correct.
-                $user = $provider->search()->findBy('uid', $uid);
-                $identification = [
-                'username' => $uid
-                ];
-                $suggestions = [
-                'username' => $user->getDisplayName(),
-                'email' => $user->mail[0]
-                //'avatar' => $user->getJpegPhoto();
-                ];
-                return $this->authResponse->make($request, $identification, $suggestions);
+            if ($this->settings->get($settingsPrefix.'use_admin')) {
+                $provider->auth()->bindAsAdministrator();
+            } else {
+                $provider->auth()->attempt($uid_dn, $password);
             }
+            // Credentials were correct.
+            $user = $provider->search()->findBy('uid', $uid);
+            $identification = [
+            'username' => $uid
+            ];
+            $suggestions = [
+            'username' => $user->getDisplayName(),
+            'email' => $user->mail[0]
+            //'avatar' => $user->getJpegPhoto();
+            ];
+            return $this->authResponse->make($request, $identification, $suggestions);
         } catch (\Adldap\Exceptions\Auth\UsernameRequiredException $e) {
             return new TextResponse("No username for LDAP authentication", 401);
         } catch (\Adldap\Exceptions\Auth\PasswordRequiredException $e) {
@@ -77,6 +82,6 @@ class LDAPAuthController implements ControllerInterface
         } catch (\Adldap\Exceptions\Auth\BindException $e) {
             return new TextResponse("Could not bind to LDAP server", 401);
         }
-        return new TextResponse("Unspecified error during LDAP authentication", 401);
+        return new TextResponse("Unspecified error during LDAP authentication", 500);
     }
 }

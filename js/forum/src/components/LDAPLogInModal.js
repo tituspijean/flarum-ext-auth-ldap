@@ -1,3 +1,4 @@
+import app from "flarum/app";
 import Modal from 'flarum/components/Modal';
 import ForgotPasswordModal from 'flarum/components/ForgotPasswordModal';
 import Alert from 'flarum/components/Alert';
@@ -84,13 +85,13 @@ export default class LDAPLogInModal extends Modal {
     this.$('[name=' + (this.identification() ? 'password' : 'identification') + ']').select();
   }
 
-	LDAPlogin(data, options = {}) {
-	return app.request(Object.assign({
-		method: 'POST',
-		url: app.forum.attribute('baseUrl') + '/auth/ldap',
-		data
-	}, options));
-}
+  LDAPlogin(data, options = {}) {
+    return app.request(Object.assign({
+      method: 'POST',
+      url: app.forum.attribute('baseUrl') + '/auth/ldap',
+      data
+    }, options));
+  }
 
   onsubmit(e) {
     e.preventDefault();
