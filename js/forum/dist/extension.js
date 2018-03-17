@@ -1,11 +1,13 @@
 'use strict';
 
-System.register('tituspijean-auth-ldap/components/LDAPLogInModal', ['flarum/components/Modal', 'flarum/components/ForgotPasswordModal', 'flarum/components/Alert', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
+System.register('tituspijean-auth-ldap/components/LDAPLogInModal', ['flarum/app', 'flarum/components/Modal', 'flarum/components/ForgotPasswordModal', 'flarum/components/Alert', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
   "use strict";
 
-  var Modal, ForgotPasswordModal, Alert, Button, LogInButtons, extractText, translationPrefix, LDAPLogInModal;
+  var app, Modal, ForgotPasswordModal, Alert, Button, LogInButtons, extractText, translationPrefix, LDAPLogInModal;
   return {
-    setters: [function (_flarumComponentsModal) {
+    setters: [function (_flarumApp) {
+      app = _flarumApp.default;
+    }, function (_flarumComponentsModal) {
       Modal = _flarumComponentsModal.default;
     }, function (_flarumComponentsForgotPasswordModal) {
       ForgotPasswordModal = _flarumComponentsForgotPasswordModal.default;

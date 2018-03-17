@@ -12,7 +12,10 @@ tituspijean-auth-ldap:
         port: port
         account_prefix: Account prefix
         account_suffix: Account suffix
+        admin_dn: LDAP admin distinguished name
+        admin_password: LDAP admin password
       follow_referrals: Follow referrals
       use_ssl: Use SSL
       use_tls: Use TLS
+      use_admin: Connect with the LDAP admin account
       onlyUse: Disable Flarum login and only use LDAP authentication
