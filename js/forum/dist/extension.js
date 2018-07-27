@@ -127,11 +127,31 @@ System.register('tituspijean-auth-ldap/components/LDAPLogInModal', ['flarum/app'
           value: function LDAPlogin(data) {
             var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-            return app.request(babelHelpers.extends({
-              method: 'POST',
-              url: app.forum.attribute('baseUrl') + '/auth/ldap',
-              data: data
-            }, options));
+            var width = 600;
+            var height = 400;
+            var $window = $(window);
+            var url = app.forum.attribute('baseUrl') + '/auth/ldap';
+            var name = "ldapauth";
+
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", url);
+            form.setAttribute("target", name);
+            for (var i in data) {
+              if (data.hasOwnProperty(i)) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = i;
+                input.value = data[i];
+                form.appendChild(input);
+              }
+            }
+            document.body.appendChild(form);
+
+            window.open("", name, 'width=' + width + ',' + ('height=' + height + ',') + ('top=' + ($window.height() / 2 - height / 2) + ',') + ('left=' + ($window.width() / 2 - width / 2) + ',') + 'status=no,scrollbars=no,resizable=no');
+
+            form.submit();
+            document.body.removeChild(form);
           }
         }, {
           key: 'onsubmit',

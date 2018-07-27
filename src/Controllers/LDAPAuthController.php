@@ -65,12 +65,12 @@ class LDAPAuthController implements ControllerInterface
                 $provider->auth()->attempt($uid_dn, $password);
             }
             // Credentials were correct.
-            $user = $provider->search()->findBy('uid', $uid);
+            $user = $provider->search()->findByDn($uid_dn);
             $identification = [
             'username' => $uid
             ];
             $suggestions = [
-            'username' => $user->getDisplayName(),
+            'username' => $uid,
             'email' => $user->mail[0]
             //'avatar' => $user->getJpegPhoto();
             ];
