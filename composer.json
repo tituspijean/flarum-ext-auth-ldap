@@ -22,6 +22,9 @@
 		}
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-master": "0.x-dev"
+		},
 		"flarum-extension": {
 			"title": "LDAP login",
 			"icon": {
