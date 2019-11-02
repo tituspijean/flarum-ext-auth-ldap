@@ -1,43 +1,38 @@
 <?php namespace TitusPiJean\Flarum\Auth\LDAP\Controllers;
 
-use Flarum\Forum\AuthenticationResponseFactory;
-use Flarum\Http\Controller\ControllerInterface;
+use Exception;
+use Flarum\Forum\Auth\Registration;
+use Flarum\Forum\Auth\ResponseFactory;
+use Flarum\User\RegistrationToken;
+use Flarum\Http\UrlGenerator;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\TextResponse;
 use Adldap;
 
-class LDAPAuthController implements ControllerInterface
+class LDAPAuthController implements RequestHandlerInterface
 {
-    /**
-     * @var AuthenticationResponseFactory
-     */
-    protected $authResponse;
+  protected $response;
+  protected $settings;
+  protected $url;
 
-    /**
-     * @var SettingsRepositoryInterface
-     */
-    protected $settings;
+     public function __construct(ResponseFactory $response, SettingsRepositoryInterface $settings, UrlGenerator $url)
+     {
+         $this->response = $response;
+         $this->settings = $settings;
+         $this->url = $url;
+     }
 
-    /**
-     * @param AuthenticationResponseFactory $authResponse
-     * @param SettingsRepositoryInterface $settings
-     */
-    public function __construct(AuthenticationResponseFactory $authResponse, SettingsRepositoryInterface $settings)
+    public function handle(Request $request): ResponseInterface
     {
-        $this->authResponse = $authResponse;
-        $this->settings = $settings;
-    }
+        $redirectUri = $this->url->to('forum')->route('auth.ldap');
 
-    /**
-     * @param Request $request
-     * @return \Psr\Http\Message\ResponseInterface|RedirectResponse
-     */
-    public function handle(Request $request)
-    {
         $actor = $request->getAttribute('actor');
         $body = $request->getParsedBody();
+
         $params = array_only($body, ['identification', 'password']);
         $uid = array_get($params, 'identification');
         $password = array_get($params, 'password');
@@ -59,29 +54,35 @@ class LDAPAuthController implements ControllerInterface
         $uid_dn = "uid=".$uid.",".$config['base_dn'];
         try {
             $provider = new \Adldap\Connections\Provider($config);
-            if ($this->settings->get($settingsPrefix.'use_admin')) {
-                $provider->auth()->bindAsAdministrator();
-            } else {
-                $provider->auth()->attempt($uid_dn, $password);
-            }
-            // Credentials were correct.
+            $provider->auth()->attempt($uid_dn, $password, $bindAsUser = true);
             $user = $provider->search()->findByDn($uid_dn);
             $identification = [
-            'username' => $uid
+              'username' => $uid
             ];
             $suggestions = [
-            'username' => $uid,
-            'email' => $user->mail[0]
-            //'avatar' => $user->getJpegPhoto();
+              'username' => $uid,
+              'email' => $user->mail[0]
+              //'avatar' => $user->getJpegPhoto();
             ];
-            return $this->authResponse->make($request, $identification, $suggestions);
-        } catch (\Adldap\Exceptions\Auth\UsernameRequiredException $e) {
+            $payload = get_object_vars($user);
+            $token = RegistrationToken::generate('ldap', $uid, $suggestions, $payload);
+            return $this->response->make(
+              'ldap', $uid,
+              function (Registration $registration) use ($user, $token) {
+                $registration
+                  ->provide('username', $user['username'])
+                  ->provideTrustedEmail($user['mail'][0])
+                  ->setPayload($payload);
+              }
+            );
+        } catch (\Adldap\Auth\UsernameRequiredException $e) {
             return new TextResponse("No username for LDAP authentication", 401);
-        } catch (\Adldap\Exceptions\Auth\PasswordRequiredException $e) {
+        } catch (\Adldap\Auth\PasswordRequiredException $e) {
             return new TextResponse("No password for LDAP authentication", 401);
-        } catch (\Adldap\Exceptions\Auth\BindException $e) {
+        } catch (\Adldap\Auth\BindException $e) {
             return new TextResponse("Could not bind to LDAP server", 401);
+        } catch (Exception $e) {
+            return new TextResponse("Unspecified error during LDAP authentication", 500);
         }
-        return new TextResponse("Unspecified error during LDAP authentication", 500);
     }
 }

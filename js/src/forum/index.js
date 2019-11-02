@@ -1,14 +1,11 @@
-import {
-	extend
-}
-from "flarum/extend";
-import app from "flarum/app";
+import { extend } from 'flarum/extend';
+import app from 'flarum/app';
 
 import HeaderSecondary from "flarum/components/HeaderSecondary";
 import SettingsPage from "flarum/components/SettingsPage";
 import Button from 'flarum/components/Button';
 
-import LDAPLogInModal from "tituspijean-auth-ldap/components/LDAPLogInModal";
+import LDAPLogInModal from "./components/LDAPLogInModal";
 
 const translationPrefix = 'tituspijean-auth-ldap.forum.';
 
