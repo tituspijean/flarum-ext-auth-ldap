@@ -1,6 +1,7 @@
 <?php namespace TitusPiJean\Flarum\Auth\LDAP;
 
 use Flarum\Extend;
+use Flarum\Foundation\Application;
 use Illuminate\Events\Dispatcher;
 use Adldap;
 
@@ -13,4 +14,7 @@ return [
   (new Extend\Locales(__DIR__ . '/locale')),
   (new Extend\Routes('forum'))
     ->post('/auth/ldap', 'auth.ldap', Controllers\LDAPAuthController::class),
+  function (Dispatcher $events, Application $app) {
+      $events->subscribe(Listeners\AddApiAttributes::class);
+  },
 ];

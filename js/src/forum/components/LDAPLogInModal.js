@@ -41,7 +41,7 @@ export default class LDAPLogInModal extends Modal {
   }
 
   title() {
-    return app.translator.trans('core.forum.log_in.title');
+    return app.translator.trans(translationPrefix + 'log_in_with') + ' ' + app.forum.attribute('LDAP_method_name');
   }
 
   content() {
@@ -115,33 +115,6 @@ export default class LDAPLogInModal extends Modal {
     ];
   }
 
-  /**
-   * Open the forgot password modal, prefilling it with an email if the user has
-   * entered one.
-   *
-   * @public
-   */
-  forgotPassword() {
-    const email = this.identification();
-    const props = email.indexOf('@') !== -1 ? {email} : undefined;
-
-    app.modal.show(new ForgotPasswordModal(props));
-  }
-
-  /**
-   * Open the sign up modal, prefilling it with an email/username/password if
-   * the user has entered one.
-   *
-   * @public
-   */
-  signUp() {
-    const props = {password: this.password()};
-    const identification = this.identification();
-    props[identification.indexOf('@') !== -1 ? 'email' : 'username'] = identification;
-
-    app.modal.show(new SignUpModal(props));
-  }
-
   onready() {
     this.$('[name=' + (this.identification() ? 'password' : 'identification') + ']').select();
   }
@@ -163,7 +136,7 @@ export default class LDAPLogInModal extends Modal {
     const password = this.password();
     const remember = this.remember();
 
-    this.ldaplogin({identification, password, remember}, {errorHandler: this.onerror.bind(this)})
+    LDAPLogInModal.prototype.ldaplogin({identification, password, remember}, {errorHandler: this.onerror.bind(this)})
       .then(
         () => window.location.reload(),
         this.loaded.bind(this)
