@@ -120,11 +120,36 @@ export default class LDAPLogInModal extends Modal {
   }
 
   ldaplogin(data, options = {}) {
-    return app.request(Object.assign({
-      method: 'POST',
-      url: app.forum.attribute('baseUrl') + '/auth/ldap',
-      data
-    }, options));
+      const width = 600;
+      const height = 400;
+      const $window = $(window);
+      const url = app.forum.attribute('baseUrl') + '/auth/ldap';
+      const name = "ldapauth";
+
+      var form = document.createElement("form");
+      form.setAttribute("method", "POST");
+      form.setAttribute("action", url);
+      form.setAttribute("target", name);
+      for (var i in data) {
+          if (data.hasOwnProperty(i)) {
+               var input = document.createElement('input');
+               input.type = 'hidden';
+               input.name = i;
+               input.value = data[i];
+               form.appendChild(input);
+           }
+      }
+      document.body.appendChild(form);
+
+      window.open("", name,
+        `width=${width},` +
+        `height=${height},` +
+        `top=${$window.height() / 2 - height / 2},` +
+        `left=${$window.width() / 2 - width / 2},` +
+        'status=no,scrollbars=no,resizable=no');
+
+      form.submit();
+      document.body.removeChild(form);
   }
 
   onsubmit(e) {
@@ -135,8 +160,9 @@ export default class LDAPLogInModal extends Modal {
     const identification = this.identification();
     const password = this.password();
     const remember = this.remember();
+    const csrfToken = app.session.csrfToken;
 
-    LDAPLogInModal.prototype.ldaplogin({identification, password, remember}, {errorHandler: this.onerror.bind(this)})
+    this.ldaplogin({identification, password, remember, csrfToken}, {errorHandler: this.onerror.bind(this)})
       .then(
         () => window.location.reload(),
         this.loaded.bind(this)

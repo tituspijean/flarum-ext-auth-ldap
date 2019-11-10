@@ -19,9 +19,9 @@ export default class LDAPSettingsModal extends SettingsModal {
 				})
 			]),
 			m('.Form-group', [
-				m('label', app.translator.trans(translationPrefix + 'field.domain_controllers')),
+				m('label', app.translator.trans(translationPrefix + 'field.hosts')),
 				m('input.FormControl', {
-					bidi: this.setting(settingsPrefix + 'domain_controllers'),
+					bidi: this.setting(settingsPrefix + 'hosts'),
 					placeholder: 'localhost'
 				})
 			]),
