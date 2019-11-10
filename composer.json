@@ -13,7 +13,7 @@
 		"source": "https://github.com/tituspijean/flarum-ext-auth-ldap"
 	},
 	"require": {
-		"flarum/core": "^0.1.0-beta.9",
+		"flarum/core": ">=0.1.0-beta.10 <0.1.0-beta.12",
 		"adldap2/adldap2": "v10.2.0"
 	},
 	"autoload": {
