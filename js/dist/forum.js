@@ -289,11 +289,30 @@ function (_Modal) {
       options = {};
     }
 
-    return flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.request(Object.assign({
-      method: 'POST',
-      url: flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.forum.attribute('baseUrl') + '/auth/ldap',
-      data: data
-    }, options));
+    var width = 600;
+    var height = 400;
+    var $window = $(window);
+    var url = flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.forum.attribute('baseUrl') + '/auth/ldap';
+    var name = "ldapauth";
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", url);
+    form.setAttribute("target", name);
+
+    for (var i in data) {
+      if (data.hasOwnProperty(i)) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = i;
+        input.value = data[i];
+        form.appendChild(input);
+      }
+    }
+
+    document.body.appendChild(form);
+    window.open("", name, "width=" + width + "," + ("height=" + height + ",") + ("top=" + ($window.height() / 2 - height / 2) + ",") + ("left=" + ($window.width() / 2 - width / 2) + ",") + 'status=no,scrollbars=no,resizable=no');
+    form.submit();
+    document.body.removeChild(form);
   };
 
   _proto.onsubmit = function onsubmit(e) {
@@ -302,10 +321,12 @@ function (_Modal) {
     var identification = this.identification();
     var password = this.password();
     var remember = this.remember();
-    LDAPLogInModal.prototype.ldaplogin({
+    var csrfToken = flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.session.csrfToken;
+    this.ldaplogin({
       identification: identification,
       password: password,
-      remember: remember
+      remember: remember,
+      csrfToken: csrfToken
     }, {
       errorHandler: this.onerror.bind(this)
     }).then(function () {

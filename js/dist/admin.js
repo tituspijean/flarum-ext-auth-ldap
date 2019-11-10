@@ -167,8 +167,8 @@ function (_SettingsModal) {
     return [m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.method_name')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'method_name'),
       placeholder: 'LDAP'
-    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.domain_controllers')), m('input.FormControl', {
-      bidi: this.setting(settingsPrefix + 'domain_controllers'),
+    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.hosts')), m('input.FormControl', {
+      bidi: this.setting(settingsPrefix + 'hosts'),
       placeholder: 'localhost'
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.base_dn')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'base_dn'),
