@@ -1,10 +1,12 @@
-import app from "flarum/app";
+import { extend } from 'flarum/extend';
+import app from 'flarum/app';
+
 import Modal from 'flarum/components/Modal';
-import ForgotPasswordModal from 'flarum/components/ForgotPasswordModal';
-import Alert from 'flarum/components/Alert';
+import SignUpModal from 'flarum/components/SignUpModal';
 import Button from 'flarum/components/Button';
 import LogInButtons from 'flarum/components/LogInButtons';
 import extractText from 'flarum/utils/extractText';
+import ItemList from 'flarum/utils/ItemList';
 
 const translationPrefix = 'tituspijean-auth-ldap.forum.';
 
@@ -39,45 +41,77 @@ export default class LDAPLogInModal extends Modal {
   }
 
   title() {
-    return app.translator.trans(translationPrefix + 'log_in_with') + ' ' +  app.forum.attribute('LDAP_method_name');
-    }
+    return app.translator.trans(translationPrefix + 'log_in_with') + ' ' + app.forum.attribute('LDAP_method_name');
+  }
 
   content() {
     return [
       <div className="Modal-body">
-
-        <div className="Form Form--centered">
-          <div className="Form-group">
-            <input className="FormControl" name="identification" type="text" placeholder={extractText(app.translator.trans('core.forum.log_in.username_or_email_placeholder'))}
-              bidi={this.identification}
-              disabled={this.loading} />
-          </div>
-
-          <div className="Form-group">
-            <input className="FormControl" name="password" type="password" placeholder={extractText(app.translator.trans('core.forum.log_in.password_placeholder'))}
-              bidi={this.password}
-              disabled={this.loading} />
-          </div>
-
-          <div className="Form-group">
-            <div>
-              <label className="checkbox">
-                <input type="checkbox" bidi={this.remember} disabled={this.loading} />
-                {app.translator.trans('core.forum.log_in.remember_me_label')}
-              </label>
-            </div>
-          </div>
-
-          <div className="Form-group">
-            {Button.component({
-              className: 'Button Button--primary Button--block',
-              type: 'submit',
-              loading: this.loading,
-              children: app.translator.trans('core.forum.log_in.submit_button')
-            })}
-          </div>
-        </div>
+        {this.body()}
       </div>,
+      <div className="Modal-footer">
+        {this.footer()}
+      </div>
+    ];
+  }
+
+  body() {
+    return [
+      //<LogInButtons/>,
+
+      <div className="Form Form--centered">
+        {this.fields().toArray()}
+      </div>
+    ];
+  }
+
+  fields() {
+    const items = new ItemList();
+
+    items.add('identification', <div className="Form-group">
+      <input className="FormControl" name="identification" type="text" placeholder={extractText(app.translator.trans('core.forum.log_in.username_or_email_placeholder'))}
+        bidi={this.identification}
+        disabled={this.loading} />
+    </div>, 30);
+
+    items.add('password', <div className="Form-group">
+      <input className="FormControl" name="password" type="password" placeholder={extractText(app.translator.trans('core.forum.log_in.password_placeholder'))}
+        bidi={this.password}
+        disabled={this.loading} />
+    </div>, 20);
+
+    /*items.add('remember', <div className="Form-group">
+      <div>
+        <label className="checkbox">
+          <input type="checkbox" bidi={this.remember} disabled={this.loading} />
+          {app.translator.trans('core.forum.log_in.remember_me_label')}
+        </label>
+      </div>
+    </div>, 10);*/
+
+    items.add('submit', <div className="Form-group">
+      {Button.component({
+        className: 'Button Button--primary Button--block',
+        type: 'submit',
+        loading: this.loading,
+        children: app.translator.trans('core.forum.log_in.submit_button')
+      })}
+    </div>, -10);
+
+    return items;
+  }
+
+  footer() {
+    return [
+      /*<p className="LogInModal-forgotPassword">
+        <a onclick={this.forgotPassword.bind(this)}>{app.translator.trans('core.forum.log_in.forgot_password_link')}</a>
+      </p>,
+
+      app.forum.attribute('allowSignUp') ? (
+        <p className="LogInModal-signUp">
+          {app.translator.trans('core.forum.log_in.sign_up_text', {a: <a onclick={this.signUp.bind(this)}/>})}
+        </p>
+      ) : ''*/
     ];
   }
 
@@ -85,7 +119,7 @@ export default class LDAPLogInModal extends Modal {
     this.$('[name=' + (this.identification() ? 'password' : 'identification') + ']').select();
   }
 
-  LDAPlogin(data, options = {}) {
+  ldaplogin(data, options = {}) {
       const width = 600;
       const height = 400;
       const $window = $(window);
@@ -126,8 +160,9 @@ export default class LDAPLogInModal extends Modal {
     const identification = this.identification();
     const password = this.password();
     const remember = this.remember();
+    const csrfToken = app.session.csrfToken;
 
-    this.LDAPlogin({identification, password, remember}, {errorHandler: this.onerror.bind(this)})
+    this.ldaplogin({identification, password, remember, csrfToken}, {errorHandler: this.onerror.bind(this)})
       .then(
         () => window.location.reload(),
         this.loaded.bind(this)
