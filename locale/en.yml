@@ -7,8 +7,9 @@ tituspijean-auth-ldap:
       title: LDAP settings
       field:
         method_name: LDAP server name (will appear after "Login with")
-        domain_controllers: LDAP domains (comma separated)
+        hosts: LDAP domains (comma separated)
         base_dn: Base DN
+        filter: Filter applied before the base DN
         port: port
         account_prefix: Account prefix
         account_suffix: Account suffix
