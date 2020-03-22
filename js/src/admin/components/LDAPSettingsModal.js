@@ -32,6 +32,13 @@ export default class LDAPSettingsModal extends SettingsModal {
 					placeholder: 'ou=users,dc=yunohost,dc=org'
 				})
 			]),
+                        m('.Form-group', [
+                                m('label', app.translator.trans(translationPrefix + 'field.filter')),
+                                m('input.FormControl', {
+                                        bidi: this.setting(settingsPrefix + 'filter'),
+                                        placeholder: 'memberof=cn=talk,ou=users,dc=yunohost,dc=org'
+                                })
+                        ]),
 			m('.Form-group', [
 				m('label', app.translator.trans(translationPrefix + 'field.port')),
 				m('input.FormControl', {

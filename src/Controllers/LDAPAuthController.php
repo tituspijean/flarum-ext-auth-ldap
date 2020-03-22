@@ -33,7 +33,6 @@ class LDAPAuthController implements RequestHandlerInterface
     $params = array_only($body, ['identification', 'password']);
     $uid = array_get($params, 'identification');
     $password = array_get($params, 'password');
-
     $config = [
         'hosts'             => explode(',', $this->settings->get($settingsPrefix.'hosts')),
         'base_dn'           => $this->settings->get($settingsPrefix.'base_dn'),
@@ -47,11 +46,16 @@ class LDAPAuthController implements RequestHandlerInterface
         'use_tls'           => boolval($this->settings->get($settingsPrefix.'use_tls')),
         'timeout'           => 5
     ];
+    $filter = $this->settings->get($settingsPrefix.'filter');
     $uid_dn = "uid=".$uid.",".$config['base_dn'];
     try {
       $provider = new \Adldap\Connections\Provider($config);
       $provider->auth()->attempt($uid_dn, $password, $bindAsUser = true);
-      $user = $provider->search()->findByDnOrFail($uid_dn);
+      if(isset($filter)) {
+         $user = $provider->search()->findByDnOrFail($uid_dn);
+      } else {
+         $user = $provider->search()->rawFilter($filter)->findByDnOrFail($uid_dn);
+      }
       $suggestions = [
         'username' => $uid,
         'email' => $user->mail[0]
@@ -74,8 +78,6 @@ class LDAPAuthController implements RequestHandlerInterface
         throw new Exception("No password for LDAP authentication");
     } catch (\Adldap\Auth\BindException $e) {
         throw new Exception("Could not bind to LDAP server");
-    } catch (Exception $e) {
-        throw new Exception("Unspecified error during LDAP authentication");
     }
   }
 }

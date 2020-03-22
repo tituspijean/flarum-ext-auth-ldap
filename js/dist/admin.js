@@ -173,6 +173,9 @@ function (_SettingsModal) {
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.base_dn')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'base_dn'),
       placeholder: 'ou=users,dc=yunohost,dc=org'
+    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.filter')), m('input.FormControl', {
+      bidi: this.setting(settingsPrefix + 'filter'),
+      placeholder: 'memberof=cn=talk,ou=users,dc=yunohost,dc=org'
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.port')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'port'),
       placeholder: '389'
