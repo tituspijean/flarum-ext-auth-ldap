@@ -14,7 +14,7 @@
 	},
 	"require": {
 		"flarum/core": ">=0.1.0-beta.12 <=0.1.0-beta.13",
-		"adldap2/adldap2": "v10.2.3"
+		"directorytree/ldaprecord": "v1.2.13"
 	},
 	"autoload": {
 		"psr-4": {

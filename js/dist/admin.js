@@ -175,16 +175,10 @@ function (_SettingsModal) {
       placeholder: 'ou=users,dc=yunohost,dc=org'
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.filter')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'filter'),
-      placeholder: 'memberof=cn=talk,ou=users,dc=yunohost,dc=org'
+      placeholder: '(&(objectClass=posixAccount)(permission=cn=flarum.main,ou=permission,dc=yunohost,dc=org)'
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.port')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'port'),
       placeholder: '389'
-    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.account_prefix')), m('input.FormControl', {
-      bidi: this.setting(settingsPrefix + 'account_prefix'),
-      placeholder: ''
-    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.account_suffix')), m('input.FormControl', {
-      bidi: this.setting(settingsPrefix + 'account_suffix'),
-      placeholder: ''
     })]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'follow_referrals')()) !== -1,
       onchange: this.setting(settingsPrefix + 'follow_referrals'),
