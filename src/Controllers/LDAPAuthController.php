@@ -7,7 +7,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\Http\UrlGenerator;
 use Psr\Http\Message\ResponseInterface;
-use Adldap;
+use LdapRecord\Connection;
+use LdapRecord\LdapRecordException;
 use Flarum\Forum\Auth\Registration;
 use Flarum\User\RegistrationToken;
 
@@ -34,50 +35,66 @@ class LDAPAuthController implements RequestHandlerInterface
     $uid = array_get($params, 'identification');
     $password = array_get($params, 'password');
     $config = [
-        'hosts'             => explode(',', $this->settings->get($settingsPrefix.'hosts')),
-        'base_dn'           => $this->settings->get($settingsPrefix.'base_dn'),
-        'account_prefix'    => $this->settings->get($settingsPrefix.'account_prefix'),
-        'account_suffix'    => $this->settings->get($settingsPrefix.'account_suffix'),
-        'username'          => $this->settings->get($settingsPrefix.'admin_dn'),
-        'password'          => $this->settings->get($settingsPrefix.'admin_password'),
-        'port'              => intval($this->settings->get($settingsPrefix.'port')),
-        'follow_referrals'  => boolval($this->settings->get($settingsPrefix.'follow_referrals')),
-        'use_ssl'           => boolval($this->settings->get($settingsPrefix.'use_ssl')),
-        'use_tls'           => boolval($this->settings->get($settingsPrefix.'use_tls')),
-        'timeout'           => 5
+      'hosts'             => explode(',', $this->settings->get($settingsPrefix.'hosts')),
+      'base_dn'           => $this->settings->get($settingsPrefix.'base_dn'),
+      'username'          => $this->settings->get($settingsPrefix.'admin_dn'),
+      'password'          => $this->settings->get($settingsPrefix.'admin_password'),
+      'port'              => intval($this->settings->get($settingsPrefix.'port')),
+      'follow_referrals'  => boolval($this->settings->get($settingsPrefix.'follow_referrals')),
+      'use_ssl'           => boolval($this->settings->get($settingsPrefix.'use_ssl')),
+      'use_tls'           => boolval($this->settings->get($settingsPrefix.'use_tls')),
+      'timeout'           => 5
     ];
     $filter = $this->settings->get($settingsPrefix.'filter');
     $uid_dn = "uid=".$uid.",".$config['base_dn'];
-    try {
-      $provider = new \Adldap\Connections\Provider($config);
-      $provider->auth()->attempt($uid_dn, $password, $bindAsUser = true);
-      if(isset($filter)) {
-         $user = $provider->search()->findByDnOrFail($uid_dn);
-      } else {
-         $user = $provider->search()->rawFilter($filter)->findByDnOrFail($uid_dn);
+
+    if (! $this->settings->get($settingsPrefix.'use_admin')) {
+      $config['username'] = $uid_dn;
+      $config['password'] = $password;
+    }
+
+    $connection = new Connection($config);
+
+    if (!isset($filter) || $filter != '') {
+      try {
+        $user = $connection->query()
+          ->setDn($config['base_dn'])
+          ->where('uid', '=', $uid)
+          ->rawFilter($filter)
+          ->firstOrFail();
+      } catch (Exception $e) {
+        throw new LdapRecordException("This user is not allowed to log in.");
       }
-      $suggestions = [
-        'username' => $uid,
-        'email' => $user->mail[0]
-        //'avatar' => $user->getJpegPhoto();
-      ];
-      $payload = get_object_vars($user);
-      return $this->response->make(
-        'ldap', $uid,
-        function (Registration $registration) use ($user, $payload) {
-          $registration
+    } else {
+      $user = $connection->query()
+        ->setDn($config['base_dn'])
+        ->where('uid', '=', $uid)
+        ->firstOrFail();
+    }
+
+    try {
+      if ($connection->auth()->attempt($uid_dn, $password, $bindAsUser = true)) {
+        $suggestions = [
+          'username' => $uid,
+          'email' => $user->mail[0]
+          //'avatar' => $user->getJpegPhoto();
+        ];
+        $payload = (array) $user;
+        return $this->response->make(
+          'ldap', $uid,
+          function (Registration $registration) use ($user, $payload) {
+            $registration
             ->provide('username', $user['uid'][0])
             ->provideTrustedEmail($user['mail'][0])
             //->provideAvatar($user->getJpegPhoto())
             ->setPayload($payload);
-        }
-      );
-    } catch (\Adldap\Auth\UsernameRequiredException $e) {
-        throw new Exception("No username for LDAP authentication");
-    } catch (\Adldap\Auth\PasswordRequiredException $e) {
-        throw new Exception("No password for LDAP authentication");
-    } catch (\Adldap\Auth\BindException $e) {
-        throw new Exception("Could not bind to LDAP server");
+          }
+        );
+      } else {
+        throw new LdapRecordException("Incorrect credentials.");
+      }
+    } catch (Exception $e) {
+      throw $e;
     }
   }
 }

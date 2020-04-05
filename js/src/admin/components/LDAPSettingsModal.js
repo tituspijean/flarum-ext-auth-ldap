@@ -32,32 +32,18 @@ export default class LDAPSettingsModal extends SettingsModal {
 					placeholder: 'ou=users,dc=yunohost,dc=org'
 				})
 			]),
-                        m('.Form-group', [
-                                m('label', app.translator.trans(translationPrefix + 'field.filter')),
-                                m('input.FormControl', {
-                                        bidi: this.setting(settingsPrefix + 'filter'),
-                                        placeholder: 'memberof=cn=talk,ou=users,dc=yunohost,dc=org'
-                                })
-                        ]),
+      m('.Form-group', [
+              m('label', app.translator.trans(translationPrefix + 'field.filter')),
+              m('input.FormControl', {
+                      bidi: this.setting(settingsPrefix + 'filter'),
+                      placeholder: '(&(objectClass=posixAccount)(permission=cn=flarum.main,ou=permission,dc=yunohost,dc=org)'
+              })
+      ]),
 			m('.Form-group', [
 				m('label', app.translator.trans(translationPrefix + 'field.port')),
 				m('input.FormControl', {
 					bidi: this.setting(settingsPrefix + 'port'),
 					placeholder: '389'
-				})
-			]),
-			m('.Form-group', [
-				m('label', app.translator.trans(translationPrefix + 'field.account_prefix')),
-				m('input.FormControl', {
-					bidi: this.setting(settingsPrefix + 'account_prefix'),
-					placeholder: ''
-				})
-			]),
-			m('.Form-group', [
-				m('label', app.translator.trans(translationPrefix + 'field.account_suffix')),
-				m('input.FormControl', {
-					bidi: this.setting(settingsPrefix + 'account_suffix'),
-					placeholder: ''
 				})
 			]),
 			m('.Form-group', [
