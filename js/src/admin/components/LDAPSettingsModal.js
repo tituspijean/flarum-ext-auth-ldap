@@ -89,6 +89,27 @@ export default class LDAPSettingsModal extends SettingsModal {
 				})
 			]),
 			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.search_user_fields')),
+				m('input.FormControl', {
+					bidi: this.setting(settingsPrefix + 'search_user_fields'),
+					placeholder: 'cn,mail'
+				})
+			]),
+			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.user_mail')),
+				m('input.FormControl', {
+					bidi: this.setting(settingsPrefix + 'user_mail'),
+					placeholder: 'mail'
+				})
+			]),
+			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.user_username')),
+				m('input.FormControl', {
+					bidi: this.setting(settingsPrefix + 'user_username'),
+					placeholder: 'cn'
+				})
+			]),
+			m('.Form-group', [
 				m('label', Switch.component({
 					state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
 					onchange: this.setting(settingsPrefix + 'onlyUse'),

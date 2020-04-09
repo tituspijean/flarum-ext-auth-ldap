@@ -202,6 +202,15 @@ function (_SettingsModal) {
       type: 'password',
       bidi: this.setting(settingsPrefix + 'admin_password'),
       placeholder: 'password'
+    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.search_user_fields')), m('input.FormControl', {
+      bidi: this.setting(settingsPrefix + 'search_user_fields'),
+      placeholder: 'cn,mail'
+    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.user_mail')), m('input.FormControl', {
+      bidi: this.setting(settingsPrefix + 'user_mail'),
+      placeholder: 'mail'
+    })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.user_username')), m('input.FormControl', {
+      bidi: this.setting(settingsPrefix + 'user_username'),
+      placeholder: 'cn'
     })]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
       onchange: this.setting(settingsPrefix + 'onlyUse'),
