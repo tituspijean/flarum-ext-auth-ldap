@@ -15,6 +15,9 @@ tituspijean-auth-ldap:
         account_suffix: Account suffix
         admin_dn: LDAP admin distinguished name
         admin_password: LDAP admin password
+        search_user_fields: LDAP user search fields (comma separed)
+        user_mail: LDAP user mail field
+        user_username: LDAP user dispayName field
       follow_referrals: Follow referrals
       use_ssl: Use SSL
       use_tls: Use TLS
