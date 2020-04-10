@@ -35,7 +35,6 @@ class LDAPAuthController implements RequestHandlerInterface
 		$password = array_get($params, 'password');
 		$config = [
 			'hosts' => explode(',', $this->settings->get($settingsPrefix . 'hosts')),
-			'base_dn' => $this->settings->get($settingsPrefix . 'base_dn'),
 			'username' => $this->settings->get($settingsPrefix . 'admin_dn'),
 			'password' => $this->settings->get($settingsPrefix . 'admin_password'),
 			'port' => intval($this->settings->get($settingsPrefix . 'port')),
@@ -44,53 +43,56 @@ class LDAPAuthController implements RequestHandlerInterface
 			'use_tls' => boolval($this->settings->get($settingsPrefix . 'use_tls')),
 			'timeout' => 5
 		];
+		$searchBaseDNs = $this->settings->get($settingsPrefix . 'base_dn');
 		$filter = $this->settings->get($settingsPrefix . 'filter');
 		$searchUserFields = $this->settings->get($settingsPrefix . 'search_user_fields');
 		$allowedUser = false;
 		$userLdapMail = $this->settings->get($settingsPrefix . 'user_mail');
 		$userLdapUsername = $this->settings->get($settingsPrefix . 'user_username');
 
-		foreach (explode(',', $searchUserFields) as $searchUserField) {
-			$current_dn = $searchUserField . "=" . $uid . "," . $config['base_dn'];
+		foreach (explode(';', $searchBaseDNs) as $searchBaseDN) {
+			foreach (explode(',', $searchUserFields) as $searchUserField) {
+				$current_dn = $searchUserField . "=" . $uid . "," . $searchBaseDN;
 
-			if (!$this->settings->get($settingsPrefix . 'use_admin')) {
-				$config['username'] = $current_dn;
-				$config['password'] = $password;
-			}
-
-			$connection = new Connection($config);
-			try {
-				if (!isset($filter) || $filter != '') {
-					$user = $connection->query()
-						->setDn($config['base_dn'])
-						->where($searchUserField, '=', $uid)
-						->rawFilter($filter)
-						->firstOrFail();
-				} else {
-					$user = $connection->query()
-						->setDn($config['base_dn'])
-						->where($searchUserField, '=', $uid)
-						->firstOrFail();
+				if (!$this->settings->get($settingsPrefix . 'use_admin')) {
+					$config['username'] = $current_dn;
+					$config['password'] = $password;
 				}
 
-				if ($connection->auth()->attempt($current_dn, $password, $bindAsUser = true)) {
-					$payload = (array)$user;
-					return $this->response->make(
-						'ldap',
-						$uid,
-						function (Registration $registration) use ($user, $payload, $userLdapUsername, $userLdapMail) {
-							$registration
-								->provide('username', $user[$userLdapUsername][0])
-								->provideTrustedEmail($user[$userLdapMail][0])
-								//->provideAvatar($user->getJpegPhoto())
-								->setPayload($payload);
-						}
-					);
-				}
+				$connection = new Connection($config);
+				try {
+					if (!isset($filter) || $filter != '') {
+						$user = $connection->query()
+							->setDn($searchBaseDN)
+							->where($searchUserField, '=', $uid)
+							->rawFilter($filter)
+							->firstOrFail();
+					} else {
+						$user = $connection->query()
+							->setDn($searchBaseDN)
+							->where($searchUserField, '=', $uid)
+							->firstOrFail();
+					}
 
-				break;
-			} catch (Exception $e) {
-				// Empty: need to test all fields
+					if ($connection->auth()->attempt($current_dn, $password, $bindAsUser = true)) {
+						$payload = (array)$user;
+						return $this->response->make(
+							'ldap',
+							$uid,
+							function (Registration $registration) use ($user, $payload, $userLdapUsername, $userLdapMail) {
+								$registration
+									->provide('username', $user[$userLdapUsername][0])
+									->provideTrustedEmail($user[$userLdapMail][0])
+									//->provideAvatar($user->getJpegPhoto())
+									->setPayload($payload);
+							}
+						);
+					}
+
+					break;
+				} catch (Exception $e) {
+					// Empty: need to test all fields
+				}
 			}
 		}
 		if (!$allowedUser) {
