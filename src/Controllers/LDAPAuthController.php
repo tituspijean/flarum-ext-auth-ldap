@@ -46,7 +46,7 @@ class LDAPAuthController implements RequestHandlerInterface
 		$searchBaseDNs = $this->settings->get($settingsPrefix . 'base_dn');
 		$filter = $this->settings->get($settingsPrefix . 'filter');
 		$searchUserFields = $this->settings->get($settingsPrefix . 'search_user_fields');
-		$allowedUser = false;
+		$ldapErrors = [];
 		$userLdapMail = $this->settings->get($settingsPrefix . 'user_mail');
 		$userLdapUsername = $this->settings->get($settingsPrefix . 'user_username');
 
@@ -91,12 +91,10 @@ class LDAPAuthController implements RequestHandlerInterface
 
 					break;
 				} catch (Exception $e) {
-					// Empty: need to test all fields
+					$ldapErrors[] = $e->getMessage();
 				}
 			}
 		}
-		if (!$allowedUser) {
-			throw new LdapRecordException("This user is not allowed to log in.");
-		}
+		throw new LdapRecordException('LDAP error: (' . implode(', ', $ldapErrors) . ')');
 	}
 }
