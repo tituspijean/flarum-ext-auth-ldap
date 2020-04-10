@@ -31,7 +31,7 @@ class LDAPAuthController implements RequestHandlerInterface
 
 		$body = $request->getParsedBody();
 		$params = array_only($body, ['identification', 'password']);
-		$uid = array_get($params, 'identification');
+		$id = array_get($params, 'identification');
 		$password = array_get($params, 'password');
 		$config = [
 			'hosts' => explode(',', $this->settings->get($settingsPrefix . 'hosts')),
@@ -52,7 +52,7 @@ class LDAPAuthController implements RequestHandlerInterface
 
 		foreach (explode(';', $searchBaseDNs) as $searchBaseDN) {
 			foreach (explode(',', $searchUserFields) as $searchUserField) {
-				$current_dn = $searchUserField . "=" . $uid . "," . $searchBaseDN;
+				$current_dn = $searchUserField . "=" . $id . "," . $searchBaseDN;
 
 				if (!$this->settings->get($settingsPrefix . 'use_admin')) {
 					$config['username'] = $current_dn;
@@ -64,13 +64,13 @@ class LDAPAuthController implements RequestHandlerInterface
 					if (!isset($filter) || $filter != '') {
 						$user = $connection->query()
 							->setDn($searchBaseDN)
-							->where($searchUserField, '=', $uid)
+							->where($searchUserField, '=', $id)
 							->rawFilter($filter)
 							->firstOrFail();
 					} else {
 						$user = $connection->query()
 							->setDn($searchBaseDN)
-							->where($searchUserField, '=', $uid)
+							->where($searchUserField, '=', $id)
 							->firstOrFail();
 					}
 
@@ -78,7 +78,7 @@ class LDAPAuthController implements RequestHandlerInterface
 						$payload = (array)$user;
 						return $this->response->make(
 							'ldap',
-							$uid,
+							$id,
 							function (Registration $registration) use ($user, $payload, $userLdapUsername, $userLdapMail) {
 								$registration
 									->provide('username', $user[$userLdapUsername][0])
