@@ -99,7 +99,7 @@ export default class LDAPSettingsModal extends SettingsModal {
 				m('label', app.translator.trans(translationPrefix + 'field.user_username')),
 				m('input.FormControl', {
 					bidi: this.setting(settingsPrefix + 'user_username'),
-					placeholder: 'cn'
+					placeholder: 'uid'
 				})
 			]),
 			m('.Form-group', [
