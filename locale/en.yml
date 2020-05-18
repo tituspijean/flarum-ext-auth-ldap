@@ -7,19 +7,18 @@ tituspijean-auth-ldap:
       title: LDAP settings
       field:
         method_name: LDAP server name (will appear after "Login with")
-        hosts: LDAP domains (comma separated)
+        hosts: LDAP domains or server IP adresses (comma separated)
         base_dn: Base DNs (semicolon separated)
         filter: Filter to apply (optional)
         port: port
         account_prefix: Account prefix
         account_suffix: Account suffix
-        admin_dn: LDAP admin distinguished name
-        admin_password: LDAP admin password
+        admin_dn: LDAP admin distinguished name (leave empty for anonymous binding)
+        admin_password: LDAP admin password (leave empty for anonymous binding)
         search_user_fields: LDAP user search fields (comma separed)
         user_mail: LDAP user mail field
-        user_username: LDAP user dispayName field
+        user_username: LDAP username field
       follow_referrals: Follow referrals
       use_ssl: Use SSL
       use_tls: Use TLS
-      use_admin: Connect with the LDAP admin account
       onlyUse: Disable Flarum login and only use LDAP authentication

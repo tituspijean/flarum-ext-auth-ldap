@@ -191,10 +191,6 @@ function (_SettingsModal) {
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_tls')()) !== -1,
       onchange: this.setting(settingsPrefix + 'use_tls'),
       children: app.translator.trans(translationPrefix + 'use_tls')
-    }))]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
-      state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_admin')()) !== -1,
-      onchange: this.setting(settingsPrefix + 'use_admin'),
-      children: app.translator.trans(translationPrefix + 'use_admin')
     }))]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.admin_dn')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'admin_dn'),
       placeholder: 'cn=admin,dc=yunohost,dc=org'
@@ -210,7 +206,7 @@ function (_SettingsModal) {
       placeholder: 'mail'
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.user_username')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'user_username'),
-      placeholder: 'cn'
+      placeholder: 'uid'
     })]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
       onchange: this.setting(settingsPrefix + 'onlyUse'),

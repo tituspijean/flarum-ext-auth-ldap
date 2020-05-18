@@ -32,13 +32,13 @@ export default class LDAPSettingsModal extends SettingsModal {
 					placeholder: 'ou=users,dc=yunohost,dc=org'
 				})
 			]),
-      m('.Form-group', [
-              m('label', app.translator.trans(translationPrefix + 'field.filter')),
-              m('input.FormControl', {
-                      bidi: this.setting(settingsPrefix + 'filter'),
-                      placeholder: '(&(objectClass=posixAccount)(permission=cn=flarum.main,ou=permission,dc=yunohost,dc=org)'
-              })
-      ]),
+			m('.Form-group', [
+				m('label', app.translator.trans(translationPrefix + 'field.filter')),
+				m('input.FormControl', {
+					bidi: this.setting(settingsPrefix + 'filter'),
+					placeholder: '(&(objectClass=posixAccount)(permission=cn=flarum.main,ou=permission,dc=yunohost,dc=org)'
+				})
+			]),
 			m('.Form-group', [
 				m('label', app.translator.trans(translationPrefix + 'field.port')),
 				m('input.FormControl', {
@@ -64,13 +64,6 @@ export default class LDAPSettingsModal extends SettingsModal {
 					state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_tls')()) !== -1,
 					onchange: this.setting(settingsPrefix + 'use_tls'),
 					children: app.translator.trans(translationPrefix + 'use_tls')
-				}))
-			]),
-			m('.Form-group', [
-				m('label', Switch.component({
-					state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_admin')()) !== -1,
-					onchange: this.setting(settingsPrefix + 'use_admin'),
-					children: app.translator.trans(translationPrefix + 'use_admin')
 				}))
 			]),
 			m('.Form-group', [
@@ -106,7 +99,7 @@ export default class LDAPSettingsModal extends SettingsModal {
 				m('label', app.translator.trans(translationPrefix + 'field.user_username')),
 				m('input.FormControl', {
 					bidi: this.setting(settingsPrefix + 'user_username'),
-					placeholder: 'cn'
+					placeholder: 'uid'
 				})
 			]),
 			m('.Form-group', [

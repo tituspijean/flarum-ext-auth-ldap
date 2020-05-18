@@ -50,17 +50,13 @@ class LDAPAuthController implements RequestHandlerInterface
 		$userLdapMail = $this->settings->get($settingsPrefix . 'user_mail');
 		$userLdapUsername = $this->settings->get($settingsPrefix . 'user_username');
 
+		$connection = new Connection($config);
+
 		foreach (explode(';', $searchBaseDNs) as $searchBaseDN) {
 			foreach (explode(',', $searchUserFields) as $searchUserField) {
-				$current_dn = $searchUserField . "=" . $id . "," . $searchBaseDN;
 
-				if (!$this->settings->get($settingsPrefix . 'use_admin')) {
-					$config['username'] = $current_dn;
-					$config['password'] = $password;
-				}
-
-				$connection = new Connection($config);
 				try {
+
 					if (!isset($filter) || $filter != '') {
 						$user = $connection->query()
 							->setDn($searchBaseDN)
@@ -74,25 +70,26 @@ class LDAPAuthController implements RequestHandlerInterface
 							->firstOrFail();
 					}
 
-					if ($connection->auth()->attempt($current_dn, $password, $bindAsUser = true)) {
-						$payload = (array)$user;
+					if ($connection->auth()->attempt($user['dn'], $password, $bindAsUser = true)) {
 						return $this->response->make(
 							'ldap',
-							$id,
-							function (Registration $registration) use ($user, $payload, $userLdapUsername, $userLdapMail) {
+							$user[strtolower($userLdapUsername)][0],
+							function (Registration $registration) use ($user, $userLdapUsername, $userLdapMail) {
 								$registration
-									->provide('username', $user[$userLdapUsername][0])
-									->provideTrustedEmail($user[$userLdapMail][0])
+									->provide('username', $user[strtolower($userLdapUsername)][0])
+									->provideTrustedEmail($user[strtolower($userLdapMail)][0])
 									//->provideAvatar($user->getJpegPhoto())
-									->setPayload($payload);
+									->setPayload((array)$user['dn']);
 							}
 						);
+					} else {
+						throw new Exception("Authentication failed with these login and password.");
 					}
 
-					break;
 				} catch (Exception $e) {
-					$ldapErrors[] = $e->getMessage();
+							$ldapErrors[] = $e->getMessage();
 				}
+
 			}
 		}
 		throw new LdapRecordException('LDAP error: (' . implode(', ', $ldapErrors) . ')');
