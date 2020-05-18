@@ -73,13 +73,13 @@ class LDAPAuthController implements RequestHandlerInterface
 					if ($connection->auth()->attempt($user['dn'], $password, $bindAsUser = true)) {
 						return $this->response->make(
 							'ldap',
-							$user[$userLdapUsername][0],
+							$user[strtolower($userLdapUsername)][0],
 							function (Registration $registration) use ($user, $userLdapUsername, $userLdapMail) {
 								$registration
-									->provide('username', $user[$userLdapUsername][0])
-									->provideTrustedEmail($user[$userLdapMail][0])
+									->provide('username', $user[strtolower($userLdapUsername)][0])
+									->provideTrustedEmail($user[strtolower($userLdapMail)][0])
 									//->provideAvatar($user->getJpegPhoto())
-									->setPayload((array)$user);
+									->setPayload($user['dn']);
 							}
 						);
 					} else {
