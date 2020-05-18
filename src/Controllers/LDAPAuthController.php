@@ -79,7 +79,7 @@ class LDAPAuthController implements RequestHandlerInterface
 									->provide('username', $user[strtolower($userLdapUsername)][0])
 									->provideTrustedEmail($user[strtolower($userLdapMail)][0])
 									//->provideAvatar($user->getJpegPhoto())
-									->setPayload($user['dn']);
+									->setPayload((array)$user['dn']);
 							}
 						);
 					} else {
