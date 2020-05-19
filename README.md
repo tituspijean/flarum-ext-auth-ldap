@@ -6,6 +6,10 @@ This extension enables users to log into [Flarum](https://github.com/flarum/core
 
 `composer require tituspijean/flarum-ext-auth-ldap` and activate it in Flarum's administration panel.
 
+## Languages
+
+This extension is translated in French and English.
+
 ## Configuration
 
 ![Screenshot](https://user-images.githubusercontent.com/8769166/82216722-aa61f500-9919-11ea-81d8-a06107c8020a.png)
