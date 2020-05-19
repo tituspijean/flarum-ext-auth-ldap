@@ -1,0 +1,24 @@
+tituspijean-auth-ldap:
+  forum:
+    log_in_with: Connexion par
+    log_out: => core.ref.log_out
+  admin:
+    settings:
+      title: Paramètres LDAP
+      field:
+        method_name: Nom du serveur LDAP (apparaîtra après « Connexion par »)
+        hosts: Domaines ou adresses IP des serveurs LDAP (séparés par des virgules)
+        base_dn: DNs de base (séparés par des points-virgules)
+        filter: Filtre à appliquer (optionnel)
+        port: port
+        account_prefix: Préfixe des comptes
+        account_suffix: Suffixe des comptes
+        admin_dn: Nom unique (DN) de l’administrateur LDAP (laisser vide pour se connecter anonymement)
+        admin_password: Mot de passe de l’administrateur (laisser vide pour se connecter anonymement)
+        search_user_fields: Champs où rechercher l’utilisateur (séparés par des virgules)
+        user_mail: Champ pour l’email d’utilisateur
+        user_username: Champ pour le nom d’utilisateur
+      follow_referrals: Suivre les renvois pour se connecter au serveur LDAP
+      use_ssl: Utiliser SSL
+      use_tls: Utiliser TLS
+      onlyUse: Cacher le système de connexion standard de Flarum
