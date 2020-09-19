@@ -165,9 +165,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var translationPrefix = 'tituspijean-auth-ldap.forum.';
 
-var LDAPLogInModal =
-/*#__PURE__*/
-function (_Modal) {
+var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
   Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(LDAPLogInModal, _Modal);
 
   function LDAPLogInModal() {
@@ -400,7 +398,9 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
   function addLoginLink(items) {
     if (items.has('logIn')) {
       items.add('logInLDAP', flarum_components_Button__WEBPACK_IMPORTED_MODULE_4___default.a.component({
-        children: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with') + ' ' + flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('LDAP_method_name'),
+        children: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with', {
+          server: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('LDAP_method_name')
+        }),
         className: 'Button Button--link',
         onclick: function onclick() {
           return flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.modal.show(new _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"]());
