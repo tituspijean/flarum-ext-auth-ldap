@@ -1,6 +1,6 @@
 tituspijean-auth-ldap:
   forum:
-    log_in_with: Connexion par
+    log_in_with: "Connexion via {server}"
     log_out: => core.ref.log_out
   admin:
     settings:

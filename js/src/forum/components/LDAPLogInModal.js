@@ -41,7 +41,7 @@ export default class LDAPLogInModal extends Modal {
   }
 
   title() {
-    return app.translator.trans(translationPrefix + 'log_in_with') + ' ' + app.forum.attribute('LDAP_method_name');
+    return app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('LDAP_method_name')});
   }
 
   content() {

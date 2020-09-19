@@ -148,9 +148,7 @@ __webpack_require__.r(__webpack_exports__);
 var settingsPrefix = 'tituspijean-auth-ldap.';
 var translationPrefix = 'tituspijean-auth-ldap.admin.settings.';
 
-var LDAPSettingsModal =
-/*#__PURE__*/
-function (_SettingsModal) {
+var LDAPSettingsModal = /*#__PURE__*/function (_SettingsModal) {
   Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(LDAPSettingsModal, _SettingsModal);
 
   function LDAPSettingsModal() {
