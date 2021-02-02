@@ -1,0 +1,82 @@
+---
+version: '3.7'
+services:
+  nginx:
+    build: services/nginx
+    links:
+      - php
+    networks:
+      - flarum
+    volumes:
+      - ../:/var/www/:cached
+    ports:
+      - "80:80"
+
+  php:
+    # uncomment for use local docker configuration
+    # build:
+    #   context: services/php-fpm
+    image: scodazzi/php-flarum:7.4
+    user: ${UID}:${UID}
+    working_dir: /var/www
+    env_file:
+      - ./.docker.conf
+    links:
+      - mysql
+      - ldap
+    networks:
+      - flarum
+    volumes:
+      - ../:/var/www:cached
+    expose:
+      - "9000"
+
+  mysql:
+    image: mariadb:10.3
+    networks:
+      - flarum
+    expose:
+      - "3306"
+    env_file:
+      - ./.docker.conf
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    links:
+      - mysql
+    networks:
+      - flarum
+    env_file:
+      - ./.docker.conf
+
+  ldap:
+    image: osixia/openldap
+    networks:
+      - flarum
+    expose:
+      - "389"
+      - "636"
+    ports:
+      - "389:389"
+    environment:
+      LDAP_ORGANISATION: "Flarum organisation"
+      LDAP_DOMAIN: "flarum.com"
+      LDAP_ADMIN_PASSWORD: "flarum"
+      # Default DN = cn=admin,dc=flarum,dc=com
+
+  ldapadmin:
+    image: osixia/phpldapadmin
+    networks:
+      - flarum
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8081:80"
+    links:
+      - "ldap"
+
+networks:
+  flarum:

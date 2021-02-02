@@ -25,3 +25,11 @@ This extension is translated in French and English.
 - `LDAP user mail field`: name of the field containing the user's email address. The extension will use the first email found for the user's registration in Flarum.
 - `LDAP username field`: name of the field containing the username that uniquely identifies the user. Can be `uid` or `sAMAccountname`, for example.
 - `Disable Flarum login and only use LDAP authentication`: merely hides the standard login links and buttons. Users can still use the standard login method through the API.
+
+## Development (With docker)
+
+- Clone the repository
+- Copy docker.conf : `cp docker/.docker.conf.dist docker/.docker.conf`
+- Change UID in `docker/.docker.conf` if needed.
+- Start dockers : `./install.sh install`
+- Open http://flarum.localhost
