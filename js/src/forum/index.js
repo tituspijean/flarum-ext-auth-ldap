@@ -33,11 +33,14 @@ app.initializers.add('tituspijean-auth-ldap', function() {
 	function addLoginLink(items) {
 		if (items.has('logIn')) {
 			items.add('logInLDAP',
-				Button.component({
-					children: app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('LDAP_method_name')}),
-					className: 'Button Button--link',
-					onclick: () => app.modal.show(new LDAPLogInModal())
-				}), 0
+				Button.component(
+				  {
+            className: 'Button Button--link',
+            onclick: () => app.modal.show(LDAPLogInModal)
+				  },
+          app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('LDAP_method_name')})
+				),
+        0
 			);
 		}
 	}
