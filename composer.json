@@ -13,7 +13,7 @@
 		"source": "https://github.com/tituspijean/flarum-ext-auth-ldap"
 	},
 	"require": {
-		"flarum/core": ">=0.1.0-beta.12 <=0.1.0-beta.13",
+		"flarum/core": "0.1.0-beta.15",
 		"directorytree/ldaprecord": "v1.2.13"
 	},
 	"autoload": {

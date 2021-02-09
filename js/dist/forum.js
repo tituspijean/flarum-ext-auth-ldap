@@ -154,6 +154,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_utils_extractText__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(flarum_utils_extractText__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! flarum/utils/ItemList */ "flarum/utils/ItemList");
 /* harmony import */ var flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var flarum_utils_Stream__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! flarum/utils/Stream */ "flarum/utils/Stream");
+/* harmony import */ var flarum_utils_Stream__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(flarum_utils_Stream__WEBPACK_IMPORTED_MODULE_9__);
+
 
 
 
@@ -174,8 +177,8 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
 
   var _proto = LDAPLogInModal.prototype;
 
-  _proto.init = function init() {
-    _Modal.prototype.init.call(this);
+  _proto.oninit = function oninit(vnode) {
+    _Modal.prototype.oninit.call(this, vnode);
     /**
      * The value of the identification input.
      *
@@ -183,21 +186,21 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
      */
 
 
-    this.identification = m.prop(this.props.identification || '');
+    this.identification = flarum_utils_Stream__WEBPACK_IMPORTED_MODULE_9___default()(this.attrs.identification || '');
     /**
      * The value of the password input.
      *
      * @type {Function}
      */
 
-    this.password = m.prop(this.props.password || '');
+    this.password = flarum_utils_Stream__WEBPACK_IMPORTED_MODULE_9___default()(this.attrs.password || '');
     /**
      * The value of the remember me input.
      *
      * @type {Function}
      */
 
-    this.remember = m.prop(!!this.props.remember);
+    this.remember = flarum_utils_Stream__WEBPACK_IMPORTED_MODULE_9___default()(!!this.attrs.remember);
   };
 
   _proto.className = function className() {
@@ -205,7 +208,9 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
   };
 
   _proto.title = function title() {
-    return flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans(translationPrefix + 'log_in_with') + ' ' + flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.forum.attribute('LDAP_method_name');
+    return flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans(translationPrefix + 'log_in_with', {
+      server: flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.forum.attribute('LDAP_method_name')
+    });
   };
 
   _proto.content = function content() {
@@ -259,9 +264,8 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
     }, flarum_components_Button__WEBPACK_IMPORTED_MODULE_5___default.a.component({
       className: 'Button Button--primary Button--block',
       type: 'submit',
-      loading: this.loading,
-      children: flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans('core.forum.log_in.submit_button')
-    })), -10);
+      loading: this.loading
+    }, flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans('core.forum.log_in.submit_button'))), -10);
     return items;
   };
 
@@ -398,14 +402,13 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
   function addLoginLink(items) {
     if (items.has('logIn')) {
       items.add('logInLDAP', flarum_components_Button__WEBPACK_IMPORTED_MODULE_4___default.a.component({
-        children: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with', {
-          server: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('LDAP_method_name')
-        }),
         className: 'Button Button--link',
         onclick: function onclick() {
           return flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.modal.show(new _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"]());
         }
-      }), 0);
+      }, flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with', {
+        server: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('LDAP_method_name')
+      })), 0);
     }
   }
 
@@ -542,6 +545,17 @@ module.exports = flarum.core.compat['extend'];
 /***/ (function(module, exports) {
 
 module.exports = flarum.core.compat['utils/ItemList'];
+
+/***/ }),
+
+/***/ "flarum/utils/Stream":
+/*!*****************************************************!*\
+  !*** external "flarum.core.compat['utils/Stream']" ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = flarum.core.compat['utils/Stream'];
 
 /***/ }),
 

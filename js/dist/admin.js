@@ -179,17 +179,14 @@ var LDAPSettingsModal = /*#__PURE__*/function (_SettingsModal) {
       placeholder: '389'
     })]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'follow_referrals')()) !== -1,
-      onchange: this.setting(settingsPrefix + 'follow_referrals'),
-      children: app.translator.trans(translationPrefix + 'follow_referrals')
-    }))]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
+      onchange: this.setting(settingsPrefix + 'follow_referrals')
+    }, app.translator.trans(translationPrefix + 'follow_referrals')))]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_ssl')()) !== -1,
-      onchange: this.setting(settingsPrefix + 'use_ssl'),
-      children: app.translator.trans(translationPrefix + 'use_ssl')
-    }))]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
+      onchange: this.setting(settingsPrefix + 'use_ssl')
+    }, app.translator.trans(translationPrefix + 'use_ssl')))]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'use_tls')()) !== -1,
-      onchange: this.setting(settingsPrefix + 'use_tls'),
-      children: app.translator.trans(translationPrefix + 'use_tls')
-    }))]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.admin_dn')), m('input.FormControl', {
+      onchange: this.setting(settingsPrefix + 'use_tls')
+    }, app.translator.trans(translationPrefix + 'use_tls')))]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.admin_dn')), m('input.FormControl', {
       bidi: this.setting(settingsPrefix + 'admin_dn'),
       placeholder: 'cn=admin,dc=yunohost,dc=org'
     })]), m('.Form-group', [m('label', app.translator.trans(translationPrefix + 'field.admin_password')), m('input.FormControl', {
@@ -207,9 +204,8 @@ var LDAPSettingsModal = /*#__PURE__*/function (_SettingsModal) {
       placeholder: 'uid'
     })]), m('.Form-group', [m('label', flarum_components_Switch__WEBPACK_IMPORTED_MODULE_2___default.a.component({
       state: [true, '1'].indexOf(this.setting(settingsPrefix + 'onlyUse')()) !== -1,
-      onchange: this.setting(settingsPrefix + 'onlyUse'),
-      children: app.translator.trans(translationPrefix + 'onlyUse')
-    }))])];
+      onchange: this.setting(settingsPrefix + 'onlyUse')
+    }, app.translator.trans(translationPrefix + 'onlyUse')))])];
   };
 
   return LDAPSettingsModal;
@@ -235,7 +231,7 @@ __webpack_require__.r(__webpack_exports__);
 
 flarum_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializers.add('tituspijean-auth-ldap', function (app) {
   app.extensionSettings['tituspijean-auth-ldap'] = function () {
-    return app.modal.show(new _components_LDAPSettingsModal__WEBPACK_IMPORTED_MODULE_1__["default"]());
+    return app.modal.show(_components_LDAPSettingsModal__WEBPACK_IMPORTED_MODULE_1__["default"]);
   };
 });
 

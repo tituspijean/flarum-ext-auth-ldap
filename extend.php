@@ -3,7 +3,6 @@
 use Flarum\Extend;
 use Flarum\Foundation\Application;
 use Illuminate\Events\Dispatcher;
-use Adldap;
 
 return [
   (new Extend\Frontend('forum'))
