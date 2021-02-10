@@ -72,13 +72,13 @@ export default class LDAPLogInModal extends Modal {
     items.add('identification', <div className="Form-group">
       <input className="FormControl" name="identification" type="text" placeholder={extractText(app.translator.trans('core.forum.log_in.username_or_email_placeholder'))}
         bidi={this.identification}
-        disabled={this.loading} />
+        disabled={this.attrs.loading} />
     </div>, 30);
 
     items.add('password', <div className="Form-group">
       <input className="FormControl" name="password" type="password" placeholder={extractText(app.translator.trans('core.forum.log_in.password_placeholder'))}
         bidi={this.password}
-        disabled={this.loading} />
+        disabled={this.attrs.loading} />
     </div>, 20);
 
     /*items.add('remember', <div className="Form-group">
@@ -95,7 +95,7 @@ export default class LDAPLogInModal extends Modal {
         {
           className: 'Button Button--primary Button--block',
           type: 'submit',
-          loading: this.loading,
+          loading: this.attrs.loading,
         },
         app.translator.trans('core.forum.log_in.submit_button')
       )}
@@ -166,15 +166,11 @@ export default class LDAPLogInModal extends Modal {
     const csrfToken = app.session.csrfToken;
 
     this.ldaplogin({identification, password, remember, csrfToken}, {errorHandler: this.onerror.bind(this)})
-      .then(
-        () => window.location.reload(),
-        this.loaded.bind(this)
-      );
   }
 
   onerror(error) {
     if (error.status === 401) {
-      error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+      error.alert.children = app.translator.trans('core.forum.log_in.invalid_login_message');
     }
 
     super.onerror(error);

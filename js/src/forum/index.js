@@ -63,7 +63,7 @@ app.initializers.add('tituspijean-auth-ldap', function() {
 
 	function checkRemoveAccountSection(items) {
 		if (items.has('account') &&
-			items.get('account').props.children.length === 0) {
+			items.get('account').children.length === 0) {
 			items.remove('account');
 		}
 	}
