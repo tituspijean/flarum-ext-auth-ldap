@@ -1,103 +1,35 @@
 module.exports =
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./forum.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _inheritsLoose)
+/* harmony export */ });
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  subClass.__proto__ = superClass;
+}
+
+/***/ }),
 
 /***/ "./forum.js":
 /*!******************!*\
   !*** ./forum.js ***!
   \******************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_forum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/forum */ "./src/forum/index.js");
-/* empty/unused harmony star reexport *//*
+/*
  * This file is part of Flarum.
  *
  * (c) Toby Zerner <toby.zerner@gmail.com>
@@ -109,34 +41,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js ***!
-  \******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _inheritsLoose; });
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
-
-/***/ }),
-
 /***/ "./src/forum/components/LDAPLogInModal.js":
 /*!************************************************!*\
   !*** ./src/forum/components/LDAPLogInModal.js ***!
   \************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LDAPLogInModal; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ LDAPLogInModal)
+/* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
 /* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/extend */ "flarum/extend");
 /* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_extend__WEBPACK_IMPORTED_MODULE_1__);
@@ -169,7 +83,7 @@ __webpack_require__.r(__webpack_exports__);
 var translationPrefix = 'tituspijean-auth-ldap.forum.';
 
 var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
-  Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(LDAPLogInModal, _Modal);
+  (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.default)(LDAPLogInModal, _Modal);
 
   function LDAPLogInModal() {
     return _Modal.apply(this, arguments) || this;
@@ -208,8 +122,8 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
   };
 
   _proto.title = function title() {
-    return flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans(translationPrefix + 'log_in_with', {
-      server: flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.forum.attribute('LDAP_method_name')
+    return flarum_app__WEBPACK_IMPORTED_MODULE_2___default().translator.trans(translationPrefix + 'log_in_with', {
+      server: flarum_app__WEBPACK_IMPORTED_MODULE_2___default().forum.attribute('LDAP_method_name')
     });
   };
 
@@ -229,16 +143,16 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
   };
 
   _proto.fields = function fields() {
-    var items = new flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_8___default.a();
+    var items = new (flarum_utils_ItemList__WEBPACK_IMPORTED_MODULE_8___default())();
     items.add('identification', m("div", {
       className: "Form-group"
     }, m("input", {
       className: "FormControl",
       name: "identification",
       type: "text",
-      placeholder: flarum_utils_extractText__WEBPACK_IMPORTED_MODULE_7___default()(flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans('core.forum.log_in.username_or_email_placeholder')),
+      placeholder: flarum_utils_extractText__WEBPACK_IMPORTED_MODULE_7___default()(flarum_app__WEBPACK_IMPORTED_MODULE_2___default().translator.trans('core.forum.log_in.username_or_email_placeholder')),
       bidi: this.identification,
-      disabled: this.loading
+      disabled: this.attrs.loading
     })), 30);
     items.add('password', m("div", {
       className: "Form-group"
@@ -246,9 +160,9 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
       className: "FormControl",
       name: "password",
       type: "password",
-      placeholder: flarum_utils_extractText__WEBPACK_IMPORTED_MODULE_7___default()(flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans('core.forum.log_in.password_placeholder')),
+      placeholder: flarum_utils_extractText__WEBPACK_IMPORTED_MODULE_7___default()(flarum_app__WEBPACK_IMPORTED_MODULE_2___default().translator.trans('core.forum.log_in.password_placeholder')),
       bidi: this.password,
-      disabled: this.loading
+      disabled: this.attrs.loading
     })), 20);
     /*items.add('remember', <div className="Form-group">
       <div>
@@ -261,11 +175,11 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
 
     items.add('submit', m("div", {
       className: "Form-group"
-    }, flarum_components_Button__WEBPACK_IMPORTED_MODULE_5___default.a.component({
+    }, flarum_components_Button__WEBPACK_IMPORTED_MODULE_5___default().component({
       className: 'Button Button--primary Button--block',
       type: 'submit',
-      loading: this.loading
-    }, flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans('core.forum.log_in.submit_button'))), -10);
+      loading: this.attrs.loading
+    }, flarum_app__WEBPACK_IMPORTED_MODULE_2___default().translator.trans('core.forum.log_in.submit_button'))), -10);
     return items;
   };
 
@@ -294,7 +208,7 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
     var width = 600;
     var height = 400;
     var $window = $(window);
-    var url = flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.forum.attribute('baseUrl') + '/auth/ldap';
+    var url = flarum_app__WEBPACK_IMPORTED_MODULE_2___default().forum.attribute('baseUrl') + '/auth/ldap';
     var name = "ldapauth";
     var form = document.createElement("form");
     form.setAttribute("method", "POST");
@@ -323,7 +237,7 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
     var identification = this.identification();
     var password = this.password();
     var remember = this.remember();
-    var csrfToken = flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.session.csrfToken;
+    var csrfToken = (flarum_app__WEBPACK_IMPORTED_MODULE_2___default().session.csrfToken);
     this.ldaplogin({
       identification: identification,
       password: password,
@@ -331,21 +245,19 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
       csrfToken: csrfToken
     }, {
       errorHandler: this.onerror.bind(this)
-    }).then(function () {
-      return window.location.reload();
-    }, this.loaded.bind(this));
+    });
   };
 
   _proto.onerror = function onerror(error) {
     if (error.status === 401) {
-      error.alert.props.children = flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.trans('core.forum.log_in.invalid_login_message');
+      error.alert.children = flarum_app__WEBPACK_IMPORTED_MODULE_2___default().translator.trans('core.forum.log_in.invalid_login_message');
     }
 
     _Modal.prototype.onerror.call(this, error);
   };
 
   return LDAPLogInModal;
-}(flarum_components_Modal__WEBPACK_IMPORTED_MODULE_3___default.a);
+}((flarum_components_Modal__WEBPACK_IMPORTED_MODULE_3___default()));
 
 
 
@@ -355,10 +267,8 @@ var LDAPLogInModal = /*#__PURE__*/function (_Modal) {
 /*!****************************!*\
   !*** ./src/forum/index.js ***!
   \****************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/extend */ "flarum/extend");
 /* harmony import */ var flarum_extend__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_extend__WEBPACK_IMPORTED_MODULE_0__);
@@ -381,39 +291,39 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var translationPrefix = 'tituspijean-auth-ldap.forum.';
-flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-auth-ldap', function () {
-  Object(flarum_extend__WEBPACK_IMPORTED_MODULE_0__["extend"])(flarum_components_HeaderSecondary__WEBPACK_IMPORTED_MODULE_2___default.a.prototype, 'items', addLoginLink);
-  Object(flarum_extend__WEBPACK_IMPORTED_MODULE_0__["extend"])(flarum_components_HeaderSecondary__WEBPACK_IMPORTED_MODULE_2___default.a.prototype, 'items', removeIfOnlyUse);
-  Object(flarum_extend__WEBPACK_IMPORTED_MODULE_0__["extend"])(flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype, 'content', overrideModal);
-  Object(flarum_extend__WEBPACK_IMPORTED_MODULE_0__["extend"])(flarum_components_SettingsPage__WEBPACK_IMPORTED_MODULE_3___default.a.prototype, 'accountItems', removeProfileActions);
-  Object(flarum_extend__WEBPACK_IMPORTED_MODULE_0__["extend"])(flarum_components_SettingsPage__WEBPACK_IMPORTED_MODULE_3___default.a.prototype, 'settingsItems', checkRemoveAccountSection);
+flarum_app__WEBPACK_IMPORTED_MODULE_1___default().initializers.add('tituspijean-auth-ldap', function () {
+  (0,flarum_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_components_HeaderSecondary__WEBPACK_IMPORTED_MODULE_2___default().prototype), 'items', addLoginLink);
+  (0,flarum_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_components_HeaderSecondary__WEBPACK_IMPORTED_MODULE_2___default().prototype), 'items', removeIfOnlyUse);
+  (0,flarum_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'content', overrideModal);
+  (0,flarum_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_components_SettingsPage__WEBPACK_IMPORTED_MODULE_3___default().prototype), 'accountItems', removeProfileActions);
+  (0,flarum_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_components_SettingsPage__WEBPACK_IMPORTED_MODULE_3___default().prototype), 'settingsItems', checkRemoveAccountSection);
 
   function overrideModal() {
-    if (flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('onlyUseLDAP')) {
-      flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype.content = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.content;
-      flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype.title = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.title;
-      flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype.body = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.body;
-      flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype.fields = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.fields;
-      flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype.footer = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.footer;
-      flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default.a.prototype.onsubmit = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"].prototype.onsubmit;
+    if (flarum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('onlyUseLDAP')) {
+      (flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype.content) = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default.prototype.content;
+      (flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype.title) = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default.prototype.title;
+      (flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype.body) = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default.prototype.body;
+      (flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype.fields) = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default.prototype.fields;
+      (flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype.footer) = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default.prototype.footer;
+      (flarum_components_LogInModal__WEBPACK_IMPORTED_MODULE_5___default().prototype.onsubmit) = _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default.prototype.onsubmit;
     }
   }
 
   function addLoginLink(items) {
     if (items.has('logIn')) {
-      items.add('logInLDAP', flarum_components_Button__WEBPACK_IMPORTED_MODULE_4___default.a.component({
+      items.add('logInLDAP', flarum_components_Button__WEBPACK_IMPORTED_MODULE_4___default().component({
         className: 'Button Button--link',
         onclick: function onclick() {
-          return flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.modal.show(new _components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__["default"]());
+          return flarum_app__WEBPACK_IMPORTED_MODULE_1___default().modal.show(_components_LDAPLogInModal__WEBPACK_IMPORTED_MODULE_6__.default);
         }
-      }, flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.translator.trans(translationPrefix + 'log_in_with', {
-        server: flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('LDAP_method_name')
+      }, flarum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans(translationPrefix + 'log_in_with', {
+        server: flarum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('LDAP_method_name')
       })), 0);
     }
   }
 
   function removeIfOnlyUse(items) {
-    if (flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.forum.attribute('onlyUseLDAP')) {
+    if (flarum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('onlyUseLDAP')) {
       if (items.has('signUp')) {
         items.remove('signUp');
       }
@@ -430,7 +340,7 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
   }
 
   function checkRemoveAccountSection(items) {
-    if (items.has('account') && items.get('account').props.children.length === 0) {
+    if (items.has('account') && items.get('account').children.length === 0) {
       items.remove('account');
     }
   }
@@ -442,8 +352,7 @@ flarum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tituspijean-
 /*!********************************************!*\
   !*** external "flarum.core.compat['app']" ***!
   \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['app'];
 
@@ -453,8 +362,7 @@ module.exports = flarum.core.compat['app'];
 /*!**********************************************************!*\
   !*** external "flarum.core.compat['components/Button']" ***!
   \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/Button'];
 
@@ -464,8 +372,7 @@ module.exports = flarum.core.compat['components/Button'];
 /*!*******************************************************************!*\
   !*** external "flarum.core.compat['components/HeaderSecondary']" ***!
   \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/HeaderSecondary'];
 
@@ -475,8 +382,7 @@ module.exports = flarum.core.compat['components/HeaderSecondary'];
 /*!****************************************************************!*\
   !*** external "flarum.core.compat['components/LogInButtons']" ***!
   \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/LogInButtons'];
 
@@ -486,8 +392,7 @@ module.exports = flarum.core.compat['components/LogInButtons'];
 /*!**************************************************************!*\
   !*** external "flarum.core.compat['components/LogInModal']" ***!
   \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/LogInModal'];
 
@@ -497,8 +402,7 @@ module.exports = flarum.core.compat['components/LogInModal'];
 /*!*********************************************************!*\
   !*** external "flarum.core.compat['components/Modal']" ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/Modal'];
 
@@ -508,8 +412,7 @@ module.exports = flarum.core.compat['components/Modal'];
 /*!****************************************************************!*\
   !*** external "flarum.core.compat['components/SettingsPage']" ***!
   \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/SettingsPage'];
 
@@ -519,8 +422,7 @@ module.exports = flarum.core.compat['components/SettingsPage'];
 /*!***************************************************************!*\
   !*** external "flarum.core.compat['components/SignUpModal']" ***!
   \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['components/SignUpModal'];
 
@@ -530,8 +432,7 @@ module.exports = flarum.core.compat['components/SignUpModal'];
 /*!***********************************************!*\
   !*** external "flarum.core.compat['extend']" ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['extend'];
 
@@ -541,8 +442,7 @@ module.exports = flarum.core.compat['extend'];
 /*!*******************************************************!*\
   !*** external "flarum.core.compat['utils/ItemList']" ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['utils/ItemList'];
 
@@ -552,8 +452,7 @@ module.exports = flarum.core.compat['utils/ItemList'];
 /*!*****************************************************!*\
   !*** external "flarum.core.compat['utils/Stream']" ***!
   \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['utils/Stream'];
 
@@ -563,12 +462,83 @@ module.exports = flarum.core.compat['utils/Stream'];
 /*!**********************************************************!*\
   !*** external "flarum.core.compat['utils/extractText']" ***!
   \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = flarum.core.compat['utils/extractText'];
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__("./forum.js");
+/******/ })()
+;
 //# sourceMappingURL=forum.js.map
