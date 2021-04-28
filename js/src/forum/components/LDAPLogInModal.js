@@ -122,39 +122,6 @@ export default class LDAPLogInModal extends Modal {
     this.$('[name=' + (this.identification() ? 'password' : 'identification') + ']').select();
   }
 
-  ldaplogin(data, options = {}) {
-      const width = 600;
-      const height = 400;
-      const $window = $(window);
-      const url = app.forum.attribute('baseUrl') + '/auth/ldap';
-      const name = "ldapauth";
-
-      var form = document.createElement("form");
-      form.setAttribute("method", "POST");
-      form.setAttribute("action", url);
-      form.setAttribute("target", name);
-      for (var i in data) {
-          if (data.hasOwnProperty(i)) {
-               var input = document.createElement('input');
-               input.type = 'hidden';
-               input.name = i;
-               input.value = data[i];
-               form.appendChild(input);
-           }
-      }
-      document.body.appendChild(form);
-
-      window.open("", name,
-        `width=${width},` +
-        `height=${height},` +
-        `top=${$window.height() / 2 - height / 2},` +
-        `left=${$window.width() / 2 - width / 2},` +
-        'status=no,scrollbars=no,resizable=no');
-
-      form.submit();
-      document.body.removeChild(form);
-  }
-
   onsubmit(e) {
     e.preventDefault();
 
@@ -165,7 +132,39 @@ export default class LDAPLogInModal extends Modal {
     const remember = this.remember();
     const csrfToken = app.session.csrfToken;
 
-    this.ldaplogin({identification, password, remember, csrfToken}, {errorHandler: this.onerror.bind(this)})
+    const data = {identification, password, remember, csrfToken};
+    const options = {errorHandler: this.onerror.bind(this)};
+
+    const width = 600;
+    const height = 400;
+    const $window = $(window);
+    const url = app.forum.attribute('baseUrl') + '/auth/ldap';
+    const name = "ldapauth";
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", url);
+    form.setAttribute("target", name);
+    for (var i in data) {
+        if (data.hasOwnProperty(i)) {
+             var input = document.createElement('input');
+             input.type = 'hidden';
+             input.name = i;
+             input.value = data[i];
+             form.appendChild(input);
+         }
+    }
+    document.body.appendChild(form);
+
+    window.open("", name,
+      `width=${width},` +
+      `height=${height},` +
+      `top=${$window.height() / 2 - height / 2},` +
+      `left=${$window.width() / 2 - width / 2},` +
+      'status=no,scrollbars=no,resizable=no');
+
+    form.submit();
+    document.body.removeChild(form);
   }
 
   onerror(error) {
