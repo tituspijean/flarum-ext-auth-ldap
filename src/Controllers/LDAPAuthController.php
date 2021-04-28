@@ -1,6 +1,7 @@
 <?php namespace TitusPiJean\Flarum\Auth\LDAP\Controllers;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Psr\Http\Server\RequestHandlerInterface;
 use Flarum\Forum\Auth\ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -10,7 +11,6 @@ use Psr\Http\Message\ResponseInterface;
 use LdapRecord\Connection;
 use LdapRecord\LdapRecordException;
 use Flarum\Forum\Auth\Registration;
-use Flarum\User\RegistrationToken;
 
 class LDAPAuthController implements RequestHandlerInterface
 {
@@ -30,9 +30,9 @@ class LDAPAuthController implements RequestHandlerInterface
 		$settingsPrefix = 'tituspijean-auth-ldap.';
 
 		$body = $request->getParsedBody();
-		$params = array_only($body, ['identification', 'password']);
-		$id = array_get($params, 'identification');
-		$password = array_get($params, 'password');
+		$params = Arr::only($body, ['identification', 'password']);
+		$id = Arr::get($params, 'identification');
+		$password = Arr::get($params, 'password');
 		$config = [
 			'hosts' => explode(',', $this->settings->get($settingsPrefix . 'hosts')),
 			'username' => $this->settings->get($settingsPrefix . 'admin_dn'),
