@@ -5,7 +5,7 @@
 	"keywords": ["authentication"],
 	"license": "MIT",
 	"authors": [{
-		"name": "TitusPiJean",
+		"name": "tituspijean",
 		"email": "tituspijean@outlook.com"
 	}],
 	"support": {
@@ -13,8 +13,8 @@
 		"source": "https://github.com/tituspijean/flarum-ext-auth-ldap"
 	},
 	"require": {
-		"flarum/core": "0.1.0-beta.15",
-		"directorytree/ldaprecord": "v1.2.13"
+		"flarum/core": "0.1.0-beta.16",
+		"directorytree/ldaprecord": "v2.4.2"
 	},
 	"autoload": {
 		"psr-4": {
