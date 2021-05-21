@@ -34,7 +34,7 @@ This extension is translated in French and English.
 - Start dockers : `./install.sh install`
 - Open http://flarum.localhost
   * MySQL host: mysql
-  * MySQL DB: mysql
+  * MySQL DB: flarum
   * MySQL user: flarum
   * MySQL password: flarum
 - Go to Admin panel and enable extension
