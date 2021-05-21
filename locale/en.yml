@@ -5,19 +5,18 @@ tituspijean-auth-ldap:
   admin:
     settings:
       title: LDAP settings
-      field:
-        method_name: LDAP server name (will appear after "Login with")
-        hosts: LDAP domains or server IP adresses (comma separated)
-        base_dn: Base DNs (semicolon separated)
-        filter: Filter to apply (optional)
-        port: port
-        account_prefix: Account prefix
-        account_suffix: Account suffix
-        admin_dn: LDAP admin distinguished name (leave empty for anonymous binding)
-        admin_password: LDAP admin password (leave empty for anonymous binding)
-        search_user_fields: LDAP user search fields (comma separed)
-        user_mail: LDAP user mail field
-        user_username: LDAP username field
+      method_name: LDAP server name (will appear after "Login with")
+      hosts: LDAP domains or server IP adresses (comma separated)
+      base_dn: Base DNs (semicolon separated)
+      filter: Filter to apply (optional)
+      port: port
+      account_prefix: Account prefix
+      account_suffix: Account suffix
+      admin_dn: LDAP admin distinguished name (leave empty for anonymous binding)
+      admin_password: LDAP admin password (leave empty for anonymous binding)
+      search_user_fields: LDAP user search fields (comma separed)
+      user_mail: LDAP user mail field
+      user_username: LDAP username field
       follow_referrals: Follow referrals to bind to LDAP server
       use_ssl: Use SSL
       use_tls: Use TLS
