@@ -1,5 +1,5 @@
-import { extend, override } from 'flarum/extend';
-import app from 'flarum/app';
+import { extend, override } from 'flarum/common/extend';
+import app from 'flarum/common/app';
 
 import HeaderSecondary from "flarum/components/HeaderSecondary";
 import SettingsPage from "flarum/components/SettingsPage";
@@ -10,7 +10,7 @@ import LDAPLogInModal from "./components/LDAPLogInModal";
 
 const translationPrefix = 'tituspijean-auth-ldap.forum.';
 
-app.initializers.add('tituspijean-auth-ldap', function() {
+app.initializers.add('tituspijean-auth-ldap', () => {
 
 	extend(HeaderSecondary.prototype, 'items', addLoginLink);
 	extend(HeaderSecondary.prototype, 'items', removeIfOnlyUse);
@@ -20,7 +20,7 @@ app.initializers.add('tituspijean-auth-ldap', function() {
 	extend(SettingsPage.prototype, 'settingsItems', checkRemoveAccountSection);
 
 	function overrideModal() {
-		if (app.forum.attribute('onlyUseLDAP')) {
+		if (app.forum.attribute('tituspijean-auth-ldap.onlyUse')) {
 			LogInModal.prototype.content = LDAPLogInModal.prototype.content
 			LogInModal.prototype.title = LDAPLogInModal.prototype.title
 			LogInModal.prototype.body = LDAPLogInModal.prototype.body
@@ -38,7 +38,7 @@ app.initializers.add('tituspijean-auth-ldap', function() {
             className: 'Button Button--link',
             onclick: () => app.modal.show(LDAPLogInModal)
 				  },
-          app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('LDAP_method_name')})
+          app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('tituspijean-auth-ldap.method_name')})
 				),
         0
 			);
@@ -46,7 +46,7 @@ app.initializers.add('tituspijean-auth-ldap', function() {
 	}
 
 	function removeIfOnlyUse(items) {
-		if (app.forum.attribute('onlyUseLDAP')) {
+		if (app.forum.attribute('tituspijean-auth-ldap.onlyUse')) {
 			if (items.has('signUp')) {
 				items.remove('signUp');
 			}

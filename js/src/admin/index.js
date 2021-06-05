@@ -115,7 +115,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
         setting: settingsPrefix + 'onlyUse',
         label: app.translator.trans(translationPrefix + 'onlyUse'),
         type: 'boolean',
-        placeholder: false,
+        default: false,
       }
     )
 });
