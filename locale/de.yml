@@ -1,0 +1,23 @@
+tituspijean-auth-ldap:
+  forum:
+    log_in_with: "Auf {server} anmelden."
+    log_out: => core.ref.log_out
+  admin:
+    settings:
+      title: LDAP Einstellungen
+      method_name: LDAP Servername (wird bei der Anmeldung angezeigt)
+      hosts: LDAP Hosts oder IPs (Getrennt durch Kommas)
+      base_dn: Base DNs (Semikolon zur Trennung.)
+      filter: Verwendete Filter (optional)
+      port: Port
+      account_prefix: Account prefix
+      account_suffix: Account suffix
+      admin_dn: LDAP Admin bind Name (Für anonymen Bind leerlassen)
+      admin_password: LDAP Admin Passwort (Für anonymen Bind leerlassen)
+      search_user_fields: LDAP Feld für Benutzererkenning (Komma Trennung)
+      user_mail: LDAP Mailfeld
+      user_username: LDAP Nutzernamenfeld
+      follow_referrals: Follow referrals to bind to LDAP server
+      use_ssl: Benutze SSL
+      use_tls: Benutze TLS
+      onlyUse: Verstecke Standard Loginmethode.
