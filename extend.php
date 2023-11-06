@@ -16,5 +16,6 @@ return [
     ->get('/auth/ldap', 'auth.ldap.get', Controllers\LDAPAuthController::class),
   (new Extend\Settings)
     ->serializeToForum('tituspijean-auth-ldap.onlyUse', 'tituspijean-auth-ldap.onlyUse', 'boolVal', false)
+    ->serializeToForum('tituspijean-auth-ldap.display_detailed_error', 'tituspijean-auth-ldap.display_detailed_error', 'boolVal', false)
     ->serializeToForum('tituspijean-auth-ldap.method_name', 'tituspijean-auth-ldap.method_name', 'strVal', 'LDAP'),
 ];

@@ -112,8 +112,24 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
     )
     .registerSetting(
       {
+        setting: settingsPrefix + 'search_nickname_fields',
+        label: app.translator.trans(translationPrefix + 'search_nickname_fields'),
+        type: 'text',
+        placeholder: 'givenname,sn',
+      }
+    )
+    .registerSetting(
+      {
         setting: settingsPrefix + 'onlyUse',
         label: app.translator.trans(translationPrefix + 'onlyUse'),
+        type: 'boolean',
+        default: false,
+      }
+    )
+    .registerSetting(
+      {
+        setting: settingsPrefix + 'display_detailed_error',
+        label: app.translator.trans(translationPrefix + 'display_detailed_error'),
         type: 'boolean',
         default: false,
       }
