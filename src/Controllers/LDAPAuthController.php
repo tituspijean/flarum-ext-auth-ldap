@@ -45,9 +45,15 @@ class LDAPAuthController implements RequestHandlerInterface
 			'timeout' => 5
 		];
 		$ldapErrors = [];
+		$userLdapUsername = $this->settings->get($settingsPrefix . 'user_username');
 		if (empty($id) || empty($password)) {
 			$contents = [
 				"errors" => array(["status" => 401, "code" => "account.invalid_inputs"]),
+			];
+			return new JsonResponse($contents, 401);
+		} else if (empty($userLdapUsername)) {
+			$contents = [
+				"errors" => array(["status" => 401, "code" => "username_is_invalid"]),
 			];
 			return new JsonResponse($contents, 401);
 		} else {
@@ -58,7 +64,6 @@ class LDAPAuthController implements RequestHandlerInterface
 			$filter = $this->settings->get($settingsPrefix . 'filter');
 			$searchUserFields = $this->settings->get($settingsPrefix . 'search_user_fields');
 			$userLdapMail = $this->settings->get($settingsPrefix . 'user_mail');
-			$userLdapUsername = $this->settings->get($settingsPrefix . 'user_username');
 
 			$connection = new Connection($config);
 
@@ -80,6 +85,19 @@ class LDAPAuthController implements RequestHandlerInterface
 								->firstOrFail();
 						}
 						if ($connection->auth()->attempt($user['dn'], $password, $bindAsUser = true)) {
+							if (!array_key_exists(strtolower($userLdapUsername), $user)) {
+								// Prevent response showing exception for null username field
+								$contents = [
+									"errors" => array(["status" => 401, "code" => "username_field_does_not_exist", "data" => $userLdapUsername]),
+								];
+								return new JsonResponse($contents, 401);
+							}
+							if (!empty($userLdapMail) && !array_key_exists(strtolower($userLdapMail), $user)) {
+								$contents = [
+									"errors" => array(["status" => 401, "code" => "mail_field_does_not_exist", "data" => $userLdapMail]),
+								];
+								return new JsonResponse($contents, 401);
+							}
 							return $this->response->make(
 								'ldap',
 								$user[strtolower($userLdapUsername)][0],
@@ -90,22 +108,18 @@ class LDAPAuthController implements RequestHandlerInterface
 											array_push($foundNickname, $user[strtolower($searchNicknameField)][0]);
 										}
 									}
-									if (count($foundNickname) == 0) {
+									$registration
+										->suggest('isLDAP', true)
+										->provide('username', $user[strtolower($userLdapUsername)][0])
+										//->provideAvatar($user->getJpegPhoto())
+										->setPayload((array)$user['dn']);
+									if (count($foundNickname) > 0) {
 										$registration
-											->suggest('isLDAP', true)
-											->provide('username', $user[strtolower($userLdapUsername)][0])
-											->provideTrustedEmail($user[strtolower($userLdapMail)][0])
-											//->provideAvatar($user->getJpegPhoto())
-											->setPayload((array)$user['dn']);
-										
-									} else {
+											->provide('nickname', implode(" ", $foundNickname));
+									}
+									if (!empty($userLdapMail)) {
 										$registration
-											->suggest('isLDAP', true)
-											->provide('username', $user[strtolower($userLdapUsername)][0])
-											->provide('nickname', implode(" ", $foundNickname))
-											->provideTrustedEmail($user[strtolower($userLdapMail)][0])
-											//->provideAvatar($user->getJpegPhoto())
-											->setPayload((array)$user['dn']);
+											->provideTrustedEmail($user[strtolower($userLdapMail)][0]);
 									}
 								}
 							);
@@ -136,6 +150,13 @@ class LDAPAuthController implements RequestHandlerInterface
 			foreach ($ldapErrors as $ldapError) {
 				if (strpos($ldapError, 'No LDAP query results') !== false) {
 					// Ignore so that all LDAP user search fields is checked
+				} else if (strpos($ldapError, 'ldap_search():') !== false) {
+					//  LDAP search filter is invalid
+					$isFound = true;
+					$contents = [
+						"errors" => array(["status" => 401, "code" => 'search_filter_is_invalid']),
+					];
+					break;
 				} else if (strpos($ldapError, 'ldap_bind():') !== false) {
 					// Cannot communicate to LDAP server correctly check settings
 					$isFound = true;

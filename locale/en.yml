@@ -4,8 +4,11 @@ tituspijean-auth-ldap:
     log_in_with: Log in with {server}
     log_out: => core.ref.log_out
     errors:
-      # Detection for core.views.error.csrf_token_mismatch, otherwise no error prompt will be shown if this doesn't match.
-      core_csrf_token_mismatch: You have been inactive for too long.
+      core_csrf_token_mismatch: => core.views.error.csrf_token_mismatch
+      search_filter_is_invalid: Unable to search filter for {server} due to invalid `LDAP user search fields`, amend extension settings.
+      username_is_invalid: Cannot save {server} user if `LDAP username field` is empty, amend extension settings.
+      username_field_does_not_exist: Cannot find {server} username from `LDAP username field` with `{data}`, amend extension settings.
+      mail_field_does_not_exist: Cannot find {server} mail from `LDAP user mail field` with `{data}`, amend extension settings.
       not_authenticated: Unable to bind {server} due to invalid credential, amend extension settings.
       csrf_token_mismatch: You have been inactive for too long, please refresh the page and try again
       account:
@@ -30,10 +33,10 @@ tituspijean-auth-ldap:
       admin_password: LDAP admin password (leave empty for anonymous binding)
       search_user_fields: LDAP user search fields (comma separated)
       search_nickname_fields: LDAP nickname search fields, enable Nicknames extension (comma separated)
-      user_mail: LDAP user mail field
+      user_mail: LDAP user mail field (leave empty for allowing users to set their own email)
       user_username: LDAP username field
       follow_referrals: Follow referrals to bind to LDAP server
       use_ssl: Use SSL
       use_tls: Use TLS
       onlyUse: Hide Flarum standard login method
-      display_detailed_error: Display detailed LDAP errors for failed login attempts
+      display_detailed_error: Display detailed LDAP errors for failed login attempts 
