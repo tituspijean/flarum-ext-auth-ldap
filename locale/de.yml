@@ -1,7 +1,21 @@
 tituspijean-auth-ldap:
   forum:
+    account_found: Found account in {server}
     log_in_with: "Auf {server} anmelden."
     log_out: => core.ref.log_out
+    errors:
+      # Detection for core.views.error.csrf_token_mismatch, otherwise no error prompt will be shown if this doesn't match.
+      core_csrf_token_mismatch: 'Sie waren zu lange inaktiv.'
+      not_authenticated: Unable to bind {server} due to invalid credential, amend extension settings.
+      csrf_token_mismatch: You have been inactive for too long, please refresh the page and try again
+      account:
+        invalid_inputs: Input fields cannot be empty
+        not_found: Cannot find your account in {server}.
+        incorrect_details: Incorrect password entered.
+        password_expired: Your password has expired.
+        disabled: Your account is disabled, contact your {server} administration.
+        expired: Your account has expired, contact your {server} administration.
+        locked: Your account is locked, contact your {server} administration.
   admin:
     settings:
       title: LDAP Einstellungen
@@ -15,9 +29,11 @@ tituspijean-auth-ldap:
       admin_dn: LDAP Admin bind Name (Für anonymen Bind leerlassen)
       admin_password: LDAP Admin Passwort (Für anonymen Bind leerlassen)
       search_user_fields: LDAP Feld für Benutzererkenning (Komma Trennung)
+      search_nickname_fields: LDAP nickname search fields, enable Nicknames extension (comma separed)
       user_mail: LDAP Mailfeld
       user_username: LDAP Nutzernamenfeld
       follow_referrals: Follow referrals to bind to LDAP server
       use_ssl: Benutze SSL
       use_tls: Benutze TLS
       onlyUse: Verstecke Standard Loginmethode.
+      display_detailed_error: Display detailed LDAP errors for failed login attempts
