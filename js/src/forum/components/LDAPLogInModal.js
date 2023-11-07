@@ -211,6 +211,20 @@ export default class LDAPLogInModal extends Modal {
     }
     if (error.status === 401) {
       switch(code_error) {
+        case 'search_filter_is_invalid':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
+          break;
+        case 'username_field_does_not_exist':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
+          data: error.response.errors[0].data});
+          break;
+        case 'username_is_invalid':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
+          break;
+        case 'mail_field_does_not_exist':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
+          data: error.response.errors[0].data});
+          break;
         case 'not_authenticated':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
