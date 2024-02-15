@@ -3,7 +3,7 @@
   "name": "@tituspijean/auth-ldap",
   "dependencies": {
     "flarum-webpack-config": "^2.0.2",
-    "webpack": "^5.89.0",
+    "webpack": "^5.90.2",
     "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
