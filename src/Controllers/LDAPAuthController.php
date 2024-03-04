@@ -35,21 +35,22 @@ class LDAPAuthController implements RequestHandlerInterface
 		$id = Arr::get($params, 'identification');
 		$password = Arr::get($params, 'password');
 
-		return $this->processDomains($id, $password);
+		if (empty($id) || empty($password)) {
+			return $this->errorResponse("account.invalid_inputs");
+		} else {
+			return $this->processDomains($id, $password);
+		}
 	}
 
 	public function errorResponse(string $translationCode, $addtionalData = [], int $statusCode = 401 ): ResponseInterface {
 		$contents = [
 			"errors" => array(array_merge(["status" => $statusCode, "code" => $translationCode], $addtionalData)),
 		];
-		return new JsonResponse($contents, 401);
+		return new JsonResponse($contents, $statusCode);
 	}
 
 	public function processDomains(string $id, string $password): ResponseInterface
 	{
-		if (empty($id) || empty($password)) {
-			return $this->errorResponse("account.invalid_inputs");
-		}
 		$domains = json_decode($this->settings->get('tituspijean-auth-ldap.domains'), true);
 
 		$domainsCount = $domains? count($domains): 0;
