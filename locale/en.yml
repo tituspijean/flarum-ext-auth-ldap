@@ -47,7 +47,10 @@ tituspijean-auth-ldap:
           base_dn_help: Semicolon separated
           filter: Filter to apply
           filter_help: Optional
-          port: port
+          port: Port
+          port_help: Non SSL (Port 389) or SSL (Port 636).
+          version: LDAP Version
+          version_help: Can only be set to 2 or 3 (3 is default).
           follow_referrals: Follow referrals to bind to LDAP server
           use_ssl: Use SSL
           use_tls: Use TLS

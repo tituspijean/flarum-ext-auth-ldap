@@ -5,6 +5,7 @@ import Button from 'flarum/common/components/Button';
 interface LdapDomain {
   host: string
   port: number
+  version: number
   baseDN: string
   filter: string
   admin: {
@@ -148,14 +149,32 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                       m('tr', [
                         m('td', app.translator.trans(translationPrefix + 'domains.data.port')),
                         m('td', m('input.FormControl', {
-                          type: 'text',
-                          value: rule.port || '',
+                          type: 'number',
+                          value: rule.port || 389,
                           placeholder: '389',
                           onchange: (event: InputEvent) => {
-                              rule.port = (event.target as HTMLInputElement).value;
+                              rule.port = Number((event.target as HTMLInputElement).value);
                               this.setting(ldapDomainsSettingKey)(JSON.stringify(ldapDomains));
                           },
                         })),
+                      ]),
+                      m('tr', [
+                        m('td', { colspan: 2, class: 'helpText'}, app.translator.trans(translationPrefix + 'domains.data.port_help')),
+                      ]),
+                      m('tr', [
+                        m('td', app.translator.trans(translationPrefix + 'domains.data.version')),
+                        m('td', m('input.FormControl', {
+                          type: 'number',
+                          value: rule.version || 3,
+                          placeholder: '3',
+                          onchange: (event: InputEvent) => {
+                            rule.version = Number((event.target as HTMLInputElement).value);
+                              this.setting(ldapDomainsSettingKey)(JSON.stringify(ldapDomains));
+                          },
+                        })),
+                      ]),
+                      m('tr', [
+                        m('td', { colspan: 2, class: 'helpText'}, app.translator.trans(translationPrefix + 'domains.data.version_help')),
                       ]),
                       m('tr', [
                         m('td', app.translator.trans(translationPrefix + 'domains.data.base_dn')),
@@ -373,7 +392,8 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                 onclick: () => {
                   ldapDomains.push({
                     host: '',
-                    port: '',
+                    port: 389,
+                    version: 3,
                     baseDN: '',
                     filter: '',
                     admin: {

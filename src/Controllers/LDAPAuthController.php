@@ -67,6 +67,7 @@ class LDAPAuthController implements RequestHandlerInterface
 				'username' => $domain['admin']['dn'],
 				'password' => $domain['admin']['password'],
 				'port' => intval($domain['port']),
+				'version' => intval($domain['version']),
 				'follow_referrals' => boolval($domain['followReferrals']),
 				'use_ssl' => boolval($domain['useSSL']),
 				'use_tls' => boolval($domain['useTLS']),
