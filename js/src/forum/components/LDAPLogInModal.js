@@ -214,17 +214,6 @@ export default class LDAPLogInModal extends Modal {
         case 'search_filter_is_invalid':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
-        case 'username_field_does_not_exist':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
-          data: error.response.errors[0].data});
-          break;
-        case 'username_is_invalid':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
-          break;
-        case 'mail_field_does_not_exist':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
-          data: error.response.errors[0].data});
-          break;
         case 'not_authenticated':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
@@ -248,6 +237,33 @@ export default class LDAPLogInModal extends Modal {
           break;
         case 'account.locked':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
+          break;
+        case 'domains.no_domains':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error);
+          break;
+        case 'domains.empty_host':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {domain_index: error.response.errors[0].domain_index});
+          break;
+        case 'domains.empty_base_dn':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {domain_index: error.response.errors[0].domain_index});
+          break;
+        case 'domains.empty_user_username':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
+          domain_index: error.response.errors[0].domain_index});
+          break;
+        case 'domains.empty_search_field':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
+          domain_index: error.response.errors[0].domain_index});
+          break;
+        case 'domains.username_field_does_not_exist':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
+          data: error.response.errors[0].data,
+          domain_index: error.response.errors[0].domain_index});
+          break;
+        case 'domains.mail_field_does_not_exist':
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
+          data: error.response.errors[0].data,
+          domain_index: error.response.errors[0].domain_index});
           break;
         default:
           

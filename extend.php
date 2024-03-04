@@ -3,8 +3,17 @@
 use Flarum\Extend;
 use Flarum\Foundation\Application;
 use Illuminate\Events\Dispatcher;
+use Flarum\Frontend\Document;
 
 return [
+  (new Extend\Frontend('admin'))
+    ->content(function (Document $document) {
+      $document->head[] = '
+        <script src="/assets/extensions/tituspijean-auth-ldap/jquery.min.js"></script>
+        <script src="/assets/extensions/tituspijean-auth-ldap/select2.min.js"></script>
+        <link href="/assets/extensions/tituspijean-auth-ldap/select2.min.css" rel="stylesheet">
+      ';
+    }),
   (new Extend\Locales(__DIR__ . '/locale')),
   (new Extend\Frontend('admin'))
     ->js(__DIR__.'/js/dist/admin.js'),
