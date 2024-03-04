@@ -28,11 +28,14 @@ const ldapDomainsSettingKey = settingsPrefix+'domains';
 const ldapNicknameAvailableFields = [
   // Full Name
   'cn',
-  'commonname',
-  'displayname',
+  'commonName',
+  'displayName',
   'name',
+  // Title
+  'title',
+  'personalTitle',
   // First Name
-  'givenname',
+  'givenName',
   // Middle Initial
   'initials',
   // Last Name
@@ -44,24 +47,24 @@ const ldapNicknameAvailableFields = [
 const ldapEmailAvailableFields = [
   // Email Address
   'mail',
-  'rfc822mailbox',
+  'rfc822Mailbox ',
 ];
 const ldapUsernameAvailableFields = [
   // User ID
-  'mailnickname',
-  'samaccountname',
+  'mailNickname',
+  'sAMAccountName',
   'uid',
-  'userprincipalname',
+  'userPrincipalName',
 ];
 const ldapSearchUsernameAvailableFields = [
   // User ID
-  'mailnickname',
-  'samaccountname',
+  'mailNickname',
+  'sAMAccountName',
   'uid',
-  'userprincipalname',
+  'userPrincipalName',
   // Email Address
   'mail',
-  'rfc822mailbox',
+  'rfc822Mailbox ',
 ];
 
 const _sort = (list = [], selected = []) => {
