@@ -82,7 +82,7 @@ class LDAPAuthController implements RequestHandlerInterface
 				return new JsonResponse($contents, 401);
 			} else {
 				// For use with Nicknames extension enabled
-				$searchNicknameFields = $domain['user']['nicknames'];
+				$searchNicknameFields = $domain['user']['nicknameFields'];
 	
 				$searchBaseDNs = $domain['baseDN'];
 				if (empty($searchBaseDNs)) {
@@ -90,7 +90,7 @@ class LDAPAuthController implements RequestHandlerInterface
 						"errors" => array(["status" => 401, "code" => "domains.empty_base_dn", "domain_index" => $index+1]),
 					];
 					return new JsonResponse($contents, 401);
-				} 
+				}
 				$filter = $domain['filter'];
 				$searchUserFields = $domain['searchFields'];
 				if (empty($searchUserFields)) {
@@ -98,7 +98,7 @@ class LDAPAuthController implements RequestHandlerInterface
 						"errors" => array(["status" => 401, "code" => "domains.empty_search_field", "domain_index" => $index+1]),
 					];
 					return new JsonResponse($contents, 401);
-				} 
+				}
 				$userLdapMail = $domain['user']['mail'];
 
 				$connection = new Connection($config);

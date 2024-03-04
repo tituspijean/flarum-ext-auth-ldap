@@ -60,7 +60,7 @@ tituspijean-auth-ldap:
           user_username: Assign Username field
           user_mail: Assign Email field
           user_mail_help: Leave empty for allowing User's to set their own email during registation
-          user_nickname: Assign Nickname with fields
-          user_nickname_help: Nickname extension must be enabled, compile Nickname with multiple LDAP fields use comma to separate. For example "givenname,sn" will assign "[First Name] [Last Name]" as Nickname
+          user_nickname_fields: Assign Nickname with fields
+          user_nickname_fields_help: Nickname extension must be enabled, compile Nickname with multiple LDAP fields use comma to separate. For example "givenname,sn" will assign "[First Name] [Last Name]" as Nickname
       onlyUse: Hide Flarum standard login method
       display_detailed_error: Display detailed LDAP errors for failed login attempts 

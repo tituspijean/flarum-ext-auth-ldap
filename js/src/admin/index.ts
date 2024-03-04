@@ -15,7 +15,7 @@ interface LdapDomain {
   user: {
     username: string
     mail: string
-    nicknames: string[]
+    nicknameFields: string[]
   }
   followReferrals: boolean
   useSSL: boolean
@@ -337,7 +337,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                         m('td', { colspan: 2, class: 'helpText'}, app.translator.trans(translationPrefix + 'domains.data.user_mail_help')),
                       ]),
                       m('tr', [
-                        m('td', app.translator.trans(translationPrefix + 'domains.data.user_nickname')),
+                        m('td', app.translator.trans(translationPrefix + 'domains.data.user_nickname_fields')),
                         m('td',
                           m('select', {
                             oncreate: ({dom}) => $(dom).select2({ width: '100%', multiple: true }).on("change", function() {
@@ -347,14 +347,14 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                               var option = $(e.target).children('[value='+id+']');
                               option.detach();
                               $(e.target).append(option).change();
-                            }).val(rule.user.nicknames || []).trigger("change"),
+                            }).val(rule.user.nicknameFields || []).trigger("change"),
                             onedit: (event: InputEvent) => {
-                              rule.user.nicknames = event.detail;
+                              rule.user.nicknameFields = event.detail;
                               this.setting(ldapDomainsSettingKey)(JSON.stringify(ldapDomains));
                             }
                           },
                             [
-                              _sort(ldapNicknameAvailableFields, rule.user.nicknames).map(field => [
+                              _sort(ldapNicknameAvailableFields, rule.user.nicknameFields).map(field => [
                                 m('option', { value: field }, field)
                               ])
                             ]
@@ -362,7 +362,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                         )
                       ]),
                       m('tr', [
-                        m('td', { colspan: 2, class: 'helpText'}, app.translator.trans(translationPrefix + 'domains.data.user_nickname_help')),
+                        m('td', { colspan: 2, class: 'helpText'}, app.translator.trans(translationPrefix + 'domains.data.user_nickname_fields_help')),
                       ])
                     ])
                   ])
@@ -384,7 +384,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                     user: {
                       username: '',
                       mail: '',
-                      nicknames: [],
+                      nicknameFields: [],
                     },
                     followReferrals: false,
                     useSSL: false,
