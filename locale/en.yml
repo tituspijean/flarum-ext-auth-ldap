@@ -5,12 +5,17 @@ tituspijean-auth-ldap:
     log_out: => core.ref.log_out
     errors:
       core_csrf_token_mismatch: => core.views.error.csrf_token_mismatch
-      search_filter_is_invalid: Unable to search filter for {server} due to invalid `LDAP user search fields`, amend extension settings.
-      username_is_invalid: Cannot save {server} user if `LDAP username field` is empty, amend extension settings.
-      username_field_does_not_exist: Cannot find {server} username from `LDAP username field` with `{data}`, amend extension settings.
-      mail_field_does_not_exist: Cannot find {server} mail from `LDAP user mail field` with `{data}`, amend extension settings.
+      search_filter_is_invalid: Unable to search filter for {server} due to invalid `LDAP search fields`, amend extension settings.
       not_authenticated: Unable to bind {server} due to invalid credential, amend extension settings.
       csrf_token_mismatch: You have been inactive for too long, please refresh the page and try again
+      domains:
+        no_domains: Admin settings has no domains set, amend extension settings.
+        empty_host: Domain {domain_index} has no Domains or server IP addresses set, amend extension settings.
+        empty_base_dn: Domain {domain_index} has no Base DNs set, amend extension settings.
+        empty_user_username: Domain {domain_index} has Flarum User Profile - 'Username field' empty, amend extension settings.
+        empty_search_field: Domain {domain_index} has LDAP Account Search - 'Search field' empty, amend extension settings.
+        username_field_does_not_exist: Domain {domain_index} cannot find username for Flarum User Profile - `Username field` with `{data}`, amend extension settings.
+        mail_field_does_not_exist: Domain {domain_index} cannot find mail for Flarum User Profile - `Email field` with `{data}`, amend extension settings.
       account:
         invalid_inputs: Input fields cannot be empty
         not_found: Cannot find your account in {server}.
@@ -23,20 +28,39 @@ tituspijean-auth-ldap:
     settings:
       title: LDAP settings
       method_name: LDAP server name (will appear after "Login with")
-      hosts: LDAP domains or server IP adresses (comma separated)
-      base_dn: Base DNs (semicolon separated)
-      filter: Filter to apply (optional)
-      port: port
-      account_prefix: Account prefix
-      account_suffix: Account suffix
-      admin_dn: LDAP admin distinguished name (leave empty for anonymous binding)
-      admin_password: LDAP admin password (leave empty for anonymous binding)
-      search_user_fields: LDAP user search fields (comma separated)
-      search_nickname_fields: LDAP nickname search fields, enable Nicknames extension (comma separated)
-      user_mail: LDAP user mail field (leave empty for allowing users to set their own email)
-      user_username: LDAP username field
-      follow_referrals: Follow referrals to bind to LDAP server
-      use_ssl: Use SSL
-      use_tls: Use TLS
+      domains:
+        title: LDAP Domains
+        description:  Enter all available LDAP domains for Flarum to use for login
+        add: Add Domain
+        banner: Domain {index}
+        header:
+          server: LDAP Server Settings
+          admin: LDAP Admin
+          search_fields: LDAP Account Search
+          search_fields_description: Create a list of LDAP fields to compare with the User's provided Username.
+          flarum: Flarum User Profile
+          flarum_description: When the LDAP account has been found, you can assign the corresponding fields to the Flarum User Profile at registation.
+        data:
+          host: Domains or server IP addresses
+          host_help: Comma separated
+          base_dn: Base DNs
+          base_dn_help: Semicolon separated
+          filter: Filter to apply
+          filter_help: Optional
+          port: port
+          follow_referrals: Follow referrals to bind to LDAP server
+          use_ssl: Use SSL
+          use_tls: Use TLS
+          admin_dn: Distinguished name (DNs)
+          admin_dn_help: Leave empty for anonymous binding
+          admin_password: Password
+          admin_password_help: Leave empty for anonymous binding
+          search_user_fields: Search fields
+          search_user_fields_help: Must use commas for multiple search fields, for example "mail" will only allow email and "uid,mail" will allow either email or username.
+          user_username: Assign Username field
+          user_mail: Assign Email field
+          user_mail_help: Leave empty for allowing User's to set their own email during registation
+          user_nickname: Assign Nickname with fields
+          user_nickname_help: Nickname extension must be enabled, compile Nickname with multiple LDAP fields use comma to separate. For example "givenname,sn" will assign "[First Name] [Last Name]" as Nickname
       onlyUse: Hide Flarum standard login method
       display_detailed_error: Display detailed LDAP errors for failed login attempts 
