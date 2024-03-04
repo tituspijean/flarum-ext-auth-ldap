@@ -38,31 +38,29 @@ class LDAPAuthController implements RequestHandlerInterface
 		return $this->processDomains($id, $password);
 	}
 
+	public function errorResponse(string $translationCode, $addtionalData = [], int $statusCode = 401 ): ResponseInterface {
+		$contents = [
+			"errors" => array(array_merge(["status" => $statusCode, "code" => $translationCode], $addtionalData)),
+		];
+		return new JsonResponse($contents, 401);
+	}
+
 	public function processDomains(string $id, string $password): ResponseInterface
 	{
 		if (empty($id) || empty($password)) {
-			$contents = [
-				"errors" => array(["status" => 401, "code" => "account.invalid_inputs"]),
-			];
-			return new JsonResponse($contents, 401);
+			return $this->errorResponse("account.invalid_inputs");
 		}
 		$domains = json_decode($this->settings->get('tituspijean-auth-ldap.domains'), true);
 
 		$domainsCount = $domains? count($domains): 0;
 		if ($domainsCount == 0) {
-			$contents = [
-				"errors" => array(["status" => 401, "code" => "domains.no_domains"]),
-			];
-			return new JsonResponse($contents, 401);
+			return $this->errorResponse("domains.no_domains");
 		} 
 		$ldapErrors = [];
 		for ($index = 0; $index < $domainsCount; $index++) {
 			$domain = $domains[$index];
 			if (empty($domain['host'])) {
-				$contents = [
-					"errors" => array(["status" => 401, "code" => "domains.empty_host", "domain_index" => $index+1])
-				];
-				return new JsonResponse($contents, 401);
+				return $this->errorResponse("domains.empty_host", ["domain_index" => $index+1]);
 			}
 			$config = [
 				'hosts' => explode(',', $domain['host']),
@@ -76,28 +74,19 @@ class LDAPAuthController implements RequestHandlerInterface
 			];
 			$userLdapUsername = $domain['user']['username'];
 			if (empty($userLdapUsername)) {
-				$contents = [
-					"errors" => array(["status" => 401, "code" => "domains.empty_user_username", "domain_index" => $index+1]),
-				];
-				return new JsonResponse($contents, 401);
+				return $this->errorResponse("domains.empty_user_username", ["domain_index" => $index+1]);
 			} else {
 				// For use with Nicknames extension enabled
 				$searchNicknameFields = $domain['user']['nicknameFields'];
 	
 				$searchBaseDNs = $domain['baseDN'];
 				if (empty($searchBaseDNs)) {
-					$contents = [
-						"errors" => array(["status" => 401, "code" => "domains.empty_base_dn", "domain_index" => $index+1]),
-					];
-					return new JsonResponse($contents, 401);
+					return $this->errorResponse("domains.empty_base_dn", ["domain_index" => $index+1]);
 				}
 				$filter = $domain['filter'];
 				$searchUserFields = $domain['searchFields'];
 				if (empty($searchUserFields)) {
-					$contents = [
-						"errors" => array(["status" => 401, "code" => "domains.empty_search_field", "domain_index" => $index+1]),
-					];
-					return new JsonResponse($contents, 401);
+					return $this->errorResponse("domains.empty_search_field", ["domain_index" => $index+1]);
 				}
 				$userLdapMail = $domain['user']['mail'];
 
@@ -122,16 +111,10 @@ class LDAPAuthController implements RequestHandlerInterface
 							if ($connection->auth()->attempt($user['dn'], $password, $bindAsUser = true)) {
 								if (!array_key_exists(strtolower($userLdapUsername), $user)) {
 									// Prevent response showing exception for null username field
-									$contents = [
-										"errors" => array(["status" => 401, "code" => "domains.username_field_does_not_exist", "data" => $userLdapUsername], "domain_index" => $index+1),
-									];
-									return new JsonResponse($contents, 401);
+									return $this->errorResponse("domains.username_field_does_not_exist", ["data" => $userLdapUsername, "domain_index" => $index+1]);
 								}
 								if (!empty($userLdapMail) && !array_key_exists(strtolower($userLdapMail), $user)) {
-									$contents = [
-										"errors" => array(["status" => 401, "code" => "domains.mail_field_does_not_exist", "data" => $userLdapMail, "domain_index" => $index+1]),
-									];
-									return new JsonResponse($contents, 401);
+									return $this->errorResponse("domains.mail_field_does_not_exist", ["data" => $userLdapMail, "domain_index" => $index+1]);
 								}
 								return $this->response->make(
 									'ldap',
