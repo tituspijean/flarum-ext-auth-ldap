@@ -46,7 +46,7 @@ tituspijean-auth-ldap:
           base_dn: Base DNs
           base_dn_help: Semicolon separated
           filter: Filter to apply
-          filter_help: Optional
+          filter_help: Optional, must exclude 'Search fields' into the filter. For example inputting filter as '(objectclass=user)' and selecting 'uid' within 'Search fields' will amend the filter as '(&(objectclass=user)(uid=[User's Input]))"
           port: Port
           port_help: Non SSL (Port 389) or SSL (Port 636).
           version: LDAP Version
