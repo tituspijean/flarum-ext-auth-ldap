@@ -41,8 +41,6 @@ const ldapNicknameAvailableFields = [
   // Last Name
   'sn',
   'surname',
-  // Title
-  'title',
 ];
 const ldapEmailAvailableFields = [
   // Email Address
@@ -285,7 +283,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                         m('td', app.translator.trans(translationPrefix + 'domains.data.search_user_fields')),
                         m('td',
                           m('select', {
-                            oncreate: ({dom}) => $(dom).select2({ width: '100%', multiple: true }).on("change", function() {
+                            oncreate: ({dom}) => $(dom).select2({ width: '100%', multiple: true, data: _sort(ldapSearchUsernameAvailableFields, rule.searchFields)}).on("change", function() {
                               this.dispatchEvent(new CustomEvent('edit', {"detail": $(this).val()}));
                             }).on('select2:select', function(e){
                               var id = e.params.data.id;
@@ -297,11 +295,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                               rule.searchFields = event.detail;
                               this.setting(ldapDomainsSettingKey)(JSON.stringify(ldapDomains));
                             }
-                          }, [
-                            _sort(ldapSearchUsernameAvailableFields, rule.searchFields).map(field => [
-                              m('option', { value: field }, field)
-                            ])
-                          ])
+                          })
                         )
                       ]),
                       m('tr', [
@@ -362,7 +356,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                         m('td', app.translator.trans(translationPrefix + 'domains.data.user_nickname_fields')),
                         m('td',
                           m('select', {
-                            oncreate: ({dom}) => $(dom).select2({ width: '100%', multiple: true }).on("change", function() {
+                            oncreate: ({dom}) => $(dom).select2({ width: '100%', multiple: true, data: _sort(ldapNicknameAvailableFields, rule.user.nicknameFields)}).on("change", function() {
                               this.dispatchEvent(new CustomEvent('edit', {"detail": $(this).val()}));
                             }).on('select2:select', function(e){
                               var id = e.params.data.id;
@@ -374,13 +368,7 @@ app.initializers.add('tituspijean-auth-ldap', function(app) {
                               rule.user.nicknameFields = event.detail;
                               this.setting(ldapDomainsSettingKey)(JSON.stringify(ldapDomains));
                             }
-                          },
-                            [
-                              _sort(ldapNicknameAvailableFields, rule.user.nicknameFields).map(field => [
-                                m('option', { value: field }, field)
-                              ])
-                            ]
-                          )
+                          })
                         )
                       ]),
                       m('tr', [
