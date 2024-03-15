@@ -1,23 +1,69 @@
 tituspijean-auth-ldap:
   forum:
-    log_in_with: "Log in with {server}"
+    account_found: Found account in {server}
+    log_in_with: Log in with {server}
     log_out: => core.ref.log_out
+    errors:
+      core_csrf_token_mismatch: => core.views.error.csrf_token_mismatch
+      search_filter_is_invalid: Unable to search filter for {server} due to invalid `LDAP search fields`, amend extension settings.
+      not_authenticated: Unable to bind {server} due to invalid credential, amend extension settings.
+      csrf_token_mismatch: You have been inactive for too long, please refresh the page and try again
+      domains:
+        no_domains: Admin settings has no domains set, amend extension settings.
+        empty_host: Domain {domain_index} has no Domains or server IP addresses set, amend extension settings.
+        empty_base_dn: Domain {domain_index} has no Base DNs set, amend extension settings.
+        empty_user_username: Domain {domain_index} has Flarum User Profile - 'Username field' empty, amend extension settings.
+        empty_search_field: Domain {domain_index} has LDAP Account Search - 'Search field' empty, amend extension settings.
+        username_field_does_not_exist: Domain {domain_index} cannot find username for Flarum User Profile - `Username field` with `{data}`, amend extension settings.
+        mail_field_does_not_exist: Domain {domain_index} cannot find mail for Flarum User Profile - `Email field` with `{data}`, amend extension settings.
+      account:
+        invalid_inputs: Input fields cannot be empty
+        not_found: Cannot find your account in {server}.
+        incorrect_details: Incorrect password entered.
+        password_expired: Your password has expired.
+        disabled: Your account is disabled, contact your {server} administration.
+        expired: Your account has expired, contact your {server} administration.
+        locked: Your account is locked, contact your {server} administration.
   admin:
     settings:
       title: LDAP settings
       method_name: LDAP server name (will appear after "Login with")
-      hosts: LDAP domains or server IP adresses (comma separated)
-      base_dn: Base DNs (semicolon separated)
-      filter: Filter to apply (optional)
-      port: port
-      account_prefix: Account prefix
-      account_suffix: Account suffix
-      admin_dn: LDAP admin distinguished name (leave empty for anonymous binding)
-      admin_password: LDAP admin password (leave empty for anonymous binding)
-      search_user_fields: LDAP user search fields (comma separed)
-      user_mail: LDAP user mail field
-      user_username: LDAP username field
-      follow_referrals: Follow referrals to bind to LDAP server
-      use_ssl: Use SSL
-      use_tls: Use TLS
+      domains:
+        title: LDAP Domains
+        description:  Enter all available LDAP domains for Flarum to use for login
+        add: Add Domain
+        banner: Domain {index}
+        header:
+          server: LDAP Server Settings
+          admin: LDAP Admin
+          search_fields: LDAP Account Search
+          search_fields_description: Create a list of LDAP fields to compare with the User's provided Username.
+          flarum: Flarum User Profile
+          flarum_description: When the LDAP account has been found, you can assign the corresponding fields to the Flarum User Profile at registation.
+        data:
+          host: Domains or server IP addresses
+          host_help: Comma separated
+          base_dn: Base DNs
+          base_dn_help: Semicolon separated
+          filter: Filter to apply
+          filter_help: Optional, must exclude 'Search fields' into the filter. For example inputting filter as '(objectclass=user)' and selecting 'uid' within 'Search fields' will amend the filter as '(&(objectclass=user)(uid=[User's Input]))"
+          port: Port
+          port_help: Non SSL (Port 389) or SSL (Port 636).
+          version: LDAP Version
+          version_help: Can only be set to 2 or 3 (3 is default).
+          follow_referrals: Follow referrals to bind to LDAP server
+          use_ssl: Use SSL
+          use_tls: Use TLS
+          admin_dn: Distinguished name (DNs)
+          admin_dn_help: Leave empty for anonymous binding
+          admin_password: Password
+          admin_password_help: Leave empty for anonymous binding
+          search_user_fields: Search fields
+          search_user_fields_help: Select multiple search fields using the dropdown options, for example selecting "mail" will only allow email, while "uid,mail" will allow either email or username.
+          user_username: Assign Username field
+          user_mail: Assign Email field
+          user_mail_help: Leave empty for allowing User's to set their own email during registation
+          user_nickname_fields: Assign Nickname with fields
+          user_nickname_fields_help: Nickname extension must be enabled, compile the Nickname with multiple LDAP fields using the dropdown options. For example selecting "givenname,sn" will assign "[First Name] [Last Name]" as their Nickname
       onlyUse: Hide Flarum standard login method
+      display_detailed_error: Display detailed LDAP errors for failed login attempts 

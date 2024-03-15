@@ -1,7 +1,24 @@
 tituspijean-auth-ldap:
   forum:
+    account_found: Found account in {server}
     log_in_with: "Connexion via {server}"
     log_out: => core.ref.log_out
+    errors:
+      core_csrf_token_mismatch: => core.views.error.csrf_token_mismatch
+      search_filter_is_invalid: Unable to search filter for {server} due to invalid `Champs où rechercher l’utilisateur`, amend extension settings.
+      username_is_invalid: Cannot save {server} user if `Champ pour le nom d’utilisateur` is empty, amend extension settings.
+      username_field_does_not_exist: Cannot find {server} username from `Champ pour le nom d’utilisateur` with `{data}`, amend extension settings.
+      mail_field_does_not_exist: Cannot find {server} mail from `Champ pour l’email d’utilisateur` with `{data}`, amend extension settings.
+      not_authenticated: Unable to bind {server} due to invalid credential, amend extension settings.
+      csrf_token_mismatch: You have been inactive for too long, please refresh the page and try again
+      account:
+        invalid_inputs: Input fields cannot be empty
+        not_found: Cannot find your account in {server}.
+        incorrect_details: Incorrect password entered.
+        password_expired: Your password has expired.
+        disabled: Your account is disabled, contact your {server} administration.
+        expired: Your account has expired, contact your {server} administration.
+        locked: Your account is locked, contact your {server} administration.
   admin:
     settings:
       title: Paramètres LDAP
@@ -15,9 +32,11 @@ tituspijean-auth-ldap:
       admin_dn: Nom unique (DN) de l’administrateur LDAP (laisser vide pour se connecter anonymement)
       admin_password: Mot de passe de l’administrateur (laisser vide pour se connecter anonymement)
       search_user_fields: Champs où rechercher l’utilisateur (séparés par des virgules)
-      user_mail: Champ pour l’email d’utilisateur
+      search_nickname_fields: LDAP nickname search fields, enable Nicknames extension (comma separated)
+      user_mail: Champ pour l’email d’utilisateur (leave empty for allowing users to set their own email)
       user_username: Champ pour le nom d’utilisateur
       follow_referrals: Suivre les renvois pour se connecter au serveur LDAP
       use_ssl: Utiliser SSL
       use_tls: Utiliser TLS
       onlyUse: Cacher le système de connexion standard de Flarum
+      display_detailed_error: Display detailed LDAP errors for failed login attempts 
