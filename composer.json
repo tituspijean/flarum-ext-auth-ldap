@@ -1,34 +1,57 @@
 {
-	"name": "tituspijean/flarum-ext-auth-ldap",
-	"description": "Allow users to log in through LDAP.",
-	"type": "flarum-extension",
-	"keywords": ["authentication"],
-	"license": "MIT",
-	"authors": [{
-		"name": "tituspijean",
-		"email": "tituspijean@outlook.com"
-	}],
-	"support": {
-		"issues": "https://github.com/tituspijean/flarum-ext-auth-ldap/issues",
-		"source": "https://github.com/tituspijean/flarum-ext-auth-ldap"
-	},
-	"require": {
-		"flarum/core": "^1.0",
-		"directorytree/ldaprecord": "v2.11.1"
-	},
-	"autoload": {
-		"psr-4": {
-			"TitusPiJean\\Flarum\\Auth\\LDAP\\": "src/"
-		}
-	},
-	"extra": {
-		"flarum-extension": {
-			"title": "LDAP login",
-			"icon": {
-				"name": "far fa-address-book",
-				"backgroundColor": "#b15959",
-				"color": "#fff"
-			}
-		}
-	}
+    "name": "tituspijean/flarum-ext-auth-ldap",
+    "description": "Allow users to log in through LDAP.",
+    "type": "flarum-extension",
+    "keywords": [
+        "flarum",
+        "authentication",
+        "ldap"
+    ],
+    "license": "MIT",
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://donate.yunohost.org"
+        },
+        {
+            "type": "other",
+            "url": "https://www.buymeacoffee.com/yippy"
+        }
+    ],
+    "authors": [
+        {
+            "name": "tituspijean",
+            "email": "tituspijean@yunohost.org",
+            "role": "Developer"
+        },
+        {
+            "name": "Yippy",
+            "email": "yippym@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/tituspijean/flarum-ext-auth-ldap/issues",
+        "source": "https://github.com/tituspijean/flarum-ext-auth-ldap",
+        "forum": "https://discuss.flarum.org/d/9515-ldap-login-extension"
+    },
+    "require": {
+        "flarum/core": "^2.0",
+        "directorytree/ldaprecord": "^3.8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "tituspijean\\Flarum\\Auth\\LDAP\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "LDAP login",
+            "icon": {
+                "name": "far fa-address-book",
+                "backgroundColor": "#b15959",
+                "color": "#fff"
+            }
+        }
+    }
 }
