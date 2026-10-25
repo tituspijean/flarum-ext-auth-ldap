@@ -5,8 +5,8 @@ import extractText from 'flarum/common/utils/extractText';
 import ItemList from 'flarum/common/utils/ItemList';
 import Stream from 'flarum/common/utils/Stream';
 
-const translationPrefix = 'yippy-auth-ldap.forum.';
-const translationErrorsPrefix = 'yippy-auth-ldap.forum.errors.';
+const translationPrefix = 'tituspijean-auth-ldap.forum.';
+const translationErrorsPrefix = 'tituspijean-auth-ldap.forum.errors.';
 
 export default class LDAPLogInModal extends FormModal {
   oninit(vnode) {
@@ -39,7 +39,7 @@ export default class LDAPLogInModal extends FormModal {
   }
 
   title() {
-    return app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+    return app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
   }
 
   content() {
@@ -209,16 +209,16 @@ export default class LDAPLogInModal extends FormModal {
     if (error.status === 401) {
       switch(code_error) {
         case 'search_filter_is_invalid':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
         case 'not_authenticated':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
         case 'account.invalid_inputs':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error);
           break;
         case 'account.not_found':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
         case 'account.incorrect_details':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error);
@@ -227,13 +227,13 @@ export default class LDAPLogInModal extends FormModal {
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error);
           break;
         case 'account.disabled':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
         case 'account.expired':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
         case 'account.locked':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
           break;
         case 'domains.no_domains':
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error);
@@ -245,25 +245,25 @@ export default class LDAPLogInModal extends FormModal {
           error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {domain_index: error.response.errors[0].domain_index});
           break;
         case 'domains.empty_user_username':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name'),
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
           domain_index: error.response.errors[0].domain_index});
           break;
         case 'domains.empty_search_field':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name'),
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
           domain_index: error.response.errors[0].domain_index});
           break;
         case 'domains.username_field_does_not_exist':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name'),
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
           data: error.response.errors[0].data,
           domain_index: error.response.errors[0].domain_index});
           break;
         case 'domains.mail_field_does_not_exist':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name'),
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
           data: error.response.errors[0].data,
           domain_index: error.response.errors[0].domain_index});
           break;
         case 'domains.connection_failed':
-          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('yippy-auth-ldap.method_name'),
+          error.alert.content = app.translator.trans(translationErrorsPrefix + code_error, {server: app.forum.attribute('tituspijean-auth-ldap.method_name'),
           data: error.response.errors[0].data,
           domain_index: error.response.errors[0].domain_index});
           break;

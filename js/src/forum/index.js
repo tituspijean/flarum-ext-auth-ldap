@@ -10,9 +10,9 @@ import Stream from 'flarum/common/utils/Stream';
 
 import LDAPLogInModal from "./components/LDAPLogInModal";
 
-const translationPrefix = 'yippy-auth-ldap.forum.';
+const translationPrefix = 'tituspijean-auth-ldap.forum.';
 
-app.initializers.add('yippy-auth-ldap', () => {
+app.initializers.add('tituspijean-auth-ldap', () => {
   extend(HeaderSecondary.prototype, 'items', function (items) {
     if (items.has('logIn')) {
       items.add('logInLDAP',
@@ -21,7 +21,7 @@ app.initializers.add('yippy-auth-ldap', () => {
           className: 'Button Button--link',
           onclick: () => app.modal.show(LDAPLogInModal)
         },
-        app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('yippy-auth-ldap.method_name')})
+        app.translator.trans(translationPrefix + 'log_in_with', {server: app.forum.attribute('tituspijean-auth-ldap.method_name')})
       ),
       0
       );
@@ -29,7 +29,7 @@ app.initializers.add('yippy-auth-ldap', () => {
   });
 
   extend(HeaderSecondary.prototype, 'items', function (items) {
-    if (app.forum.attribute('yippy-auth-ldap.onlyUse')) {
+    if (app.forum.attribute('tituspijean-auth-ldap.onlyUse')) {
       if (items.has('signUp')) {
         items.remove('signUp');
       }
@@ -40,7 +40,7 @@ app.initializers.add('yippy-auth-ldap', () => {
   });
 
   extend("flarum/forum/components/LogInModal", 'oninit', function () {
-    if (app.forum.attribute('yippy-auth-ldap.onlyUse')) {
+    if (app.forum.attribute('tituspijean-auth-ldap.onlyUse')) {
       LogInModal.prototype.content = LDAPLogInModal.prototype.content
       LogInModal.prototype.title = LDAPLogInModal.prototype.title
       LogInModal.prototype.body = LDAPLogInModal.prototype.body
@@ -55,7 +55,7 @@ app.initializers.add('yippy-auth-ldap', () => {
   extend('flarum/forum/components/SignUpModal', 'oninit', function () {
     this.title = function() {
       if (this.attrs.isLDAP) {
-        return app.translator.trans(translationPrefix + 'account_found', {server: app.forum.attribute('yippy-auth-ldap.method_name')});
+        return app.translator.trans(translationPrefix + 'account_found', {server: app.forum.attribute('tituspijean-auth-ldap.method_name')});
       } else {
         return app.translator.trans('core.forum.sign_up.title');
       }

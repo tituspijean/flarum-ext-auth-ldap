@@ -1,5 +1,5 @@
 <?php
-namespace Yippy\Flarum\Auth\LDAP\Controllers;
+namespace tituspijean\Flarum\Auth\LDAP\Controllers;
 
 use Exception;
 use Illuminate\Support\Arr;
@@ -29,7 +29,7 @@ class LDAPAuthController implements RequestHandlerInterface
 
 	public function handle(Request $request): ResponseInterface
 	{
-		$settingsPrefix = 'yippy-auth-ldap.';
+		$settingsPrefix = 'tituspijean-auth-ldap.';
 
 		$body = $request->getParsedBody();
 		$params = Arr::only($body, ['identification', 'password']);
@@ -52,7 +52,7 @@ class LDAPAuthController implements RequestHandlerInterface
 
 	public function processDomains(string $id, string $password): ResponseInterface
 	{
-		$domains = json_decode($this->settings->get('yippy-auth-ldap.domains'), true);
+		$domains = json_decode($this->settings->get('tituspijean-auth-ldap.domains'), true);
 
 		$domainsCount = $domains? count($domains): 0;
 		if ($domainsCount == 0) {

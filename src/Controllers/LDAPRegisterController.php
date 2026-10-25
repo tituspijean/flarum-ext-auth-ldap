@@ -1,5 +1,5 @@
 <?php
-namespace Yippy\Flarum\Auth\LDAP\Controllers;
+namespace tituspijean\Flarum\Auth\LDAP\Controllers;
 
 use Flarum\Api\Client;
 use Flarum\Http\RememberAccessToken;

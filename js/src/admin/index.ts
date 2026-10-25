@@ -38,8 +38,8 @@ interface PermissionGroup {
   namePlural: string
   nameSingular: string
 }
-const settingsPrefix = 'yippy-auth-ldap';
-const translationPrefix = 'yippy-auth-ldap.admin.settings.';
+const settingsPrefix = 'tituspijean-auth-ldap';
+const translationPrefix = 'tituspijean-auth-ldap.admin.settings.';
 const ldapDomainsSettingKey = settingsPrefix+'.domains';
 const ldapNicknameAvailableFields = [
   // Full Name

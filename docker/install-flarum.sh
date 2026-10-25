@@ -7,4 +7,4 @@ composer config minimum-stability dev
 
 echo "Installing LDAP extension ..."
 composer config repositories.repo-name path /var/www
-composer require yippy/flarum-ext-auth-ldap
+composer require tituspijean/flarum-ext-auth-ldap
