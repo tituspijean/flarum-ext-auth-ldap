@@ -4,7 +4,7 @@
   "dependencies": {
     "flarum-webpack-config": "^2.0.2",
     "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^7.2.3"
   },
   "devDependencies": {
     "flarum-tsconfig": "^1.0.2"
