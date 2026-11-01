@@ -1,3 +1,4 @@
+import app from 'flarum/forum/app';
 import FormModal from 'flarum/common/components/FormModal';
 import Button from 'flarum/common/components/Button';
 import LogInButtons from 'flarum/forum/components/LogInButtons';
@@ -152,7 +153,7 @@ export default class LDAPLogInModal extends FormModal {
     const password = this.password();
     const remember = this.remember();
     const csrfToken = app.session.csrfToken;
-    const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
+    const returnTo = window.location.pathname + window.location.search;
     const data = {
       identification,
       password,
@@ -177,39 +178,6 @@ export default class LDAPLogInModal extends FormModal {
     $('input[name="identification"]').prop("disabled", false );
     $('input[name="password"]').prop("disabled", false );
     $('button[name="submit_log_in"]').prop("disabled", false );
-
-    console.log('modifyResponse called with:', response); 
-
-/*    if (response.indexOf('app.authenticationComplete') >= 0) {
-      console.log('Found authenticationComplete in response');
-      response = response.replace( /(^.*\{|\}.*$)/g, '' );
-      var matches = response.match(/[^{\}]+(?=})/g);
-      console.log('Parsed matches:', matches);
-      if (matches.length > 0) {
-        const userData = JSON.parse("{"+matches[0]+"}");
-        console.log('Calling authenticationComplete with:', userData);
-        app.authenticationComplete(userData);
-        console.log('Modal before close:', app.modal);
-        app.modal.close();
-      }
-    } else if (response.indexOf(app.translator.trans(translationErrorsPrefix+'core_csrf_token_mismatch')) >= 0) {
-      // Identify the default csrf_token_mismatch response that is sent in html. Oddly this does not prompt onerror method, will manually invoke onerror method.
-      this.onerror({
-        alert: {
-          content: app.translator.trans(translationErrorsPrefix + 'csrf_token_mismatch'),
-          controls: false,
-          dismissible: false,
-          type: "error"
-        },
-        status: 400,
-        response: {
-          errors: [{
-            code: 'csrf_token_mismatch',
-            status: 400
-          }]
-        }
-      });
-    }*/
     this.loaded();
     return response;
   }
