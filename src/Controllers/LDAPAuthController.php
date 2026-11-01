@@ -19,6 +19,7 @@ class LDAPAuthController implements RequestHandlerInterface
 	protected $response;
 	protected $settings;
 	protected $url;
+	protected $settingsPrefix = 'tituspijean-auth-ldap.';
 
 	public function __construct(ResponseFactory $response, SettingsRepositoryInterface $settings, UrlGenerator $url)
 	{
@@ -29,17 +30,21 @@ class LDAPAuthController implements RequestHandlerInterface
 
 	public function handle(Request $request): ResponseInterface
 	{
-		$settingsPrefix = 'tituspijean-auth-ldap.';
-
 		$body = $request->getParsedBody();
-		$params = Arr::only($body, ['identification', 'password']);
+		$params = Arr::only($body, ['identification', 'password', 'returnTo']);
 		$id = Arr::get($params, 'identification');
 		$password = Arr::get($params, 'password');
+
+		// Validate and store returnTo.
+		$returnTo = $this->validateReturnTo(
+		    Arr::get($params, 'returnTo', ''),
+		    $request
+		);
 
 		if (empty($id) || empty($password)) {
 			return $this->errorResponse("account.invalid_inputs");
 		} else {
-			return $this->processDomains($id, $password);
+			return $this->processDomains($id, $password, $returnTo);
 		}
 	}
 
@@ -50,9 +55,9 @@ class LDAPAuthController implements RequestHandlerInterface
 		return new JsonResponse($contents, $statusCode);
 	}
 
-	public function processDomains(string $id, string $password): ResponseInterface
+	public function processDomains(string $id, string $password, string $returnTo): ResponseInterface
 	{
-		$domains = json_decode($this->settings->get('tituspijean-auth-ldap.domains'), true);
+		$domains = json_decode($this->settings->get($this->settingsPrefix . 'domains'), true);
 
 		$domainsCount = $domains? count($domains): 0;
 		if ($domainsCount == 0) {
@@ -100,7 +105,7 @@ class LDAPAuthController implements RequestHandlerInterface
 					try {
 						$connection->connect();
 					} catch (\LdapRecord\Auth\BindException $e) {
-						return $this->errorResponse("domains.connection_failed", ["data" => $error->getErrorCode(), "domain_index" => $index+1]);
+						return $this->errorResponse("domains.connection_failed", ["data" => $e->getErrorCode(), "domain_index" => $index+1]);
 					}
 					foreach (explode(';', $searchBaseDNs) as $searchBaseDN) {
 						foreach ($searchUserFields as $searchUserField) {
@@ -140,7 +145,7 @@ class LDAPAuthController implements RequestHandlerInterface
 												->suggest('isLDAP', true)
 												->suggest('permissionGroupForLDAP', $userPermissionGroups)
 												->provide('username', $user[strtolower($userLdapUsername)][0])
-												//->provideAvatar($user->getJpegPhoto())
+												//->provideAvatar($user->getJpegPhoto())’
 												->setPayload(
 													[
 														"index" => $index,
@@ -158,7 +163,8 @@ class LDAPAuthController implements RequestHandlerInterface
 												$registration
 													->provideTrustedEmail($user[strtolower($userLdapMail)][0]);
 											}
-										}
+										},
+										$returnTo
 									);
 								} else {
 									$error = $connection->getLdapConnection()->getDiagnosticMessage();
@@ -184,7 +190,7 @@ class LDAPAuthController implements RequestHandlerInterface
 			}
 		}
 
-		if ($this->settings->get($settingsPrefix . 'display_detailed_error')) {
+		if ($this->settings->get($this->settingsPrefix . 'display_detailed_error')) {
 			$isFound = false;
 			foreach ($ldapErrors as $ldapError) {
 				if (strpos($ldapError, 'No LDAP query results') !== false) {
@@ -224,4 +230,40 @@ class LDAPAuthController implements RequestHandlerInterface
 		}
 		return new JsonResponse($contents, 401);
 	}
+
+    // Following functions are taken and adapted from FriendsOfFlarum/oauth, thanks to its maintainers!
+    /**
+     * Validate a returnTo URL.
+     *
+     * Only relative paths (starting with /) are accepted. External URLs are
+     * silently replaced with '/' to prevent open redirect attacks.
+     */
+    protected function validateReturnTo(string $returnTo, Request $request): string
+    {
+        if (empty($returnTo)) {
+            // Fall back to the Referer header, which is same-origin in normal usage.
+            $referer = $request->getHeaderLine('Referer');
+            if (!empty($referer)) {
+                $returnTo = parse_url($referer, PHP_URL_PATH) ?? $this->url->to('forum')->base();
+            }
+        }
+
+        return self::isSafeReturnPath($returnTo) ? $returnTo : $this->url->to('forum')->base();
+    }
+
+    /**
+     * Whether a returnTo value is a path on this forum and safe to redirect to.
+     *
+     * Rejects anything that looks like an absolute URL (has a scheme or //host). Browsers read "\" as "/",
+     * so "/\host" is a //host too, and strip tab/CR/LF, so "/<TAB>/host" is as well.
+     */
+    public static function isSafeReturnPath(string $returnTo): bool
+    {
+        return str_starts_with($returnTo, '/')
+            && !str_starts_with($returnTo, '//')
+            && !str_contains($returnTo, '://')
+            && !str_contains($returnTo, '\\')
+            && !preg_match('/[\x00-\x1F\x7F]/', $returnTo);
+    }
+
 }

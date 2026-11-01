@@ -140,6 +140,9 @@ export default class LDAPLogInModal extends FormModal {
   onsubmit(e) {
     e.preventDefault();
 
+    console.log('baseUrl:', app.forum.attribute('baseUrl'));
+    console.log('forum basePath:', app.forum.attribute('basePath'));
+
     this.loading = true;
     $('input[name="identification"]').prop("disabled", true );
     $('input[name="password"]').prop("disabled", true );
@@ -149,10 +152,12 @@ export default class LDAPLogInModal extends FormModal {
     const password = this.password();
     const remember = this.remember();
     const csrfToken = app.session.csrfToken;
+    const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
     const data = {
       identification,
       password,
       remember,
+      returnTo,
       csrfToken
     };
     const options = {
@@ -173,11 +178,19 @@ export default class LDAPLogInModal extends FormModal {
     $('input[name="password"]').prop("disabled", false );
     $('button[name="submit_log_in"]').prop("disabled", false );
 
-    if (response.indexOf('app.authenticationComplete') >= 0) {
-      response.replace( /(^.*\{|\}.*$)/g, '' );
+    console.log('modifyResponse called with:', response); 
+
+/*    if (response.indexOf('app.authenticationComplete') >= 0) {
+      console.log('Found authenticationComplete in response');
+      response = response.replace( /(^.*\{|\}.*$)/g, '' );
       var matches = response.match(/[^{\}]+(?=})/g);
+      console.log('Parsed matches:', matches);
       if (matches.length > 0) {
-        app.authenticationComplete(JSON.parse("{"+matches[0]+"}"));
+        const userData = JSON.parse("{"+matches[0]+"}");
+        console.log('Calling authenticationComplete with:', userData);
+        app.authenticationComplete(userData);
+        console.log('Modal before close:', app.modal);
+        app.modal.close();
       }
     } else if (response.indexOf(app.translator.trans(translationErrorsPrefix+'core_csrf_token_mismatch')) >= 0) {
       // Identify the default csrf_token_mismatch response that is sent in html. Oddly this does not prompt onerror method, will manually invoke onerror method.
@@ -196,7 +209,7 @@ export default class LDAPLogInModal extends FormModal {
           }]
         }
       });
-    }
+    }*/
     this.loaded();
     return response;
   }
